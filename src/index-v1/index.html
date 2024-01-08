@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Izi Crawler Index</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css"
+        />
+    </head>
+    <body>
+        <div id="readme-content" class="markdown-body"></div>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+            const githubUrl = 'https://raw.githubusercontent.com/Stari89/izi-crawler/main/README.md';
+
+            fetch(githubUrl)
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById('readme-content').innerHTML = marked.parse(data);
+                });
+        </script>
+    </body>
+</html>
