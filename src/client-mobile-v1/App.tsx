@@ -1,19 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PaperProvider, useTheme } from 'react-native-paper';
-import { Text } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WelcomeScreen from './screens/WelcomeScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const theme = useTheme();
 
     return (
         <PaperProvider>
-            <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-                <Text variant="bodyLarge" theme={{ colors: { onSurface: theme.colors.onBackground } }}>
-                    Izi Crawler
-                </Text>
-                <StatusBar style="auto" />
-            </View>
+            <StatusBar />
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: theme.colors.background } }}>
+                    <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
         </PaperProvider>
     );
 }
