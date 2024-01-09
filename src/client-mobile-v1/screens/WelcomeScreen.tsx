@@ -5,7 +5,7 @@ const WelcomeScreen = () => {
     const theme = useTheme();
 
     return (
-        <View style={styles.rootContainer}>
+        <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <View style={styles.imageContainer}>
                 <Image style={styles.image} source={require('../assets/images/welcome-02.jpg')} />
             </View>

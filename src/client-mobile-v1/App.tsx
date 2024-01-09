@@ -1,5 +1,4 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
 import { PaperProvider, useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,18 +13,10 @@ export default function App() {
         <PaperProvider>
             <StatusBar style="light" backgroundColor={theme.colors.primary} />
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: theme.colors.background } }}>
+                <Stack.Navigator>
                     <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
