@@ -12,7 +12,7 @@ export default function App() {
 
     return (
         <PaperProvider>
-            <StatusBar />
+            <StatusBar style="light" backgroundColor={theme.colors.primary} />
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: theme.colors.background } }}>
                     <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }} />
