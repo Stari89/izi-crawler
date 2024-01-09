@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         width: '100%',
+        maxWidth: 420,
         alignItems: 'stretch',
         marginBottom: 32,
     },
