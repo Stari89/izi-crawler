@@ -1,8 +1,19 @@
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 
-const WelcomeScreen = () => {
+const WelcomeScreen: React.FC = () => {
     const theme = useTheme();
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+    const handleSignupPress = () => {
+        navigation.navigate('signup');
+    };
+
+    const handleLoginPress = () => {
+        navigation.navigate('login');
+    };
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
@@ -17,10 +28,10 @@ const WelcomeScreen = () => {
                 Welcome to Izi Crawler!
             </Text>
             <View style={styles.buttonsContainer}>
-                <Button mode="contained" style={styles.button}>
+                <Button mode="contained" style={styles.button} onPress={handleSignupPress}>
                     Join for free
                 </Button>
-                <Button mode="outlined" style={styles.button}>
+                <Button mode="outlined" style={styles.button} onPress={handleLoginPress}>
                     Log In
                 </Button>
             </View>
