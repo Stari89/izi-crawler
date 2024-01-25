@@ -1,16 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { PaperProvider, useTheme } from 'react-native-paper';
+import { MD3Theme, PaperProvider, useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen, SignupScreen, WelcomeScreen } from './screens';
-import { Platform } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import Constants from 'expo-constants';
+import { DARK_THEME, LIGHT_THEME } from './constants';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+    const colorScheme = useColorScheme();
+    const theme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
     return (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
             <AppContent />
         </PaperProvider>
     );
