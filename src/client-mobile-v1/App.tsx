@@ -16,6 +16,8 @@ import { Platform, useColorScheme } from 'react-native';
 import Constants from 'expo-constants';
 import { DARK_THEME, LIGHT_THEME } from './constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useAuth } from './hooks/use-auth';
+import { AuthProvider } from './store/auth-context';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -25,7 +27,9 @@ const App = () => {
     const theme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
     return (
         <PaperProvider theme={theme}>
-            <AppContent />
+            <AuthProvider>
+                <AppContent />
+            </AuthProvider>
         </PaperProvider>
     );
 };
@@ -98,8 +102,7 @@ const PublicNavigator = () => {
 };
 
 const Navigation = () => {
-    const isAuthenticated = true; // TODO: get from hook
-
+    const { isAuthenticated } = useAuth();
     return <NavigationContainer>{isAuthenticated ? <SignedInNavigator /> : <PublicNavigator />}</NavigationContainer>;
 };
 
