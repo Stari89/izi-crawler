@@ -1,8 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 import { Button, Divider, Text, TextInput, useTheme } from 'react-native-paper';
+import { useAuth } from '../hooks/use-auth';
 
 const LoginScreen = () => {
     const theme = useTheme();
+    const { login } = useAuth();
+
+    const handleLoginPress = () => {
+        login();
+    };
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
@@ -14,7 +20,9 @@ const LoginScreen = () => {
             <View style={styles.forgotPasswordContainer}>
                 <Button>Forgot Password?</Button>
             </View>
-            <Button mode="contained">Log In</Button>
+            <Button style={styles.loginButton} mode="contained" onPress={handleLoginPress}>
+                Log In
+            </Button>
             <Divider style={styles.divider} />
             <Button style={styles.continueWithButton} mode="outlined" icon="google">
                 Continue with Google
