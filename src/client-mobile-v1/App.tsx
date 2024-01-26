@@ -38,12 +38,25 @@ export default App;
 const SignedInNavigator = () => {
     const theme = useTheme();
     return (
-        <BottomTab.Navigator>
+        <BottomTab.Navigator
+            screenOptions={{
+                headerStyle: { backgroundColor: theme.colors.background },
+                headerTintColor: theme.colors.onBackground,
+                tabBarStyle: { backgroundColor: theme.colors.background },
+                tabBarActiveTintColor: theme.colors.primary,
+            }}
+        >
             <BottomTab.Screen
                 name="home"
                 component={HomeScreen}
                 options={{
-                    tabBarIcon: ({ size }) => <Icon source="home" size={size} color={theme.colors.primary} />,
+                    tabBarIcon: ({ size, focused }) => (
+                        <Icon
+                            source="home"
+                            size={size}
+                            color={focused ? theme.colors.primary : theme.colors.onSurface}
+                        />
+                    ),
                     tabBarLabel: 'Home',
                 }}
             />
@@ -51,7 +64,13 @@ const SignedInNavigator = () => {
                 name="routes"
                 component={RoutesScreen}
                 options={{
-                    tabBarIcon: ({ size }) => <Icon source="map-legend" size={size} color={theme.colors.primary} />,
+                    tabBarIcon: ({ size, focused }) => (
+                        <Icon
+                            source="map-legend"
+                            size={size}
+                            color={focused ? theme.colors.primary : theme.colors.onSurface}
+                        />
+                    ),
                     tabBarLabel: 'Routes',
                 }}
             />
@@ -59,7 +78,13 @@ const SignedInNavigator = () => {
                 name="crawl"
                 component={CrawlScreen}
                 options={{
-                    tabBarIcon: ({ size }) => <Icon source="beer" size={size + 8} color={theme.colors.primary} />,
+                    tabBarIcon: ({ size, focused }) => (
+                        <Icon
+                            source="beer"
+                            size={size}
+                            color={focused ? theme.colors.primary : theme.colors.onSurface}
+                        />
+                    ),
                     tabBarLabel: 'Crawl',
                 }}
             />
@@ -67,7 +92,13 @@ const SignedInNavigator = () => {
                 name="explore"
                 component={ExploreScreen}
                 options={{
-                    tabBarIcon: ({ size }) => <Icon source="compass" size={size} color={theme.colors.primary} />,
+                    tabBarIcon: ({ size, focused }) => (
+                        <Icon
+                            source="compass"
+                            size={size}
+                            color={focused ? theme.colors.primary : theme.colors.onSurface}
+                        />
+                    ),
                     tabBarLabel: 'Explore',
                 }}
             />
@@ -75,7 +106,13 @@ const SignedInNavigator = () => {
                 name="profile"
                 component={ProfileScreen}
                 options={{
-                    tabBarIcon: ({ size }) => <Icon source="account" size={size} color={theme.colors.primary} />,
+                    tabBarIcon: ({ size, focused }) => (
+                        <Icon
+                            source="account"
+                            size={size}
+                            color={focused ? theme.colors.primary : theme.colors.onSurface}
+                        />
+                    ),
                     tabBarLabel: 'Profile',
                 }}
             />
