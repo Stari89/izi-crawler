@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { CrawlRoute } from '../models';
 import { CRAWL_ROUTES, LOGGED_USER } from '../data/dummy-data';
+import CrawlRoutesList from '../constants/crawl-routes-list/CrawlRoutesList';
 
 const CrawlRoutesScreen = () => {
     const theme = useTheme();
@@ -21,7 +22,7 @@ const CrawlRoutesScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <Text>Routes Screen {crawlRoutes.length}</Text>
+            <CrawlRoutesList crawlRouteItems={crawlRoutes} />
         </View>
     );
 };
