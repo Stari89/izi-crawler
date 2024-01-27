@@ -12,13 +12,13 @@ import {
     SignupScreen,
     WelcomeScreen,
 } from './screens';
-import { Platform, useColorScheme } from 'react-native';
-import Constants from 'expo-constants';
+import { useColorScheme } from 'react-native';
 import { DARK_THEME, LIGHT_THEME } from './constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAuth } from './hooks/use-auth';
 import { AuthProvider, RouteProvider } from './store';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -41,6 +41,7 @@ export default App;
 
 const SignedInNavigator = () => {
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
     return (
         <BottomTab.Navigator
             screenOptions={{
@@ -50,6 +51,7 @@ const SignedInNavigator = () => {
                 tabBarActiveTintColor: theme.colors.primary,
                 headerShown: false,
             }}
+            sceneContainerStyle={{ paddingTop: insets.top }}
         >
             <BottomTab.Screen
                 name="home"
@@ -126,10 +128,13 @@ const SignedInNavigator = () => {
 };
 
 const RoutesNavigator = () => {
+    const theme = useTheme();
     return (
         <Tab.Navigator
             screenOptions={{
-                tabBarContentContainerStyle: { paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight * 2 }, // TODO: calculate correct padding, this is just a guess
+                tabBarStyle: { backgroundColor: theme.colors.primary },
+                tabBarActiveTintColor: theme.colors.onPrimary,
+                tabBarIndicatorStyle: { backgroundColor: theme.colors.onPrimary },
             }}
         >
             <Tab.Screen name="my-routes" component={RoutesScreen} options={{ title: 'My Routes' }} />
@@ -140,13 +145,14 @@ const RoutesNavigator = () => {
 
 const PublicNavigator = () => {
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
     return (
         <Stack.Navigator
             screenOptions={{
                 headerStyle: { backgroundColor: theme.colors.background },
                 headerTintColor: theme.colors.onBackground,
                 headerShown: false,
-                contentStyle: { paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight },
+                contentStyle: { paddingTop: insets.top },
             }}
         >
             <Stack.Screen name="welcome" component={WelcomeScreen} />
