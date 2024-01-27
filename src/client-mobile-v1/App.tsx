@@ -137,8 +137,18 @@ const RoutesNavigator = () => {
                 tabBarIndicatorStyle: { backgroundColor: theme.colors.onPrimary },
             }}
         >
-            <Tab.Screen name="my-routes" component={CrawlRoutesScreen} options={{ title: 'My Routes' }} />
-            <Tab.Screen name="favorite-routes" component={CrawlRoutesScreen} options={{ title: 'Favorites' }} />
+            <Tab.Screen
+                name="my-routes"
+                component={CrawlRoutesScreen}
+                options={{ title: 'My Routes' }}
+                initialParams={{ myRoutes: true }}
+            />
+            <Tab.Screen
+                name="favorite-routes"
+                component={CrawlRoutesScreen}
+                options={{ title: 'Favorites' }}
+                initialParams={{ myRoutes: false }}
+            />
         </Tab.Navigator>
     );
 };
