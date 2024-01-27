@@ -18,9 +18,11 @@ import { DARK_THEME, LIGHT_THEME } from './constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAuth } from './hooks/use-auth';
 import { AuthProvider, RouteProvider } from './store';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 const App = () => {
     const colorScheme = useColorScheme();
@@ -46,6 +48,7 @@ const SignedInNavigator = () => {
                 headerTintColor: theme.colors.onBackground,
                 tabBarStyle: { backgroundColor: theme.colors.background },
                 tabBarActiveTintColor: theme.colors.primary,
+                headerShown: false,
             }}
         >
             <BottomTab.Screen
@@ -64,7 +67,7 @@ const SignedInNavigator = () => {
             />
             <BottomTab.Screen
                 name="routes"
-                component={RoutesScreen}
+                component={RoutesNavigator}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -119,6 +122,19 @@ const SignedInNavigator = () => {
                 }}
             />
         </BottomTab.Navigator>
+    );
+};
+
+const RoutesNavigator = () => {
+    return (
+        <Tab.Navigator
+            screenOptions={{
+                tabBarContentContainerStyle: { paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight * 2 }, // TODO: calculate correct padding, this is just a guess
+            }}
+        >
+            <Tab.Screen name="my-routes" component={RoutesScreen} options={{ title: 'My Routes' }} />
+            <Tab.Screen name="favorite-routes" component={RoutesScreen} options={{ title: 'Favorites' }} />
+        </Tab.Navigator>
     );
 };
 
