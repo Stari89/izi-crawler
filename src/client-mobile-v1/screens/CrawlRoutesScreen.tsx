@@ -27,8 +27,10 @@ const CrawlRoutesScreen = () => {
     };
 
     useEffect(() => {
-        const filteredCrawlRoutes = crawlRoutes.filter((route) =>
-            route.name.toLowerCase().includes(searchText.toLowerCase()),
+        const filteredCrawlRoutes = crawlRoutes.filter(
+            (route) =>
+                route.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                route.createdBy.name.toLowerCase().includes(searchText.toLocaleLowerCase()),
         );
         setFilteredCrawlRoutes(filteredCrawlRoutes);
     }, [searchText, crawlRoutes]);
