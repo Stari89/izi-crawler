@@ -37,6 +37,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Test Route',
         favorite: false,
         finishedBy: 0,
+        destinationCount: 4,
     },
     {
         guid: 'e444c9b4-d514-4fa1-b7d8-aee6cc5d7361',
@@ -45,6 +46,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Brežice Prednovoletni Crawl Fixed',
         favorite: true,
         finishedBy: 10,
+        destinationCount: 25,
     },
     {
         guid: '95e62328-06aa-4223-b59b-b00f0cf2baa5',
@@ -53,6 +55,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Brežice Prednovoletni Crawl',
         favorite: true,
         finishedBy: 0,
+        destinationCount: 27,
     },
     {
         guid: '1d953914-d673-4203-ae7e-e53b59899aaf',
@@ -61,6 +64,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Ljubljana Fešta',
         favorite: false,
         finishedBy: 0,
+        destinationCount: 4,
     },
     {
         guid: '4aaaaf40-8f7b-482c-8fa8-cb3218104884',
@@ -69,6 +73,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Morning Afterparty',
         favorite: false,
         finishedBy: 0,
+        destinationCount: 2,
     },
     {
         guid: '45be3a9c-5fe9-4a96-915e-a8b65ca5aa24',
@@ -77,14 +82,16 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'A je v Šiški še kaj odprtega?',
         favorite: false,
         finishedBy: 0,
+        destinationCount: 2,
     },
     {
         guid: 'fb7f97b1-16d1-4b29-99db-92c1b21803d3',
         createdBy: USERS[3],
         createdOn: new Date('2024-01-05'),
-        name: 'Calm Evening',
-        favorite: false,
+        name: 'Zjutraj kofe',
+        favorite: true,
         finishedBy: 0,
+        destinationCount: 2,
     },
     {
         guid: 'd90896f2-a748-4419-840c-e2dadb1b25df',
@@ -93,6 +100,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Stag Party',
         favorite: true,
         finishedBy: 5,
+        destinationCount: 6,
     },
     {
         guid: 'fdf89d06-21d2-446b-a6ad-e2f0f3ac210e',
@@ -101,6 +109,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Discover Grosuplje',
         favorite: true,
         finishedBy: 1,
+        destinationCount: 8,
     },
     {
         guid: '5e09e07d-86bb-4088-9981-7e3e61fd358c',
@@ -109,6 +118,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Ni vic it peš iz Skopic',
         favorite: true,
         finishedBy: 2,
+        destinationCount: 1,
     },
     {
         guid: '8efe1fe1-2626-4bbb-9975-2ad9f718f164',
@@ -117,6 +127,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '50-letnica Družinski prijatelj 1',
         favorite: true,
         finishedBy: 6,
+        destinationCount: 2,
     },
     {
         guid: 'f2b8d980-7b4a-4328-aae5-2e54998a79ca',
@@ -125,6 +136,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '40-letnica Družinski prijatelj 2',
         favorite: true,
         finishedBy: 4,
+        destinationCount: 7,
     },
     {
         guid: '138e04d9-bf43-4b80-a108-5e7153c7ad79',
@@ -133,5 +145,6 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '60-letnica Družinski prijatelj 3',
         favorite: true,
         finishedBy: 1,
+        destinationCount: 13,
     },
 ];

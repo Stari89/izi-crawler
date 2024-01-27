@@ -7,4 +7,5 @@ export interface CrawlRoute {
     name: string;
     favorite: boolean;
     finishedBy: number;
+    destinationCount: number;
 }

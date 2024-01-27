@@ -14,9 +14,9 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
 
     const finishedByText = crawlRoute.finishedBy
         ? crawlRoute.finishedBy > 1
-            ? `${crawlRoute.finishedBy} people finished this route!`
-            : '1 person already finished this route!'
-        : 'Nobody finished this route yet!';
+            ? `${crawlRoute.finishedBy} people finished!`
+            : '1 person finished!'
+        : 'Nobody finished yet!';
 
     return (
         <View style={[styles.rootContainer]}>
@@ -37,6 +37,7 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
                                 <Text style={styles.bold}>{crawlRoute.createdOn.toLocaleDateString()}</Text>
                             </Paragraph>
                             <Paragraph style={styles.finishedByParagraph}>
+                                <Text variant="bodySmall">{crawlRoute.destinationCount} destinations | </Text>
                                 <Text variant="bodySmall">{finishedByText}</Text>
                             </Paragraph>
                         </View>
