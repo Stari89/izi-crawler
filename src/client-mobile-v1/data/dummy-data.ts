@@ -90,7 +90,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         createdOn: new Date('2024-01-05'),
         name: 'Zjutraj kofe',
         favorite: true,
-        finishedBy: 0,
+        finishedBy: 55,
         destinationCount: 2,
     },
     {

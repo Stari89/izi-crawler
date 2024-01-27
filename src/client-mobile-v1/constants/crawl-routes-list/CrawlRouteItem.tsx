@@ -14,9 +14,9 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
 
     const finishedByText = crawlRoute.finishedBy
         ? crawlRoute.finishedBy > 1
-            ? `${crawlRoute.finishedBy} people finished!`
-            : '1 person finished!'
-        : 'Nobody finished yet!';
+            ? `${crawlRoute.finishedBy} people finished`
+            : '1 person finished'
+        : 'Nobody finished yet';
 
     return (
         <View style={[styles.rootContainer]}>
