@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     card: {
-        margin: 4,
+        marginVertical: 4,
+        marginHorizontal: 8,
     },
     cardContentView: {
         flexDirection: 'row',
