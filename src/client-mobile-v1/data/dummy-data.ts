@@ -1,4 +1,4 @@
-import { Route, User } from '../models';
+import { CrawlRoute, User } from '../models';
 
 export const USERS: User[] = [
     {
@@ -29,7 +29,7 @@ export const USERS: User[] = [
 
 export const LOGGED_USER = USERS[0];
 
-export const ROUTES: Route[] = [
+export const CRAWL_ROUTES: CrawlRoute[] = [
     {
         guid: 'c03f3d76-5253-4172-a1f3-4d75a69974a1',
         createdBy: USERS[0],

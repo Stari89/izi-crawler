@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 
-const WelcomeScreen: React.FC = () => {
+const WelcomeScreen = () => {
     const theme = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 

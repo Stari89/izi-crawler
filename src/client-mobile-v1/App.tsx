@@ -8,7 +8,7 @@ import {
     HomeScreen,
     LoginScreen,
     ProfileScreen,
-    RoutesScreen,
+    CrawlRoutesScreen,
     SignupScreen,
     WelcomeScreen,
 } from './screens';
@@ -16,7 +16,7 @@ import { useColorScheme } from 'react-native';
 import { DARK_THEME, LIGHT_THEME } from './constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAuth } from './hooks/use-auth';
-import { AuthProvider, RouteProvider } from './store';
+import { AuthProvider, CrawlRouteProvider } from './store';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -30,9 +30,9 @@ const App = () => {
     return (
         <PaperProvider theme={theme}>
             <AuthProvider>
-                <RouteProvider>
+                <CrawlRouteProvider>
                     <AppContent />
-                </RouteProvider>
+                </CrawlRouteProvider>
             </AuthProvider>
         </PaperProvider>
     );
@@ -137,8 +137,8 @@ const RoutesNavigator = () => {
                 tabBarIndicatorStyle: { backgroundColor: theme.colors.onPrimary },
             }}
         >
-            <Tab.Screen name="my-routes" component={RoutesScreen} options={{ title: 'My Routes' }} />
-            <Tab.Screen name="favorite-routes" component={RoutesScreen} options={{ title: 'Favorites' }} />
+            <Tab.Screen name="my-routes" component={CrawlRoutesScreen} options={{ title: 'My Routes' }} />
+            <Tab.Screen name="favorite-routes" component={CrawlRoutesScreen} options={{ title: 'Favorites' }} />
         </Tab.Navigator>
     );
 };
