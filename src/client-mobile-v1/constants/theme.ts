@@ -9,6 +9,10 @@ export const DARK_THEME: MD3Theme = {
         onPrimary: COLORS.primary100,
         primaryContainer: COLORS.primary300,
         onPrimaryContainer: COLORS.primary900,
+        secondary: COLORS.secondary800,
+        onSecondary: COLORS.secondary100,
+        secondaryContainer: COLORS.secondary200,
+        onSecondaryContainer: COLORS.secondary900,
     },
 };
 
@@ -20,5 +24,9 @@ export const LIGHT_THEME: MD3Theme = {
         onPrimary: COLORS.primary100,
         primaryContainer: COLORS.primary300,
         onPrimaryContainer: COLORS.primary900,
+        secondary: COLORS.secondary800,
+        onSecondary: COLORS.secondary100,
+        secondaryContainer: COLORS.secondary200,
+        onSecondaryContainer: COLORS.secondary900,
     },
 };
