@@ -27,6 +27,8 @@ export const USERS: User[] = [
     },
 ];
 
+export const LOGGED_USER = USERS[0];
+
 export const ROUTES: Route[] = [
     {
         guid: 'c03f3d76-5253-4172-a1f3-4d75a69974a1',
@@ -40,7 +42,7 @@ export const ROUTES: Route[] = [
         createdBy: USERS[1],
         createdOn: new Date('2023-12-27'),
         name: 'Brežice Crawl Fixed',
-        favorite: false,
+        favorite: true,
     },
     {
         guid: '95e62328-06aa-4223-b59b-b00f0cf2baa5',
@@ -68,7 +70,7 @@ export const ROUTES: Route[] = [
         createdBy: USERS[2],
         createdOn: new Date('2024-01-01'),
         name: 'A je v Šiški še kaj odprtega?',
-        favorite: false,
+        favorite: true,
     },
     {
         guid: 'fb7f97b1-16d1-4b29-99db-92c1b21803d3',
@@ -82,14 +84,14 @@ export const ROUTES: Route[] = [
         createdBy: USERS[4],
         createdOn: new Date('2024-01-01'),
         name: 'Stag Party',
-        favorite: false,
+        favorite: true,
     },
     {
         guid: 'fdf89d06-21d2-446b-a6ad-e2f0f3ac210e',
         createdBy: USERS[4],
         createdOn: new Date('2024-01-01'),
         name: 'Discover Grosuplje',
-        favorite: false,
+        favorite: true,
     },
     {
         guid: '5e09e07d-86bb-4088-9981-7e3e61fd358c',

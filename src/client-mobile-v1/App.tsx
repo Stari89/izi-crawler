@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Icon, MD3Theme, PaperProvider, useTheme } from 'react-native-paper';
+import { Icon, PaperProvider, useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -17,7 +17,7 @@ import Constants from 'expo-constants';
 import { DARK_THEME, LIGHT_THEME } from './constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAuth } from './hooks/use-auth';
-import { AuthProvider } from './store/auth-context';
+import { AuthProvider, RouteProvider } from './store';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -28,7 +28,9 @@ const App = () => {
     return (
         <PaperProvider theme={theme}>
             <AuthProvider>
-                <AppContent />
+                <RouteProvider>
+                    <AppContent />
+                </RouteProvider>
             </AuthProvider>
         </PaperProvider>
     );
