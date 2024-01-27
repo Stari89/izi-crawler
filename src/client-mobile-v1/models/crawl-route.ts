@@ -6,4 +6,5 @@ export interface CrawlRoute {
     createdOn: Date;
     name: string;
     favorite: boolean;
+    finishedBy: number;
 }

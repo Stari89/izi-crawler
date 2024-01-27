@@ -18,7 +18,7 @@ const CrawlRoutesScreen = () => {
     useEffect(() => {
         const fetchedCrawlRoutes = CRAWL_ROUTES.filter((crawlRoute) =>
             myRoutes ? crawlRoute.createdBy.guid === LOGGED_USER.guid : crawlRoute.favorite,
-        );
+        ).sort((a, b) => b.createdOn.getTime() - a.createdOn.getTime());
         setCrawlRoutes(fetchedCrawlRoutes);
     }, []);
 
