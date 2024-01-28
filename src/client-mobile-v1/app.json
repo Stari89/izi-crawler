@@ -16,6 +16,7 @@
             "supportsTablet": true
         },
         "android": {
+            "package": "com.stari89.izicrawler",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
