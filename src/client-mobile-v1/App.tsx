@@ -174,6 +174,7 @@ const PublicNavigator = () => {
 
 const Navigation = () => {
     const { isAuthenticated } = useAuth();
+
     return <NavigationContainer>{isAuthenticated ? <SignedInNavigator /> : <PublicNavigator />}</NavigationContainer>;
 };
 
