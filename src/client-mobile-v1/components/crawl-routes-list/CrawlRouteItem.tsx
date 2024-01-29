@@ -1,6 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { CrawlRoute } from '../../models';
 import { Card, IconButton, Paragraph, Text, useTheme } from 'react-native-paper';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface CrawlRouteItemProps {
     crawlRoute: CrawlRoute;
@@ -8,9 +10,12 @@ interface CrawlRouteItemProps {
 
 const CrawlRouteItem = (props: CrawlRouteItemProps) => {
     const theme = useTheme();
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const { crawlRoute } = props;
 
-    const handleOptionsPress = () => {};
+    const handleCardPress = () => {
+        navigation.navigate('crawl-route-details');
+    };
 
     const finishedByText = crawlRoute.finishedBy
         ? crawlRoute.finishedBy > 1
@@ -20,7 +25,7 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
 
     return (
         <View style={[styles.rootContainer]}>
-            <Card style={styles.card}>
+            <Card style={styles.card} onPress={handleCardPress}>
                 <Card.Content>
                     <View style={styles.cardContentView}>
                         <IconButton
@@ -41,7 +46,6 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
                                 <Text variant="bodySmall">{finishedByText}</Text>
                             </Paragraph>
                         </View>
-                        <IconButton style={styles.iconButton} icon="dots-vertical" onPress={handleOptionsPress} />
                     </View>
                 </Card.Content>
             </Card>

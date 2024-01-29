@@ -8,9 +8,11 @@ import {
     HomeScreen,
     LoginScreen,
     ProfileScreen,
-    CrawlRoutesScreen,
+    CrawlRoutesListScreen,
     SignupScreen,
     WelcomeScreen,
+    CrawlRouteDetailsScreen,
+    CrawlRouteMapScreen,
 } from './screens';
 import { useColorScheme } from 'react-native';
 import { DARK_THEME, LIGHT_THEME } from './constants';
@@ -68,8 +70,8 @@ const SignedInNavigator = () => {
                 }}
             />
             <BottomTab.Screen
-                name="routes"
-                component={RoutesNavigator}
+                name="crawl-routes"
+                component={CrawlRouteNavigator}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -127,7 +129,22 @@ const SignedInNavigator = () => {
     );
 };
 
-const RoutesNavigator = () => {
+const CrawlRouteNavigator = () => {
+    const theme = useTheme();
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="crawl-routes-list"
+                component={CrawlRoutesListNavigator}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="crawl-route-details" component={CrawlRouteDetailsScreen} />
+            <Stack.Screen name="crawl-route-map" component={CrawlRouteMapScreen} />
+        </Stack.Navigator>
+    );
+};
+
+const CrawlRoutesListNavigator = () => {
     const theme = useTheme();
     return (
         <Tab.Navigator
@@ -139,13 +156,13 @@ const RoutesNavigator = () => {
         >
             <Tab.Screen
                 name="my-routes"
-                component={CrawlRoutesScreen}
+                component={CrawlRoutesListScreen}
                 options={{ title: 'My Routes' }}
                 initialParams={{ myRoutes: true }}
             />
             <Tab.Screen
                 name="favorite-routes"
-                component={CrawlRoutesScreen}
+                component={CrawlRoutesListScreen}
                 options={{ title: 'Favorites' }}
                 initialParams={{ myRoutes: false }}
             />
