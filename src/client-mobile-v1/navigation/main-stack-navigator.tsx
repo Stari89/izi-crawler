@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'react-native-paper';
 import { CrawlRouteDetailsScreen, CrawlRouteMapScreen } from '../screens';
 import MainBottomTabsNavigator from './main-bottom-tabs-navigator';
+import { NAVIGATION_NAMES } from '../constants/navigation-names';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,9 +15,13 @@ const MainStackNavigator = () => {
                 headerTintColor: theme.colors.onPrimary,
             }}
         >
-            <Stack.Screen name="bottom-tabs" component={MainBottomTabsNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="crawl-route-details" component={CrawlRouteDetailsScreen} />
-            <Stack.Screen name="crawl-route-map" component={CrawlRouteMapScreen} />
+            <Stack.Screen
+                name={NAVIGATION_NAMES.bottomTabsNavigator}
+                component={MainBottomTabsNavigator}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name={NAVIGATION_NAMES.crawlRouteDetails} component={CrawlRouteDetailsScreen} />
+            <Stack.Screen name={NAVIGATION_NAMES.crawlRouteMap} component={CrawlRouteMapScreen} />
         </Stack.Navigator>
     );
 };

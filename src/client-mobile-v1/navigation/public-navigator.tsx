@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LoginScreen, SignupScreen, WelcomeScreen } from '../screens';
+import { NAVIGATION_NAMES } from '../constants/navigation-names';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,9 +18,9 @@ const PublicNavigator = () => {
                 contentStyle: { paddingTop: insets.top },
             }}
         >
-            <Stack.Screen name="welcome" component={WelcomeScreen} />
-            <Stack.Screen name="login" component={LoginScreen} />
-            <Stack.Screen name="signup" component={SignupScreen} />
+            <Stack.Screen name={NAVIGATION_NAMES.welcome} component={WelcomeScreen} />
+            <Stack.Screen name={NAVIGATION_NAMES.login} component={LoginScreen} />
+            <Stack.Screen name={NAVIGATION_NAMES.signup} component={SignupScreen} />
         </Stack.Navigator>
     );
 };

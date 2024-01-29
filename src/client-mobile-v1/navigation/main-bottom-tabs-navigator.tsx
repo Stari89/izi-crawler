@@ -3,6 +3,7 @@ import { Icon, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CrawlScreen, ExploreScreen, HomeScreen, ProfileScreen } from '../screens';
 import CrawlRoutesTopTabNavigator from './crawl-routes-top-tab-navigator';
+import { NAVIGATION_NAMES } from '../constants/navigation-names';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -21,7 +22,7 @@ const MainBottomTabsNavigator = () => {
             sceneContainerStyle={{ paddingTop: insets.top }}
         >
             <BottomTab.Screen
-                name="home"
+                name={NAVIGATION_NAMES.home}
                 component={HomeScreen}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
@@ -35,7 +36,7 @@ const MainBottomTabsNavigator = () => {
                 }}
             />
             <BottomTab.Screen
-                name="crawl-routes"
+                name={NAVIGATION_NAMES.crawlRoutesNavigator}
                 component={CrawlRoutesTopTabNavigator}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
@@ -49,7 +50,7 @@ const MainBottomTabsNavigator = () => {
                 }}
             />
             <BottomTab.Screen
-                name="crawl"
+                name={NAVIGATION_NAMES.crawl}
                 component={CrawlScreen}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
@@ -63,7 +64,7 @@ const MainBottomTabsNavigator = () => {
                 }}
             />
             <BottomTab.Screen
-                name="explore"
+                name={NAVIGATION_NAMES.explore}
                 component={ExploreScreen}
                 options={{
                     tabBarIcon: ({ size, focused }) => (
@@ -77,7 +78,7 @@ const MainBottomTabsNavigator = () => {
                 }}
             />
             <BottomTab.Screen
-                name="profile"
+                name={NAVIGATION_NAMES.profile}
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ size, focused }) => (

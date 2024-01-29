@@ -1,6 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useTheme } from 'react-native-paper';
 import { CrawlRoutesListScreen } from '../screens';
+import { NAVIGATION_NAMES } from '../constants/navigation-names';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,13 +16,13 @@ const CrawlRoutesTopTabNavigator = () => {
             }}
         >
             <Tab.Screen
-                name="my-routes"
+                name={NAVIGATION_NAMES.myRoutes}
                 component={CrawlRoutesListScreen}
                 options={{ title: 'My Routes' }}
                 initialParams={{ myRoutes: true }}
             />
             <Tab.Screen
-                name="favorite-routes"
+                name={NAVIGATION_NAMES.favoriteRoutes}
                 component={CrawlRoutesListScreen}
                 options={{ title: 'Favorites' }}
                 initialParams={{ myRoutes: false }}

@@ -3,6 +3,7 @@ import { CrawlRoute } from '../../models';
 import { Card, IconButton, Paragraph, Text, useTheme } from 'react-native-paper';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NAVIGATION_NAMES } from '../../constants/navigation-names';
 
 interface CrawlRouteItemProps {
     crawlRoute: CrawlRoute;
@@ -14,7 +15,7 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
     const { crawlRoute } = props;
 
     const handleCardPress = () => {
-        navigation.navigate('crawl-route-details');
+        navigation.navigate(NAVIGATION_NAMES.crawlRouteDetails);
     };
 
     const finishedByText = crawlRoute.finishedBy

@@ -2,17 +2,18 @@ import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { NAVIGATION_NAMES } from '../constants/navigation-names';
 
 const WelcomeScreen = () => {
     const theme = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const handleSignupPress = () => {
-        navigation.navigate('signup');
+        navigation.navigate(NAVIGATION_NAMES.signup);
     };
 
     const handleLoginPress = () => {
-        navigation.navigate('login');
+        navigation.navigate(NAVIGATION_NAMES.login);
     };
 
     return (
