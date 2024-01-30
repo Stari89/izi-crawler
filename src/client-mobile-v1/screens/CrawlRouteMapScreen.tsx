@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
-import { useTheme } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import { useForegroundPermissions, PermissionStatus, getCurrentPositionAsync } from 'expo-location';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const CrawlRouteMapScreen = () => {
     const theme = useTheme();
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
     const [locationPermission, requestLocationPermission] = useForegroundPermissions();
 
     const [region, setRegion] = useState<Region>();
 
     const verifyPermission = async () => {
-        console.log('1', locationPermission);
-
         if (
             !locationPermission ||
             (locationPermission.status !== PermissionStatus.GRANTED && locationPermission.canAskAgain)
@@ -29,7 +31,7 @@ const CrawlRouteMapScreen = () => {
         return true;
     };
 
-    const getLocation = async () => {
+    const refreshLocation = async () => {
         const hasPermission = await verifyPermission();
         if (!hasPermission) {
             return;
@@ -44,7 +46,12 @@ const CrawlRouteMapScreen = () => {
     };
 
     useEffect(() => {
-        getLocation();
+        navigation.setOptions({
+            headerRight: (props) => {
+                return <IconButton iconColor={props.tintColor} icon="autorenew" onPress={refreshLocation} />;
+            },
+        });
+        refreshLocation();
     }, []);
 
     if (!region) {
@@ -53,7 +60,7 @@ const CrawlRouteMapScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <MapView style={styles.mapView} region={region}>
+            <MapView style={styles.mapView} initialRegion={region}>
                 <Marker title="You're here" coordinate={region} />
             </MapView>
         </View>
