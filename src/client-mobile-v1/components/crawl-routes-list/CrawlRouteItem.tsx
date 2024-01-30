@@ -15,7 +15,7 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
     const { crawlRoute } = props;
 
     const handleCardPress = () => {
-        navigation.navigate(NAVIGATION_NAMES.crawlRouteDetails);
+        navigation.navigate(NAVIGATION_NAMES.crawlRouteDetails, { guid: crawlRoute.guid });
     };
 
     const finishedByText = crawlRoute.finishedBy

@@ -21,7 +21,11 @@ const MainStackNavigator = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name={NAVIGATION_NAMES.crawlRouteDetails} component={CrawlRouteDetailsScreen} />
-            <Stack.Screen name={NAVIGATION_NAMES.crawlRouteMap} component={CrawlRouteMapScreen} />
+            <Stack.Screen
+                name={NAVIGATION_NAMES.crawlRouteMap}
+                component={CrawlRouteMapScreen}
+                options={{ headerTitle: 'Map' }}
+            />
         </Stack.Navigator>
     );
 };
