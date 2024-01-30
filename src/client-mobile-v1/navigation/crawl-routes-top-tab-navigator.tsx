@@ -19,13 +19,13 @@ const CrawlRoutesTopTabNavigator = () => {
                 name={NAVIGATION_NAMES.myRoutes}
                 component={CrawlRoutesListScreen}
                 options={{ title: 'My Routes' }}
-                initialParams={{ myRoutes: true }}
+                initialParams={{ showMyRoutes: true }}
             />
             <Tab.Screen
                 name={NAVIGATION_NAMES.favoriteRoutes}
                 component={CrawlRoutesListScreen}
                 options={{ title: 'Favorites' }}
-                initialParams={{ myRoutes: false }}
+                initialParams={{ showMyRoutes: false }}
             />
         </Tab.Navigator>
     );

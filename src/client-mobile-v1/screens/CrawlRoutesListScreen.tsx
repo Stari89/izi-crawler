@@ -3,22 +3,22 @@ import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
 import { CrawlRoute } from '../models';
-import { CRAWL_ROUTES, LOGGED_USER } from '../data/dummy-data';
 import CrawlRoutesList from '../components/crawl-routes-list/CrawlRoutesList';
+import { useCrawlRoute } from '../hooks';
 
 const CrawlRoutesListScreen = () => {
     const theme = useTheme();
     const route = useRoute();
-    const { myRoutes } = route.params as { myRoutes: boolean };
+    const { showMyRoutes } = route.params as { showMyRoutes: boolean };
+
+    const { myRoutes, favoriteRoutes } = useCrawlRoute();
 
     const [crawlRoutes, setCrawlRoutes] = useState<CrawlRoute[]>([]);
     const [filteredCrawlRoutes, setFilteredCrawlRoutes] = useState<CrawlRoute[]>([]);
     const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        const fetchedCrawlRoutes = CRAWL_ROUTES.filter((crawlRoute) =>
-            myRoutes ? crawlRoute.createdBy.guid === LOGGED_USER.guid : crawlRoute.favorite,
-        ).sort((a, b) => b.createdOn.getTime() - a.createdOn.getTime());
+        const fetchedCrawlRoutes = showMyRoutes ? myRoutes : favoriteRoutes;
         setCrawlRoutes(fetchedCrawlRoutes);
     }, []);
 
