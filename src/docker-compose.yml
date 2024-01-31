@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+    izi-crawler-builder:
+        build:
+            context: ./
+            dockerfile: ./docker/Dockerfile
+        network_mode: 'host'
+        restart: on-failure
+        volumes:
+            - ./client-mobile-v1:/project/app
