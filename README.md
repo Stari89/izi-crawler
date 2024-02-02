@@ -5,6 +5,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 ## Useful Links
 
 -   [Index](https://izi-crawler.dko.si)
+-   [Build Artifacts](https://izi-crawler.dko.si/artifacts.php)
 -   [GitHub repository](https://github.com/Stari89/izi-crawler)
 -   [Project on Expo](https://expo.dev/accounts/stari89/projects/izi-crawler)
 
@@ -86,6 +87,8 @@ docker-compose run izi-crawler-builder env
 **TODO**
 
 ### Testing (installing app on your device)
+
+All build artifacts for testing are available on [Izi Crawler Build Artifacts](https://izi-crawler.dko.si/artifacts.php) page.
 
 #### Android
 
