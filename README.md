@@ -47,7 +47,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 -   The 90% of the remaining 10% of problems is resolved by deleting the `/src/client-mobile-v1/node_modules` folder and running `npm install` command again.
 -   Contact the Principal Developer only after you tried first two bullet points.
 
-### Local Preview Build for Testing
+### Build (Preview)
 
 #### Android
 
@@ -75,6 +75,19 @@ docker image prune -a -f
 docker volume prune -a -f
 docker buildx prune -f
 ```
+
+#### iOS
+
+**TODO**
+
+### Testing (installing app on your device)
+
+#### Android
+
+Once you have an url to the APK (Android Package Kit) file, you will need to do the following:
+
+-   Download the `*.apk` file to your device
+-   Follow this [guide](https://www.groovypost.com/howto/install-apk-files-on-android/).
 
 #### iOS
 
