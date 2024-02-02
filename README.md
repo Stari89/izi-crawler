@@ -103,8 +103,8 @@ Once you have an url to the APK (Android Package Kit) file, you will need to do 
 
 ## Credits
 
--   **Damjan Kovačič** - Principal Developer
--   **Ana Šolar** - Interested Spectator
+-   **Damjan Kovačič** - Principal Development
+-   **Ana Šolar** - Testing
 -   **Iztok Molan** - Initial Inspiration For This Project, Named After, Interested Spectator
 -   **Domen Prevejšek** - Interested Spectator
 -   **Boštjan Piltaver** - Interested Spectator
