@@ -7,23 +7,57 @@ Pub crawler app for my friend and anyone else who may be interested.
 -   [Index](https://izi-crawler.dko.si)
 -   [GitHub repository](https://github.com/Stari89/izi-crawler)
 
-## Develop
+## Development
 
-### Setup
+### Environment Setup
 
-TODO
+-   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
+-   Download and install Node Version Manager: [nvm for Windows](https://github.com/coreybutler/nvm-windows), [nvm for Linux and MacOS](https://github.com/nvm-sh/nvm)
+-   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.10.0 in this instructions) with nvm in your terminal:
+    ```
+        nvm install 20.10.0
+        nvm use 20.10.0
+    ```
+-   Navigate to `/src/client-mobile-v1` folder in your terminal
+    ```
+        cd /src/client-mobile-v1
+    ```
+-   Install npm packages:
+    ```
+        npm install
+    ```
 
 ### Debug
 
-TODO
+-   Navigate to `/src/client-mobile-v1` folder in your terminal
+    ```
+        cd /src/client-mobile-v1
+    ```
+-   Start the Expo development server with command:
+    ```
+        npm run start
+    ```
+-   If you wish to debug on physical device, scan the QR code with Expo Go app (Android) or the Camera app (iOS).
+-   If you wish to debug on an emulator, follow this instruction: [Virtual Device Manager](https://developer.android.com/studio/run/managing-avds) for Android **and make sure your emulator has the Play Store enabled**. Once you have your emulator up and running, follow Expo's development server instructions on how to debug (basically you just press "A" button on your keyboard).
+-   Have fun.
+
+#### Troubleshooting
+
+-   90% of problems is resolved by re-running the `npm install` command.
+-   The 90% of the remaining 10% of problems is resolved by deleting the `/src/client-mobile-v1/node_modules` folder and running `npm install` command again.
+-   Contact the Principal Developer after you tried first two bullet points.
 
 ### Local Preview Build for Testing
 
--   Install [Docker](https://www.docker.com/).
--   In terminal, navigate to `/src/docker` folder and run `docker-compose up -d`. Open terminal of the Docker container, navigate to your react-native project and run: `eas build -p android --profile preview --local`
--   This will generate \*.apk file which you can copy on your Android device and install.
+#### Android
 
-#### Useful Docker commands
+-   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, the principal developer will supply you with one.
+-   Install [Docker](https://www.docker.com/).
+-   In terminal, navigate to `/src/docker` folder and run `docker-compose up -d`. Open terminal of the Docker container, navigate (should be navigated correctly by default) to your react-native project and run: `eas build -p android --profile preview --local`
+-   eas will prompt you for login credentials. Contact the Principal Developer.
+-   This will generate `*.apk` file which you can copy on your Android device and install.
+
+##### Useful Docker commands
 
 ```
 docker image prune -a -f
@@ -31,12 +65,17 @@ docker volume prune -a -f
 docker buildx prune -f
 ```
 
+#### iOS
+
+**TODO**
+
 ## Credits
 
--   **Damjan Kovačič** - Development
+-   **Damjan Kovačič** - Principal Developer
 -   **Ana Šolar** - Interested Spectator
 -   **Iztok Molan** - Initial Inspiration For This Project, Named After, Interested Spectator
 -   **Domen Prevejšek** - Interested Spectator
 -   **Boštjan Piltaver** - Interested Spectator
 -   **Sami Ilc** - Interested Spectator
 -   **Tilen Volčanšek** - Interested Spectator
+-   **Rok Ivanšek** - Interested Spectator
