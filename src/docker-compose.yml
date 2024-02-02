@@ -5,6 +5,9 @@ services:
         build:
             context: ./
             dockerfile: ./docker/Dockerfile
+        env_file:
+            - ./client-mobile-v1/.env
+            - ./client-mobile-v1/.env.preview
         network_mode: 'host'
         restart: on-failure
         volumes:

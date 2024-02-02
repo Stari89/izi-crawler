@@ -11,7 +11,6 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 ### Environment Setup
 
--   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
 -   Download and install Node Version Manager: [nvm for Windows](https://github.com/coreybutler/nvm-windows), [nvm for Linux and MacOS](https://github.com/nvm-sh/nvm)
 -   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.10.0 in this instructions) with nvm in your terminal:
     ```
@@ -51,7 +50,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 #### Android
 
--   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, the Principal Peveloper will supply you with one.
+-   Make sure you have `.env.preview` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
 -   Install [Docker](https://www.docker.com/).
 -   In terminal, navigate to `/src` folder where the `docker-compose.yml` fole is located:
     ```
@@ -61,9 +60,13 @@ Pub crawler app for my friend and anyone else who may be interested.
     ```
     docker-compose up -d
     ```
--   Open terminal of the Docker container, navigate (should be navigated correctly by default) to your react-native project and run:
+-   Make sure environment variables are correctly set **(APP WILL CRASH IF GOOGLE_API_KEY IS EMPTY)**:
     ```
-    eas build -p android --profile preview --local
+    docker-compose run izi-crawler-builder env
+    ```
+-   Run the build through Docker:
+    ```
+    docker-compose run izi-crawler-builder eas build -p android --profile preview --local
     ```
 -   eas-cli will prompt you for login credentials. Contact the Principal Developer.
 -   This will generate `*.apk` file which you can copy on your Android device and install.
@@ -74,6 +77,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 docker image prune -a -f
 docker volume prune -a -f
 docker buildx prune -f
+docker-compose run izi-crawler-builder env
 ```
 
 #### iOS

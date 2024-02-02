@@ -1,6 +1,6 @@
 module.exports = {
     // use the variable if it's defined, otherwise use the fallback
-    name: 'Izi Crawler',
+    name: process.env.APP_NAME || 'Izi Crawler',
     slug: 'izi-crawler',
     version: '1.0.0',
     orientation: 'portrait',
