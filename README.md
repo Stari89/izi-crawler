@@ -6,16 +6,17 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 -   [Index](https://izi-crawler.dko.si)
 -   [GitHub repository](https://github.com/Stari89/izi-crawler)
+-   [Project on Expo](https://expo.dev/accounts/stari89/projects/izi-crawler)
 
 ## Development
 
 ### Environment Setup
 
 -   Download and install Node Version Manager: [nvm for Windows](https://github.com/coreybutler/nvm-windows), [nvm for Linux and MacOS](https://github.com/nvm-sh/nvm)
--   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.10.0 in this instructions) with nvm in your terminal:
+-   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.11.0 in this instructions) with nvm in your terminal (run your terminal as administrator if you get `exit status 5: Access is denied.` error):
     ```
-        nvm install 20.10.0
-        nvm use 20.10.0
+    nvm install 20.11.0
+    nvm use 20.11.0
     ```
 -   Navigate to `/src/client-mobile-v1` folder in your terminal:
     ```
