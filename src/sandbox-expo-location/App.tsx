@@ -7,7 +7,7 @@ export default function App() {
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-    const hanldleGetUserLocation = async () => {
+    const handleGetUserLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
             setErrorMsg('Permission to access location was denied');
@@ -29,7 +29,7 @@ export default function App() {
             <StatusBar style="auto" />
             <Text>User Location</Text>
             <Text>{text}</Text>
-            <Button onPress={hanldleGetUserLocation} title="Get Location" />
+            <Button onPress={handleGetUserLocation} title="Get Location" />
         </View>
     );
 }

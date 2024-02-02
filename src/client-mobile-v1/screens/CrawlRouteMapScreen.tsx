@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { IconButton, useTheme } from 'react-native-paper';
 import { useForegroundPermissions, PermissionStatus, getCurrentPositionAsync } from 'expo-location';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
@@ -60,7 +60,7 @@ const CrawlRouteMapScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <MapView style={styles.mapView} initialRegion={region}>
+            <MapView style={styles.mapView} initialRegion={region} provider={PROVIDER_GOOGLE}>
                 <Marker title="You're here" coordinate={region} />
             </MapView>
         </View>

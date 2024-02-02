@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "client-mobile-v1",
-        "slug": "client-mobile-v1",
+        "name": "Izi Crawler",
+        "slug": "izi-crawler",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
@@ -20,6 +20,11 @@
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
+            },
+            "config": {
+                "googleMaps": {
+                    "apiKey": ""
+                }
             }
         },
         "web": {
@@ -28,7 +33,7 @@
         "plugins": ["expo-location"],
         "extra": {
             "eas": {
-                "projectId": "b6215245-2455-4395-8b4b-b33ba675c097",
+                "projectId": "3669dab6-2e6b-4237-bddf-87e528c385a8",
                 "owner": "stari89"
             }
         },
