@@ -18,26 +18,26 @@ Pub crawler app for my friend and anyone else who may be interested.
         nvm install 20.10.0
         nvm use 20.10.0
     ```
--   Navigate to `/src/client-mobile-v1` folder in your terminal
+-   Navigate to `/src/client-mobile-v1` folder in your terminal:
     ```
-        cd /src/client-mobile-v1
+    cd ./src/client-mobile-v1
     ```
 -   Install npm packages:
     ```
-        npm install
+    npm install
     ```
 
 ### Debug
 
--   Navigate to `/src/client-mobile-v1` folder in your terminal
+-   Navigate to `/src/client-mobile-v1` folder in your terminal:
     ```
-        cd /src/client-mobile-v1
+    cd ./src/client-mobile-v1
     ```
 -   Start the Expo development server with command:
     ```
-        npm run start
+    npm run start
     ```
--   If you wish to debug on physical device, scan the QR code with Expo Go app (Android) or the Camera app (iOS).
+-   If you wish to debug on a physical device, scan the QR code with Expo Go app (Android) or the Camera app (iOS).
 -   If you wish to debug on an emulator, follow this instruction: [Virtual Device Manager](https://developer.android.com/studio/run/managing-avds) for Android **and make sure your emulator has the Play Store enabled**. Once you have your emulator up and running, follow Expo's development server instructions on how to debug (basically you just press "A" button on your keyboard).
 -   Have fun.
 
@@ -45,16 +45,27 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 -   90% of problems is resolved by re-running the `npm install` command.
 -   The 90% of the remaining 10% of problems is resolved by deleting the `/src/client-mobile-v1/node_modules` folder and running `npm install` command again.
--   Contact the Principal Developer after you tried first two bullet points.
+-   Contact the Principal Developer only after you tried first two bullet points.
 
 ### Local Preview Build for Testing
 
 #### Android
 
--   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, the principal developer will supply you with one.
+-   Make sure you have `.env` file with secrets in `/src/client-mobile-v1`. If not, the Principal Peveloper will supply you with one.
 -   Install [Docker](https://www.docker.com/).
--   In terminal, navigate to `/src/docker` folder and run `docker-compose up -d`. Open terminal of the Docker container, navigate (should be navigated correctly by default) to your react-native project and run: `eas build -p android --profile preview --local`
--   eas will prompt you for login credentials. Contact the Principal Developer.
+-   In terminal, navigate to `/src` folder where the `docker-compose.yml` fole is located:
+    ```
+    cd ./src
+    ```
+-   Run the docker-compose command:
+    ```
+    docker-compose up -d
+    ```
+-   Open terminal of the Docker container, navigate (should be navigated correctly by default) to your react-native project and run:
+    ```
+    eas build -p android --profile preview --local
+    ```
+-   eas-cli will prompt you for login credentials. Contact the Principal Developer.
 -   This will generate `*.apk` file which you can copy on your Android device and install.
 
 ##### Useful Docker commands
