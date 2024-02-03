@@ -105,9 +105,11 @@ Once you have an url to the APK (Android Package Kit) file, you will need to do 
 
 -   **Damjan Kovačič** - Principal Development
 -   **Ana Šolar** - Testing
+-   **Ana Fekonja** - Testing
+-   **Domen Prevejšek** - Testing
+-   **Matjaž Predanič** - Testing
+-   **Rok Ivanšek** - Testing
 -   **Iztok Molan** - Initial Inspiration For This Project, Named After, Interested Spectator
--   **Domen Prevejšek** - Interested Spectator
 -   **Boštjan Piltaver** - Interested Spectator
 -   **Sami Ilc** - Interested Spectator
 -   **Tilen Volčanšek** - Interested Spectator
--   **Rok Ivanšek** - Interested Spectator
