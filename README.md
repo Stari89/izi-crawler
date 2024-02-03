@@ -54,6 +54,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 -   Make sure you have `.env.preview` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
 -   Install [Docker](https://www.docker.com/).
+-   Run Docker.
 -   In terminal, navigate to `/src` folder where the `docker-compose.yml` file is located:
     ```
     cd ./src
