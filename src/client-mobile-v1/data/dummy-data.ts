@@ -37,7 +37,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Test Route',
         favorite: false,
         finishedBy: 0,
-        destinationCount: 5,
+        expectedTimeToFinish: '2:45',
+        distance: 3.2,
         venues: [
             {
                 guid: '22b8c0c5-6245-455b-95f3-ead463da1589',
@@ -83,7 +84,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Pit Pot Fixed',
         favorite: true,
         finishedBy: 10,
-        destinationCount: 22,
+        expectedTimeToFinish: '12:20',
+        distance: 6.7,
         venues: [
             {
                 guid: 'fb01665a-b106-4794-9dac-792b86afe729',
@@ -248,7 +250,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Brežice Prednovoletni Crawl',
         favorite: true,
         finishedBy: 0,
-        destinationCount: 27,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -258,7 +261,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Ljubljana Fešta',
         favorite: false,
         finishedBy: 0,
-        destinationCount: 4,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -268,7 +272,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Morning Afterparty',
         favorite: false,
         finishedBy: 0,
-        destinationCount: 2,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -278,7 +283,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'A je v Šiški še kaj odprtega?',
         favorite: false,
         finishedBy: 0,
-        destinationCount: 2,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -288,7 +294,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Zjutraj kofe',
         favorite: true,
         finishedBy: 55,
-        destinationCount: 2,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -298,7 +305,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Stag Party',
         favorite: true,
         finishedBy: 5,
-        destinationCount: 6,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -308,7 +316,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Discover Grosuplje',
         favorite: true,
         finishedBy: 1,
-        destinationCount: 8,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -318,7 +327,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Ni vic it peš iz Skopic',
         favorite: true,
         finishedBy: 2,
-        destinationCount: 1,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -328,7 +338,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '50-letnica Družinski prijatelj 1',
         favorite: true,
         finishedBy: 6,
-        destinationCount: 2,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -338,7 +349,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '40-letnica Družinski prijatelj 2',
         favorite: true,
         finishedBy: 4,
-        destinationCount: 7,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
     {
@@ -348,7 +360,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: '60-letnica Družinski prijatelj 3',
         favorite: true,
         finishedBy: 1,
-        destinationCount: 13,
+        expectedTimeToFinish: '0:00',
+        distance: 0,
         venues: [],
     },
 ];

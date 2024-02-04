@@ -62,7 +62,7 @@ const CrawlRouteDetailsScreen = () => {
                             Distance
                         </Text>
                         <Text variant="displaySmall" style={styles.statsValue}>
-                            6.4 km
+                            {crawlRoute?.distance.toFixed(2)} km
                         </Text>
                     </View>
                 </View>
@@ -82,7 +82,7 @@ const CrawlRouteDetailsScreen = () => {
                             Expected time
                         </Text>
                         <Text variant="displaySmall" style={styles.statsValue}>
-                            4:20
+                            {crawlRoute?.expectedTimeToFinish}
                         </Text>
                     </View>
                 </View>

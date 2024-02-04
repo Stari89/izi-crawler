@@ -43,7 +43,7 @@ const CrawlRouteItem = (props: CrawlRouteItemProps) => {
                                 <Text style={styles.bold}>{crawlRoute.createdOn.toLocaleDateString()}</Text>
                             </Paragraph>
                             <Paragraph style={styles.finishedByParagraph}>
-                                <Text variant="bodySmall">{crawlRoute.destinationCount} destinations | </Text>
+                                <Text variant="bodySmall">{crawlRoute.venues.length} destinations | </Text>
                                 <Text variant="bodySmall">{finishedByText}</Text>
                             </Paragraph>
                         </View>
