@@ -58,7 +58,7 @@ const CrawlRouteMapScreen = () => {
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <MapView style={styles.mapView} region={region} provider={PROVIDER_GOOGLE}>
                 {crawlRoute.venues.map((v) => (
-                    <Marker key={v.guid} coordinate={v.location} style={{ opacity: 0.7 }} />
+                    <Marker key={v.guid} coordinate={v.location} />
                 ))}
                 <Polyline
                     coordinates={crawlRoute.venues.map((v) => v.location)}
