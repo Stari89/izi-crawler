@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
 import { CrawlRoute } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
+import MapView, { Polyline, Region } from 'react-native-maps';
 
 type ParamList = {
     Detail: {
@@ -21,10 +22,38 @@ const CrawlRouteDetailsScreen = () => {
     const { getCrawlRoute } = useCrawlRoute();
     const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
 
+    const [region, setRegion] = useState<Region>();
+
     useEffect(() => {
         const crawlRoute = getCrawlRoute(route.params.guid);
         navigation.setOptions({ title: crawlRoute?.name });
         setCrawlRoute(crawlRoute);
+
+        if (crawlRoute?.venues.length === 0) {
+            return;
+        }
+        const latList = crawlRoute?.venues.map((v) => v.location.latitude);
+        const lngList = crawlRoute?.venues.map((v) => v.location.longitude);
+
+        if (!latList || !lngList || latList.length === 0 || lngList.length === 0) {
+            return;
+        }
+
+        const latMin = Math.min(...latList);
+        const latMax = Math.max(...latList);
+        const lngMin = Math.min(...lngList);
+        const lngMax = Math.max(...lngList);
+
+        const region: Region = {
+            latitude: (latMin + latMax) / 2,
+            longitude: (lngMin + lngMax) / 2,
+            latitudeDelta: (latMax - latMin) * 1.5,
+            longitudeDelta: (lngMax - lngMin) * 1.5,
+        };
+
+        console.log('region', region);
+
+        setRegion(region);
     }, []);
 
     const handleMapButtonPress = () => {
@@ -47,6 +76,26 @@ const CrawlRouteDetailsScreen = () => {
                         </Text>
                     </View>
                 </View>
+                {region && crawlRoute && (
+                    <View style={styles.mapViewContainer}>
+                        <MapView
+                            style={styles.mapView}
+                            region={region}
+                            onPress={handleMapButtonPress}
+                            liteMode={true}
+                            zoomEnabled={false}
+                            rotateEnabled={false}
+                            scrollEnabled={false}
+                        >
+                            <Polyline
+                                coordinates={crawlRoute.venues.map((v) => v.location)}
+                                strokeWidth={2.5}
+                                strokeColor={theme.colors.secondary}
+                                lineDashPattern={[0, 5]}
+                            />
+                        </MapView>
+                    </View>
+                )}
                 <Divider style={styles.divider} />
                 <View style={styles.statsRow}>
                     <View style={styles.statsCell}>
@@ -115,6 +164,12 @@ const styles = StyleSheet.create({
     },
     headline: {
         marginTop: 4,
+    },
+    mapViewContainer: {
+        marginTop: 16,
+    },
+    mapView: {
+        height: 200,
     },
     statsRow: {
         flexDirection: 'row',
