@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { IconButton, useTheme } from 'react-native-paper';
-import { useForegroundPermissions, PermissionStatus, getCurrentPositionAsync } from 'expo-location';
+import { useForegroundPermissions, PermissionStatus, getCurrentPositionAsync, LocationObject } from 'expo-location';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { isDevice } from 'expo-device';
 
 const CrawlRouteMapScreen = () => {
     const theme = useTheme();
@@ -36,7 +37,10 @@ const CrawlRouteMapScreen = () => {
         if (!hasPermission) {
             return;
         }
-        const location = await getCurrentPositionAsync();
+
+        const location = isDevice
+            ? await getCurrentPositionAsync()
+            : (JSON.parse(process.env.EXPO_PUBLIC_EMULATOR_POSITION as string) as LocationObject);
         setRegion({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
