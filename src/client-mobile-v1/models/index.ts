@@ -1,4 +1,5 @@
 import { CrawlRoute } from './crawl-route';
 import { User } from './user';
+import { Venue } from './venue';
 
-export { User, CrawlRoute };
+export { CrawlRoute, User, Venue };
