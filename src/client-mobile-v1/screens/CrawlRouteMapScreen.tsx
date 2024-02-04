@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Marker, Region, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import MapView, { Marker, Region, PROVIDER_GOOGLE, LatLng, Polyline } from 'react-native-maps';
 import { useTheme } from 'react-native-paper';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -58,8 +58,14 @@ const CrawlRouteMapScreen = () => {
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <MapView style={styles.mapView} region={region} provider={PROVIDER_GOOGLE}>
                 {crawlRoute.venues.map((v) => (
-                    <Marker key={v.guid} coordinate={v.location} />
+                    <Marker key={v.guid} coordinate={v.location} style={{ opacity: 0.7 }} />
                 ))}
+                <Polyline
+                    coordinates={crawlRoute.venues.map((v) => v.location)}
+                    strokeWidth={2.5}
+                    strokeColor={theme.colors.secondary}
+                    lineDashPattern={[0, 5]}
+                />
             </MapView>
         </View>
     );
