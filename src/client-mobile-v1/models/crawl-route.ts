@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Venue } from './venue';
 
 export interface CrawlRoute {
     guid: string;
@@ -8,4 +9,5 @@ export interface CrawlRoute {
     favorite: boolean;
     finishedBy: number;
     destinationCount: number;
+    venues: Venue[];
 }
