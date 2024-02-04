@@ -1,71 +1,65 @@
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
-import { IconButton, useTheme } from 'react-native-paper';
-import { useForegroundPermissions, PermissionStatus, getCurrentPositionAsync, LocationObject } from 'expo-location';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker, Region, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import { useTheme } from 'react-native-paper';
+import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { isDevice } from 'expo-device';
+import { useCrawlRoute } from '../hooks';
+import { CrawlRoute } from '../models';
+
+type ParamList = {
+    Detail: {
+        guid: string;
+    };
+};
 
 const CrawlRouteMapScreen = () => {
     const theme = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    const route = useRoute<RouteProp<ParamList, 'Detail'>>();
+    const { getCrawlRoute } = useCrawlRoute();
 
-    const [locationPermission, requestLocationPermission] = useForegroundPermissions();
-
+    const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
     const [region, setRegion] = useState<Region>();
 
-    const verifyPermission = async () => {
-        if (
-            !locationPermission ||
-            (locationPermission.status !== PermissionStatus.GRANTED && locationPermission.canAskAgain)
-        ) {
-            const permissionResponse = await requestLocationPermission();
-            return permissionResponse.granted;
+    useEffect(() => {
+        const crawlRoute = getCrawlRoute(route.params.guid);
+        setCrawlRoute(crawlRoute);
+        if (crawlRoute?.venues.length === 0) {
+            return;
         }
+        const latList = crawlRoute?.venues.map((v) => v.location.latitude);
+        const lngList = crawlRoute?.venues.map((v) => v.location.longitude);
 
-        if (locationPermission?.status === PermissionStatus.DENIED) {
-            Alert.alert('No Location Permissions!', 'You need to grant location permissions to use this feature.');
-            return false;
-        }
-
-        return true;
-    };
-
-    const refreshLocation = async () => {
-        const hasPermission = await verifyPermission();
-        if (!hasPermission) {
+        if (!latList || !lngList || latList.length === 0 || lngList.length === 0) {
             return;
         }
 
-        const location = isDevice
-            ? await getCurrentPositionAsync()
-            : (JSON.parse(process.env.EXPO_PUBLIC_EMULATOR_POSITION as string) as LocationObject);
-        setRegion({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        });
-    };
+        const latMin = Math.min(...latList);
+        const latMax = Math.max(...latList);
+        const lngMin = Math.min(...lngList);
+        const lngMax = Math.max(...lngList);
 
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: (props) => {
-                return <IconButton iconColor={props.tintColor} icon="autorenew" onPress={refreshLocation} />;
-            },
-        });
-        refreshLocation();
-    }, []);
+        const region: Region = {
+            latitude: (latMin + latMax) / 2,
+            longitude: (lngMin + lngMax) / 2,
+            latitudeDelta: (latMax - latMin) * 1.5,
+            longitudeDelta: (lngMax - lngMin) * 1.5,
+        };
 
-    if (!region) {
+        setRegion(region);
+    }, [route]);
+
+    if (!region || !crawlRoute) {
         return null;
     }
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <MapView style={styles.mapView} initialRegion={region} provider={PROVIDER_GOOGLE}>
-                <Marker title="You're here" coordinate={region} />
+            <MapView style={styles.mapView} region={region} provider={PROVIDER_GOOGLE}>
+                {crawlRoute.venues.map((v) => (
+                    <Marker key={v.guid} coordinate={v.location} />
+                ))}
             </MapView>
         </View>
     );
