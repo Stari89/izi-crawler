@@ -4,14 +4,19 @@ import { Card, useTheme, Text, Paragraph, IconButton } from 'react-native-paper'
 
 interface VenueItemProps {
     venue: Venue;
+    onPress?: (venue: Venue) => void;
 }
 const VenueItem = (props: VenueItemProps) => {
     const theme = useTheme();
-    const { venue } = props;
+    const { venue, onPress } = props;
+
+    const handleCardPress = () => {
+        onPress && onPress(venue);
+    };
 
     return (
         <View style={[styles.rootContainer]}>
-            <Card style={styles.card}>
+            <Card style={styles.card} onPress={handleCardPress}>
                 <Card.Content>
                     <View style={styles.cardContentView}>
                         <Text style={styles.headline} variant="headlineSmall">

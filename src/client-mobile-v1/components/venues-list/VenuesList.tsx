@@ -5,11 +5,16 @@ import VenueItem from './VenueItem';
 
 interface VenuesListProps {
     venueItems: Venue[];
+    onVenuePress?: (venue: Venue) => void;
 }
 const VenuesList = (props: VenuesListProps) => {
-    const { venueItems } = props;
+    const { venueItems, onVenuePress } = props;
 
-    const renderItem = ({ item }: { item: Venue }) => <VenueItem venue={item} />;
+    const handleVenuePress = (venue: Venue) => {
+        onVenuePress && onVenuePress(venue);
+    };
+
+    const renderItem = ({ item }: { item: Venue }) => <VenueItem venue={item} onPress={handleVenuePress} />;
 
     if (!venueItems.length) {
         return (

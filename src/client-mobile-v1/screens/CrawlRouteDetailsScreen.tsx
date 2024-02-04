@@ -5,9 +5,9 @@ import { Avatar, Button, Divider, Text, useTheme } from 'react-native-paper';
 import { NAVIGATION_NAMES } from '../constants/navigation-names';
 import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
-import { CrawlRoute } from '../models';
+import { CrawlRoute, Venue } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
-import MapView, { Polyline, Region } from 'react-native-maps';
+import MapView, { LatLng, Marker, Polyline, Region } from 'react-native-maps';
 
 type ParamList = {
     Detail: {
@@ -23,6 +23,7 @@ const CrawlRouteDetailsScreen = () => {
     const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
 
     const [region, setRegion] = useState<Region>();
+    const [markerPosition, setMarkerPosition] = useState<LatLng>();
 
     useEffect(() => {
         const crawlRoute = getCrawlRoute(route.params.guid);
@@ -51,8 +52,6 @@ const CrawlRouteDetailsScreen = () => {
             longitudeDelta: (lngMax - lngMin) * 1.5,
         };
 
-        console.log('region', region);
-
         setRegion(region);
     }, []);
 
@@ -60,7 +59,9 @@ const CrawlRouteDetailsScreen = () => {
         navigation.navigate(NAVIGATION_NAMES.crawlRouteMap, { guid: route.params.guid });
     };
 
-    const canViewMap = !!crawlRoute && crawlRoute.venues.length > 0;
+    const handleVenuePress = (venue: Venue) => {
+        setMarkerPosition(venue.location);
+    };
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
@@ -87,6 +88,7 @@ const CrawlRouteDetailsScreen = () => {
                             rotateEnabled={false}
                             scrollEnabled={false}
                         >
+                            {markerPosition && <Marker coordinate={markerPosition} />}
                             <Polyline
                                 coordinates={crawlRoute.venues.map((v) => v.location)}
                                 strokeWidth={2.5}
@@ -138,7 +140,7 @@ const CrawlRouteDetailsScreen = () => {
                 </View>
                 <Divider style={styles.divider} />
             </View>
-            <VenuesList venueItems={crawlRoute?.venues || []} />
+            <VenuesList venueItems={crawlRoute?.venues || []} onVenuePress={handleVenuePress} />
         </View>
     );
 };
