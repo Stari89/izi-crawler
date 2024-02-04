@@ -4,26 +4,32 @@ export const USERS: User[] = [
     {
         guid: 'd35e8221-a312-4736-b4e5-1083c072abd2',
         name: 'Damjan Kovačič',
+        initials: 'DK',
     },
     {
         guid: 'a052f2e9-7e55-496d-a9d4-80b9bad35c38',
         name: 'Iztok Molan',
+        initials: 'IM',
     },
     {
         guid: 'eb3be931-c5f6-43f2-8e2e-1b6d98dcd981',
         name: 'Tilen Volčanšek',
+        initials: 'TV',
     },
     {
         guid: '618ca037-1fe8-4334-ab67-639bcf51d3e1',
         name: 'Domen Prevejšek',
+        initials: 'DP',
     },
     {
         guid: '8b7808d0-e2b2-4d6d-a7b6-3b5312f59937',
         name: 'Sami Ilc',
+        initials: 'SI',
     },
     {
         guid: '6e4eb297-d70e-461b-a463-777662e0d90f',
         name: 'Ana Šolar',
+        initials: 'AŠ',
     },
 ];
 

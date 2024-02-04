@@ -1,7 +1,7 @@
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
-import { Button, Divider, Text, useTheme } from 'react-native-paper';
+import { Avatar, Button, Divider, Text, useTheme } from 'react-native-paper';
 import { NAVIGATION_NAMES } from '../constants/navigation-names';
 import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
@@ -35,17 +35,18 @@ const CrawlRouteDetailsScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            {/* <Text>Crawl Route Details Screen</Text>
-            <Button mode="outlined" onPress={handleMapButtonPress} disabled={!canViewMap}>
-                {canViewMap ? 'View on Map' : 'No Venues'}
-            </Button> */}
             <View style={styles.detailsView}>
-                <Text variant="bodySmall" style={styles.createdInfo}>
-                    Created by {crawlRoute?.createdBy.name} on {crawlRoute?.createdOn.toLocaleDateString()}
-                </Text>
-                <Text style={styles.headline} variant="headlineMedium">
-                    {crawlRoute?.name}
-                </Text>
+                <View style={styles.header}>
+                    <Avatar.Text label={crawlRoute?.createdBy.initials || ''} size={48} style={styles.avatar} />
+                    <View>
+                        <Text variant="bodySmall" style={styles.createdInfo}>
+                            Created by {crawlRoute?.createdBy.name} on {crawlRoute?.createdOn.toLocaleDateString()}
+                        </Text>
+                        <Text style={styles.headline} variant="headlineMedium">
+                            {crawlRoute?.name}
+                        </Text>
+                    </View>
+                </View>
                 <Divider style={styles.divider} />
                 <View style={styles.statsRow}>
                     <View style={styles.statsCell}>
@@ -102,6 +103,12 @@ const styles = StyleSheet.create({
     detailsView: {
         marginHorizontal: 8,
         marginTop: 16,
+    },
+    header: {
+        flexDirection: 'row',
+    },
+    avatar: {
+        marginRight: 16,
     },
     createdInfo: {
         opacity: 0.5,
