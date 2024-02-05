@@ -1,13 +1,14 @@
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Divider, Text, useTheme } from 'react-native-paper';
+import { Avatar, Divider, Text, useTheme } from 'react-native-paper';
 import { NAVIGATION_NAMES } from '../constants/navigation-names';
 import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
 import { CrawlRoute, Venue } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
-import MapView, { LatLng, Marker, Polyline, Region } from 'react-native-maps';
+import { LatLng } from 'react-native-maps';
+import RouteMapView from '../components/map/RouteMapView';
 
 type ParamList = {
     Detail: {
@@ -22,37 +23,12 @@ const CrawlRouteDetailsScreen = () => {
     const { getCrawlRoute } = useCrawlRoute();
     const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
 
-    const [region, setRegion] = useState<Region>();
     const [markerPosition, setMarkerPosition] = useState<LatLng>();
 
     useEffect(() => {
         const crawlRoute = getCrawlRoute(route.params.guid);
         navigation.setOptions({ title: crawlRoute?.name });
         setCrawlRoute(crawlRoute);
-
-        if (crawlRoute?.venues.length === 0) {
-            return;
-        }
-        const latList = crawlRoute?.venues.map((v) => v.location.latitude);
-        const lngList = crawlRoute?.venues.map((v) => v.location.longitude);
-
-        if (!latList || !lngList || latList.length === 0 || lngList.length === 0) {
-            return;
-        }
-
-        const latMin = Math.min(...latList);
-        const latMax = Math.max(...latList);
-        const lngMin = Math.min(...lngList);
-        const lngMax = Math.max(...lngList);
-
-        const region: Region = {
-            latitude: (latMin + latMax) / 2,
-            longitude: (lngMin + lngMax) / 2,
-            latitudeDelta: (latMax - latMin) * 1.5,
-            longitudeDelta: (lngMax - lngMin) * 1.5,
-        };
-
-        setRegion(region);
     }, []);
 
     const handleMapButtonPress = () => {
@@ -77,25 +53,14 @@ const CrawlRouteDetailsScreen = () => {
                         </Text>
                     </View>
                 </View>
-                {region && crawlRoute && (
+                {crawlRoute && (
                     <View style={styles.mapViewContainer}>
-                        <MapView
+                        <RouteMapView
+                            venues={crawlRoute.venues}
                             style={styles.mapView}
-                            region={region}
                             onPress={handleMapButtonPress}
-                            liteMode={true}
-                            zoomEnabled={false}
-                            rotateEnabled={false}
-                            scrollEnabled={false}
-                        >
-                            {markerPosition && <Marker coordinate={markerPosition} />}
-                            <Polyline
-                                coordinates={crawlRoute.venues.map((v) => v.location)}
-                                strokeWidth={2.5}
-                                strokeColor={theme.colors.secondary}
-                                lineDashPattern={[0, 5]}
-                            />
-                        </MapView>
+                            markerPosition={markerPosition}
+                        />
                     </View>
                 )}
                 <Divider style={styles.divider} />
