@@ -1,8 +1,8 @@
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { Venue } from '../../models';
 import { Text, useTheme } from 'react-native-paper';
 import MapView, { LatLng, Marker, Polyline, Region } from 'react-native-maps';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface RouteMapViewProps {
     venues: Venue[];

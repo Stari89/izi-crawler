@@ -29,6 +29,8 @@ module.exports = {
     },
     web: {
         favicon: './assets/favicon.png',
+        output: 'single',
+        bundler: 'metro',
     },
     plugins: ['expo-location'],
     extra: {
@@ -36,6 +38,7 @@ module.exports = {
             projectId: '3669dab6-2e6b-4237-bddf-87e528c385a8',
             owner: 'stari89',
         },
+        googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     owner: 'stari89',
 };
