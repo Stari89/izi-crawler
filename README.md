@@ -13,6 +13,8 @@ Pub crawler app for my friend and anyone else who may be interested.
 
 ### Environment Setup
 
+-   Download and install **git** (for newbies the Principal Developer recommends installing [Sourcetree](https://www.sourcetreeapp.com/) git UI client with git included, so in case of problems he can help you)
+-   Clone the project to your workspace folder with this url: `https://github.com/Stari89/izi-crawler.git`
 -   Download and install Node Version Manager: [nvm for Windows](https://github.com/coreybutler/nvm-windows), [nvm for Linux and MacOS](https://github.com/nvm-sh/nvm)
 -   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.11.0 in this instructions) with nvm in your terminal (run your terminal as administrator if you get `exit status 5: Access is denied.` error):
     ```
@@ -28,8 +30,9 @@ Pub crawler app for my friend and anyone else who may be interested.
     npm install
     ```
 
-### Debug
+### Debugging (development profile)
 
+-   Make sure you have `.env.development` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
 -   Navigate to `/src/client-mobile-v1` folder in your terminal:
     ```
     cd ./src/client-mobile-v1
@@ -38,9 +41,27 @@ Pub crawler app for my friend and anyone else who may be interested.
     ```
     npm run start
     ```
--   If you wish to debug on a physical device, scan the QR code with Expo Go app (Android) or the Camera app (iOS).
--   If you wish to debug on an emulator, follow this instruction: [Virtual Device Manager](https://developer.android.com/studio/run/managing-avds) for Android **and make sure your emulator has the Play Store enabled**. Once you have your emulator up and running, follow Expo's development server instructions on how to debug (basically you just press "A" button on your keyboard).
--   Have fun.
+
+#### Android
+
+-   Install the Expo Go app.
+-   Scan the QR code with the app.
+
+#### iOS
+
+-   Scan the QR code with the Camera app.
+
+#### Web
+
+-   Follow the Expo's development server instructions (just press "W" key once the server is up and running).
+
+#### Android Emulator
+
+-   Follow this guide: [Virtual Device Manager](https://developer.android.com/studio/run/managing-avds) for Android **and make sure your emulator has the Play Store enabled**. Once you have your emulator up and running, follow Expo's development server instructions on how to debug (basically you just press "A" button on your keyboard).
+
+#### iOS Simulator
+
+-   **TODO**
 
 #### Troubleshooting
 
@@ -48,7 +69,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 -   The 90% of the remaining 10% of problems is resolved by deleting the `/src/client-mobile-v1/node_modules` folder and running `npm install` command again.
 -   Contact the Principal Developer only after you tried first two bullet points.
 
-### Build (Preview)
+### Build (preview profile)
 
 #### Android
 
@@ -85,7 +106,7 @@ docker-compose run izi-crawler-builder env
 
 #### iOS
 
-**TODO**
+-   **TODO**
 
 ### Testing (installing app on your device)
 
@@ -100,7 +121,11 @@ Once you have an url to the APK (Android Package Kit) file, you will need to do 
 
 #### iOS
 
-**TODO**
+-   **TODO**
+
+#### Web
+
+-   **TODO** (no installation will be required, just an url to the preview instance).
 
 ## Credits
 
