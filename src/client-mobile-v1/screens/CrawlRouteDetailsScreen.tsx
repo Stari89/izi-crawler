@@ -9,6 +9,7 @@ import { CrawlRoute, Venue } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
 import { LatLng } from 'react-native-maps';
 import RouteMapView from '../components/map/RouteMapView';
+import { composeAppTitle } from '../util/screen-title';
 
 type ParamList = {
     Detail: {
@@ -27,7 +28,7 @@ const CrawlRouteDetailsScreen = () => {
 
     useEffect(() => {
         const crawlRoute = getCrawlRoute(route.params.guid);
-        navigation.setOptions({ title: crawlRoute?.name });
+        navigation.setOptions({ headerTitle: crawlRoute?.name, title: composeAppTitle(crawlRoute?.name) });
         setCrawlRoute(crawlRoute);
     }, []);
 

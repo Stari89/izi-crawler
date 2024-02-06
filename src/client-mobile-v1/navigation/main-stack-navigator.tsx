@@ -3,6 +3,7 @@ import { useTheme } from 'react-native-paper';
 import { CrawlRouteDetailsScreen, CrawlRouteMapScreen } from '../screens';
 import MainBottomTabsNavigator from './main-bottom-tabs-navigator';
 import { NAVIGATION_NAMES } from '../constants/navigation-names';
+import { composeAppTitle } from '../util/screen-title';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name={NAVIGATION_NAMES.crawlRouteMap}
                 component={CrawlRouteMapScreen}
-                options={{ headerTitle: 'Map' }}
+                options={{ headerTitle: 'Map', title: composeAppTitle('Map') }}
             />
         </Stack.Navigator>
     );

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CrawlScreen, ExploreScreen, HomeScreen, ProfileScreen } from '../screens';
 import CrawlRoutesTopTabNavigator from './crawl-routes-top-tab-navigator';
 import { NAVIGATION_NAMES } from '../constants/navigation-names';
+import { composeAppTitle } from '../util/screen-title';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -33,6 +34,7 @@ const MainBottomTabsNavigator = () => {
                         />
                     ),
                     tabBarLabel: 'Home',
+                    title: composeAppTitle('Home'),
                 }}
             />
             <BottomTab.Screen
@@ -47,6 +49,7 @@ const MainBottomTabsNavigator = () => {
                         />
                     ),
                     tabBarLabel: 'Routes',
+                    title: composeAppTitle('Routes'),
                 }}
             />
             <BottomTab.Screen
@@ -61,6 +64,7 @@ const MainBottomTabsNavigator = () => {
                         />
                     ),
                     tabBarLabel: 'Crawl',
+                    title: composeAppTitle('Crawl'),
                 }}
             />
             <BottomTab.Screen
@@ -75,6 +79,7 @@ const MainBottomTabsNavigator = () => {
                         />
                     ),
                     tabBarLabel: 'Explore',
+                    title: composeAppTitle('Explore'),
                 }}
             />
             <BottomTab.Screen
@@ -89,6 +94,7 @@ const MainBottomTabsNavigator = () => {
                         />
                     ),
                     tabBarLabel: 'Profile',
+                    title: composeAppTitle('Profile'),
                 }}
             />
         </BottomTab.Navigator>
