@@ -5,7 +5,8 @@ Pub crawler app for my friend and anyone else who may be interested.
 ## Useful Links
 
 -   [Index](https://izi-crawler.dko.si)
--   [Build Artifacts](https://izi-crawler.dko.si/artifacts.php)
+-   [Build Artifacts PREVIEW](https://izi-crawler.dko.si/artifacts.php)
+-   [Web Application PREVIEW](https://preview.izi-crawler.dko.si)
 -   [GitHub repository](https://github.com/Stari89/izi-crawler)
 -   [Project on Expo](https://expo.dev/accounts/stari89/projects/izi-crawler)
 
@@ -108,6 +109,15 @@ docker-compose run izi-crawler-builder env
 
 -   **TODO**
 
+#### Web
+
+-   Copy-paste values from `.env.preview` to `.env` (until the Principal Developer automates this step)
+-   Run expo export
+    ```
+    npm run export-web
+    ```
+-   **Undo changes** done on `.env`
+
 ### Testing (installing app on your device)
 
 All build artifacts for testing are available on [Izi Crawler Build Artifacts](https://izi-crawler.dko.si/artifacts.php) page.
@@ -125,7 +135,7 @@ Once you have an url to the APK (Android Package Kit) file, you will need to do 
 
 #### Web
 
--   **TODO** (no installation will be required, just an url to the preview instance).
+-   On any device (desktop, mobile), open your favorite browser and navigate to this url: https://preview.izi-crawler.dko.si.
 
 ## Credits
 
