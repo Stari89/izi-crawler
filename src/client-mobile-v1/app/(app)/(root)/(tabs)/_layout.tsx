@@ -1,18 +1,12 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Tabs } from 'expo-router';
 import { Icon, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CrawlScreen, ExploreScreen, HomeScreen, ProfileScreen } from '../screens';
-import CrawlRoutesTopTabNavigator from './crawl-routes-top-tab-navigator';
-import { NAVIGATION_NAMES } from '../constants/navigation-names';
-import { composeAppTitle } from '../util/screen-title';
+import { composeAppTitle } from '../../../../util/screen-title';
 
-const BottomTab = createBottomTabNavigator();
-
-const MainBottomTabsNavigator = () => {
+const TabsLayout = () => {
     const theme = useTheme();
-    const insets = useSafeAreaInsets();
+
     return (
-        <BottomTab.Navigator
+        <Tabs
             screenOptions={{
                 headerStyle: { backgroundColor: theme.colors.background },
                 headerTintColor: theme.colors.onBackground,
@@ -20,11 +14,9 @@ const MainBottomTabsNavigator = () => {
                 tabBarActiveTintColor: theme.colors.primary,
                 headerShown: false,
             }}
-            sceneContainerStyle={{ paddingTop: insets.top }}
         >
-            <BottomTab.Screen
-                name={NAVIGATION_NAMES.home}
-                component={HomeScreen}
+            <Tabs.Screen
+                name="index"
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -37,9 +29,8 @@ const MainBottomTabsNavigator = () => {
                     title: composeAppTitle('Home'),
                 }}
             />
-            <BottomTab.Screen
-                name={NAVIGATION_NAMES.crawlRoutesNavigator}
-                component={CrawlRoutesTopTabNavigator}
+            <Tabs.Screen
+                name="(routes)"
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -52,9 +43,8 @@ const MainBottomTabsNavigator = () => {
                     title: composeAppTitle('Routes'),
                 }}
             />
-            <BottomTab.Screen
-                name={NAVIGATION_NAMES.crawl}
-                component={CrawlScreen}
+            <Tabs.Screen
+                name="crawl"
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -67,9 +57,8 @@ const MainBottomTabsNavigator = () => {
                     title: composeAppTitle('Crawl'),
                 }}
             />
-            <BottomTab.Screen
-                name={NAVIGATION_NAMES.explore}
-                component={ExploreScreen}
+            <Tabs.Screen
+                name="explore"
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -82,9 +71,8 @@ const MainBottomTabsNavigator = () => {
                     title: composeAppTitle('Explore'),
                 }}
             />
-            <BottomTab.Screen
-                name={NAVIGATION_NAMES.profile}
-                component={ProfileScreen}
+            <Tabs.Screen
+                name="profile"
                 options={{
                     tabBarIcon: ({ size, focused }) => (
                         <Icon
@@ -97,8 +85,8 @@ const MainBottomTabsNavigator = () => {
                     title: composeAppTitle('Profile'),
                 }}
             />
-        </BottomTab.Navigator>
+        </Tabs>
     );
 };
 
-export default MainBottomTabsNavigator;
+export default TabsLayout;

@@ -1,9 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { CrawlRoute } from '../../models';
 import { Card, IconButton, Paragraph, Text, useTheme } from 'react-native-paper';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { NAVIGATION_NAMES } from '../../constants/navigation-names';
+import { router } from 'expo-router';
+import { NAVIGATION_ROUTES } from '../../constants/navigation-routes';
 
 interface CrawlRouteItemProps {
     crawlRoute: CrawlRoute;
@@ -11,11 +10,10 @@ interface CrawlRouteItemProps {
 
 const CrawlRouteItem = (props: CrawlRouteItemProps) => {
     const theme = useTheme();
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const { crawlRoute } = props;
 
     const handleCardPress = () => {
-        navigation.navigate(NAVIGATION_NAMES.crawlRouteDetails, { guid: crawlRoute.guid });
+        router.navigate(NAVIGATION_ROUTES.route.replace('[guid]', crawlRoute.guid));
     };
 
     const finishedByText = crawlRoute.finishedBy

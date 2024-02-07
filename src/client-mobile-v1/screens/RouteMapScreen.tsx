@@ -1,30 +1,25 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCrawlRoute } from '../hooks';
 import { CrawlRoute } from '../models';
 import RouteMapView from '../components/map/RouteMapView';
-
-type ParamList = {
-    Detail: {
-        guid: string;
-    };
-};
+import { useLocalSearchParams } from 'expo-router';
 
 const CrawlRouteMapScreen = () => {
     const theme = useTheme();
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const route = useRoute<RouteProp<ParamList, 'Detail'>>();
+    const { guid } = useLocalSearchParams();
     const { getCrawlRoute } = useCrawlRoute();
 
     const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
 
     useEffect(() => {
-        const crawlRoute = getCrawlRoute(route.params.guid);
+        if (typeof guid !== 'string') {
+            return;
+        }
+        const crawlRoute = getCrawlRoute(guid);
         setCrawlRoute(crawlRoute);
-    }, [route]);
+    }, [guid]);
 
     if (!crawlRoute) {
         return null;

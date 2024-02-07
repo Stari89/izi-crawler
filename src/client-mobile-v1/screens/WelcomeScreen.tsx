@@ -1,19 +1,17 @@
-import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { router } from 'expo-router';
 import { Image, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { NAVIGATION_NAMES } from '../constants/navigation-names';
+import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
 const WelcomeScreen = () => {
     const theme = useTheme();
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const handleSignupPress = () => {
-        navigation.navigate(NAVIGATION_NAMES.signup);
+        router.navigate(NAVIGATION_ROUTES.signup);
     };
 
     const handleLoginPress = () => {
-        navigation.navigate(NAVIGATION_NAMES.login);
+        router.navigate(NAVIGATION_ROUTES.login);
     };
 
     return (

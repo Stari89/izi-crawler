@@ -1,4 +1,3 @@
-import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
@@ -6,10 +5,12 @@ import { CrawlRoute } from '../models';
 import CrawlRoutesList from '../components/crawl-routes-list/CrawlRoutesList';
 import { useCrawlRoute } from '../hooks';
 
-const CrawlRoutesListScreen = () => {
+interface CrawlRouteScreenProps {
+    crawlRoutesFilter: 'my-routes' | 'favorite-routes';
+}
+const CrawlRoutesScreen = (props: CrawlRouteScreenProps) => {
     const theme = useTheme();
-    const route = useRoute();
-    const { showMyRoutes } = route.params as { showMyRoutes: boolean };
+    const { crawlRoutesFilter } = props;
 
     const { myRoutes, favoriteRoutes } = useCrawlRoute();
 
@@ -18,7 +19,7 @@ const CrawlRoutesListScreen = () => {
     const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        const fetchedCrawlRoutes = showMyRoutes ? myRoutes : favoriteRoutes;
+        const fetchedCrawlRoutes = crawlRoutesFilter === 'my-routes' ? myRoutes : favoriteRoutes;
         setCrawlRoutes(fetchedCrawlRoutes);
     }, []);
 
@@ -50,7 +51,7 @@ const CrawlRoutesListScreen = () => {
     );
 };
 
-export default CrawlRoutesListScreen;
+export default CrawlRoutesScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {

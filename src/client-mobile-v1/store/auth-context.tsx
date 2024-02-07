@@ -1,4 +1,6 @@
+import { router } from 'expo-router';
 import { ReactNode, createContext, useState } from 'react';
+import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
 interface AuthContextValue {
     isAuthenticated: boolean;
@@ -18,6 +20,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
     const login = () => {
         setIsAuthenticated(true);
+        router.replace(NAVIGATION_ROUTES.index);
     };
 
     const logout = () => {

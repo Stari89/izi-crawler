@@ -32,7 +32,7 @@ module.exports = {
         output: 'single',
         bundler: 'metro',
     },
-    plugins: ['expo-location'],
+    plugins: ['expo-location', 'expo-router'],
     extra: {
         eas: {
             projectId: '3669dab6-2e6b-4237-bddf-87e528c385a8',
@@ -40,5 +40,6 @@ module.exports = {
         },
         googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
+    scheme: 'your-app-scheme',
     owner: 'stari89',
 };

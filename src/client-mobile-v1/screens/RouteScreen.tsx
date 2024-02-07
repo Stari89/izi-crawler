@@ -1,8 +1,7 @@
-import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Divider, Text, useTheme } from 'react-native-paper';
-import { NAVIGATION_NAMES } from '../constants/navigation-names';
 import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
 import { CrawlRoute, Venue } from '../models';
@@ -10,30 +9,30 @@ import VenuesList from '../components/venues-list/VenuesList';
 import { LatLng } from 'react-native-maps';
 import RouteMapView from '../components/map/RouteMapView';
 import { composeAppTitle } from '../util/screen-title';
+import { router, useLocalSearchParams } from 'expo-router';
+import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
-type ParamList = {
-    Detail: {
-        guid: string;
-    };
-};
-
-const CrawlRouteDetailsScreen = () => {
+const CrawlRouteScreen = () => {
     const theme = useTheme();
+    const { guid } = useLocalSearchParams();
+
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const route = useRoute<RouteProp<ParamList, 'Detail'>>();
     const { getCrawlRoute } = useCrawlRoute();
     const [crawlRoute, setCrawlRoute] = useState<CrawlRoute>();
 
     const [markerPosition, setMarkerPosition] = useState<LatLng>();
 
     useEffect(() => {
-        const crawlRoute = getCrawlRoute(route.params.guid);
+        if (typeof guid !== 'string') {
+            return;
+        }
+        const crawlRoute = getCrawlRoute(guid);
         navigation.setOptions({ headerTitle: crawlRoute?.name, title: composeAppTitle(crawlRoute?.name) });
         setCrawlRoute(crawlRoute);
-    }, []);
+    }, [guid]);
 
     const handleMapButtonPress = () => {
-        navigation.navigate(NAVIGATION_NAMES.crawlRouteMap, { guid: route.params.guid });
+        router.navigate(NAVIGATION_ROUTES.routeMap.replace('[guid]', guid as string));
     };
 
     const handleVenuePress = (venue: Venue) => {
@@ -111,7 +110,7 @@ const CrawlRouteDetailsScreen = () => {
     );
 };
 
-export default CrawlRouteDetailsScreen;
+export default CrawlRouteScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
