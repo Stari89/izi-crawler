@@ -5,6 +5,7 @@ import TabsDrawerContent from '../../../../components/ui/TabsDrawerContent';
 import { Drawer } from 'expo-router/drawer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
+import { useOrientation } from '../../../../hooks';
 
 interface SimpleScreenOptions {
     name: string;
@@ -43,31 +44,15 @@ const screenOptions: SimpleScreenOptions[] = [
 const TabsLayout = () => {
     const theme = useTheme();
 
-    const [currentOrientation, setCurrentOrientation] = useState<ScreenOrientation.Orientation>(
-        ScreenOrientation.Orientation.PORTRAIT_UP,
-    );
-
-    const handleOrientationChange = (event: ScreenOrientation.OrientationChangeEvent) => {
-        setCurrentOrientation(event.orientationInfo.orientation);
-    };
+    const { currentOrientation } = useOrientation();
+    const [showDrawer, setShowDrawer] = useState(false);
 
     useEffect(() => {
-        const initOrientation = async () => {
-            const orientation = await ScreenOrientation.getOrientationAsync();
-            setCurrentOrientation(orientation);
-        };
-        initOrientation();
-        const subscription = ScreenOrientation.addOrientationChangeListener(handleOrientationChange);
-
-        return () => {
-            // Cleanup: Remove the orientation change listener when the component unmounts
-            subscription.remove();
-        };
-    }, []);
-
-    const showDrawer =
-        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
-        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+        const showDrawer =
+            currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+            currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+        setShowDrawer(showDrawer);
+    }, [currentOrientation]);
 
     if (showDrawer) {
         return (

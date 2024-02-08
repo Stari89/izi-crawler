@@ -3,7 +3,7 @@ module.exports = {
     name: process.env.APP_NAME || 'Izi Crawler',
     slug: 'izi-crawler',
     version: '1.0.0',
-    orientation: 'portrait',
+    orientation: 'default',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
     splash: {

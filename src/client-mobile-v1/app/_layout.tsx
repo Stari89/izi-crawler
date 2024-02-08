@@ -1,7 +1,7 @@
 import { useColorScheme } from 'react-native';
 import { DARK_THEME, LIGHT_THEME } from '../constants';
 import { PaperProvider } from 'react-native-paper';
-import { AuthProvider, CrawlRouteProvider } from '../store';
+import { AuthProvider, CrawlRouteProvider, OrientationProvider } from '../store';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { Slot, Stack } from 'expo-router';
@@ -33,13 +33,15 @@ const RootLayout = () => {
     //   }
 
     return (
-        <PaperProvider theme={theme}>
-            <AuthProvider>
-                <CrawlRouteProvider>
-                    <Slot />
-                </CrawlRouteProvider>
-            </AuthProvider>
-        </PaperProvider>
+        <OrientationProvider>
+            <PaperProvider theme={theme}>
+                <AuthProvider>
+                    <CrawlRouteProvider>
+                        <Slot />
+                    </CrawlRouteProvider>
+                </AuthProvider>
+            </PaperProvider>
+        </OrientationProvider>
     );
 };
 
