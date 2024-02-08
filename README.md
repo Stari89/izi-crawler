@@ -85,15 +85,14 @@ Pub crawler app for my friend and anyone else who may be interested.
     ```
     docker-compose up -d
     ```
--   Make sure environment variables are correctly set **(APP WILL CRASH IF GOOGLE_API_KEY IS EMPTY)**:
+-   Make sure environment variables are correctly set, EXPO_TOKEN is required for eas authentication **(APP WILL CRASH IF GOOGLE_API_KEY IS EMPTY)**:
     ```
     docker-compose run izi-crawler-builder env
     ```
 -   Run the build through Docker:
     ```
-    docker-compose run izi-crawler-builder eas build -p android --profile preview --local
+    docker-compose run izi-crawler-builder eas build -p android --profile preview --local --non-interactive --no-wait
     ```
--   eas-cli will prompt you for login credentials. Contact the Principal Developer.
 -   This will generate `*.apk` file which you can copy on your Android device and install.
 
 ##### Useful Docker commands
