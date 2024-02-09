@@ -1,4 +1,4 @@
-import { Tabs, useNavigation, useRouter } from 'expo-router';
+import { Tabs, useNavigation, useRouter, withLayoutContext } from 'expo-router';
 import { Icon, useTheme } from 'react-native-paper';
 import { composeAppTitle } from '../../../../util/screen-title';
 import TabsDrawerContent from '../../../../components/ui/TabsDrawerContent';
@@ -6,7 +6,17 @@ import { Drawer } from 'expo-router/drawer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
 import { useOrientation } from '../../../../hooks';
-import { ParamListBase, useNavigationState } from '@react-navigation/native';
+import { ParamListBase, TabNavigationState, useNavigationState } from '@react-navigation/native';
+import { TabsDrawerNavigationEventMap, TabsDrawerNavigationOptions, createTabsDrawerNavigator } from '../../../../components/ui/TabsDrawerNavigator';
+
+const { Navigator } = createTabsDrawerNavigator();
+
+const TabsDrawer = withLayoutContext<
+    TabsDrawerNavigationOptions,
+    typeof Navigator,
+    TabNavigationState<ParamListBase>,
+    TabsDrawerNavigationEventMap
+>(Navigator);
 
 interface SimpleScreenOptions {
     name: string;
@@ -103,7 +113,7 @@ const TabsLayout = () => {
     }
 
     return (
-        <Tabs
+        <TabsDrawer
             screenOptions={{
                 headerStyle: { backgroundColor: theme.colors.background },
                 headerTintColor: theme.colors.onBackground,
@@ -111,6 +121,8 @@ const TabsLayout = () => {
                 tabBarActiveTintColor: theme.colors.primary,
                 headerShown: false,
             }}
+            tabBarStyle={undefined}
+            contentStyle={undefined}
         >
             {screenOptions.map((s, i) => (
                 <Tabs.Screen
@@ -129,7 +141,7 @@ const TabsLayout = () => {
                     }}
                 />
             ))}
-        </Tabs>
+        </TabsDrawer>
     );
 };
 

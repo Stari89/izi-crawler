@@ -6,12 +6,9 @@ import {
     MaterialTopTabNavigationOptions,
     createMaterialTopTabNavigator,
 } from '@react-navigation/material-top-tabs';
-import { ParamListBase, TabNavigationState, createNavigatorFactory } from '@react-navigation/native';
-import TabsDrawerNavigator from '../../../../../components/ui/TabsDrawerNavigator';
+import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 
 const { Navigator } = createMaterialTopTabNavigator();
-
-const { Nav2 } = createNavigatorFactory(TabsDrawerNavigator);
 
 const MaterialTopTabs = withLayoutContext<
     MaterialTopTabNavigationOptions,
