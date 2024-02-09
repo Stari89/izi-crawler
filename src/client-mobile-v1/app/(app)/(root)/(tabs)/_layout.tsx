@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useNavigation, useRouter } from 'expo-router';
 import { Icon, useTheme } from 'react-native-paper';
 import { composeAppTitle } from '../../../../util/screen-title';
 import TabsDrawerContent from '../../../../components/ui/TabsDrawerContent';
@@ -6,6 +6,7 @@ import { Drawer } from 'expo-router/drawer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
 import { useOrientation } from '../../../../hooks';
+import { ParamListBase, useNavigationState } from '@react-navigation/native';
 
 interface SimpleScreenOptions {
     name: string;
@@ -46,13 +47,27 @@ const TabsLayout = () => {
 
     const { currentOrientation } = useOrientation();
     const [showDrawer, setShowDrawer] = useState(false);
+    const navigation = useNavigation();
+    const route = useRouter();
+    const navigationState = useNavigationState((state) => state);
+
+    const [savedNavigationState, setSavedNavigationState] = useState<string | null>(null);
 
     useEffect(() => {
         const showDrawer =
             currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
             currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
         setShowDrawer(showDrawer);
+
+        // console.log('navigation', navigation);
+        // console.log('route', route);
     }, [currentOrientation]);
+
+    useEffect(() => {
+        const navState = navigation.getState();
+        console.log('navState', navState);
+        setSavedNavigationState(JSON.stringify(navState));
+    }, [navigationState]);
 
     if (showDrawer) {
         return (
