@@ -1,16 +1,17 @@
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Divider, Text, useTheme } from 'react-native-paper';
+import { Avatar, Text, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import { useCrawlRoute } from '../hooks';
-import { CrawlRoute, Venue } from '../models';
+import { CrawlRoute, Stat, Venue } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
 import { LatLng } from 'react-native-maps';
 import RouteMapView from '../components/map/RouteMapView';
 import { composeAppTitle } from '../util/screen-title';
 import { router, useLocalSearchParams } from 'expo-router';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
+import StatsTable from '../components/ui/StatsTable';
 
 const CrawlRouteScreen = () => {
     const theme = useTheme();
@@ -39,6 +40,25 @@ const CrawlRouteScreen = () => {
         setMarkerPosition(venue.location);
     };
 
+    const stats: Stat[] = [
+        {
+            label: 'Venues',
+            value: crawlRoute?.venues.length,
+        },
+        {
+            label: 'Distance',
+            value: `${crawlRoute?.distance.toFixed(2)} km`,
+        },
+        {
+            label: 'People Finished',
+            value: crawlRoute?.finishedBy,
+        },
+        {
+            label: 'Expected time',
+            value: crawlRoute?.expectedTimeToFinish,
+        },
+    ];
+
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <View style={styles.detailsView}>
@@ -63,47 +83,7 @@ const CrawlRouteScreen = () => {
                         />
                     </View>
                 )}
-                <Divider style={styles.divider} />
-                <View style={styles.statsRow}>
-                    <View style={styles.statsCell}>
-                        <Text variant="labelSmall" style={styles.statsLabel}>
-                            Venues
-                        </Text>
-                        <Text variant="displaySmall" style={styles.statsValue}>
-                            {crawlRoute?.venues.length}
-                        </Text>
-                    </View>
-                    <View style={[styles.verticalDivider, { backgroundColor: theme.colors.onBackground }]}></View>
-                    <View style={styles.statsCell}>
-                        <Text variant="labelSmall" style={styles.statsLabel}>
-                            Distance
-                        </Text>
-                        <Text variant="displaySmall" style={styles.statsValue}>
-                            {crawlRoute?.distance.toFixed(2)} km
-                        </Text>
-                    </View>
-                </View>
-                <Divider style={styles.divider} />
-                <View style={styles.statsRow}>
-                    <View style={styles.statsCell}>
-                        <Text variant="labelSmall" style={styles.statsLabel}>
-                            People Finished
-                        </Text>
-                        <Text variant="displaySmall" style={styles.statsValue}>
-                            {crawlRoute?.finishedBy}
-                        </Text>
-                    </View>
-                    <View style={[styles.verticalDivider, { backgroundColor: theme.colors.onBackground }]}></View>
-                    <View style={styles.statsCell}>
-                        <Text variant="labelSmall" style={styles.statsLabel}>
-                            Expected time
-                        </Text>
-                        <Text variant="displaySmall" style={styles.statsValue}>
-                            {crawlRoute?.expectedTimeToFinish}
-                        </Text>
-                    </View>
-                </View>
-                <Divider style={styles.divider} />
+                <StatsTable stats={stats} columns={2} />
             </View>
             <VenuesList venueItems={crawlRoute?.venues || []} onVenuePress={handleVenuePress} />
         </View>
@@ -137,25 +117,5 @@ const styles = StyleSheet.create({
     },
     mapView: {
         height: 200,
-    },
-    statsRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-    },
-    statsCell: {
-        alignItems: 'center',
-        flex: 1,
-    },
-    statsLabel: {
-        opacity: 0.5,
-        fontWeight: '100',
-    },
-    statsValue: {},
-    verticalDivider: {
-        width: 0.5,
-        opacity: 0.2,
-    },
-    divider: {
-        marginVertical: 16,
     },
 });
