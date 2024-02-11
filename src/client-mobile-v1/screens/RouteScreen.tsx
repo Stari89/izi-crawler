@@ -1,9 +1,9 @@
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar, Text, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
-import { useCrawlRoute } from '../hooks';
+import { useCrawlRoute, useOrientation } from '../hooks';
 import { CrawlRoute, Stat, Venue } from '../models';
 import VenuesList from '../components/venues-list/VenuesList';
 import { LatLng } from 'react-native-maps';
@@ -12,10 +12,12 @@ import { composeAppTitle } from '../util/screen-title';
 import { router, useLocalSearchParams } from 'expo-router';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 import StatsTable from '../components/ui/StatsTable';
+import { Orientation } from 'expo-screen-orientation';
 
 const CrawlRouteScreen = () => {
     const theme = useTheme();
     const { guid } = useLocalSearchParams();
+    const { currentOrientation } = useOrientation();
 
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const { getCrawlRoute } = useCrawlRoute();
@@ -58,10 +60,18 @@ const CrawlRouteScreen = () => {
             value: crawlRoute?.expectedTimeToFinish,
         },
     ];
+    const isPortrait =
+        currentOrientation === Orientation.PORTRAIT_UP || currentOrientation === Orientation.PORTRAIT_DOWN;
 
     return (
-        <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <View style={styles.detailsView}>
+        <View
+            style={[
+                styles.rootContainer,
+                { backgroundColor: theme.colors.background },
+                !isPortrait && styles.rootContainerLandscape,
+            ]}
+        >
+            <View style={[!isPortrait && styles.mainContainerLandscape]}>
                 <View style={styles.header}>
                     <Avatar.Text label={crawlRoute?.createdBy.initials || ''} size={48} style={styles.avatar} />
                     <View>
@@ -73,19 +83,27 @@ const CrawlRouteScreen = () => {
                         </Text>
                     </View>
                 </View>
-                {crawlRoute && (
-                    <View style={styles.mapViewContainer}>
+                <ScrollView>
+                    {isPortrait && crawlRoute && (
                         <RouteMapView
                             venues={crawlRoute.venues}
                             style={styles.mapView}
                             onPress={handleMapButtonPress}
                             markerPosition={markerPosition}
                         />
-                    </View>
-                )}
-                <StatsTable stats={stats} columns={2} />
+                    )}
+                    <StatsTable stats={stats} columns={2} />
+                    <VenuesList venueItems={crawlRoute?.venues || []} onVenuePress={handleVenuePress} />
+                </ScrollView>
             </View>
-            <VenuesList venueItems={crawlRoute?.venues || []} onVenuePress={handleVenuePress} />
+            {!isPortrait && crawlRoute && (
+                <RouteMapView
+                    venues={crawlRoute.venues}
+                    style={styles.mapViewLandscape}
+                    onPress={handleMapButtonPress}
+                    markerPosition={markerPosition}
+                />
+            )}
         </View>
     );
 };
@@ -96,12 +114,17 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
     },
-    detailsView: {
-        marginHorizontal: 8,
-        marginTop: 16,
+    rootContainerLandscape: {
+        flexDirection: 'row',
+    },
+    mainContainerLandscape: {
+        maxWidth: 420,
     },
     header: {
         flexDirection: 'row',
+        marginTop: 16,
+        marginBottom: 8,
+        marginHorizontal: 8,
     },
     avatar: {
         marginRight: 16,
@@ -112,10 +135,11 @@ const styles = StyleSheet.create({
     headline: {
         marginTop: 4,
     },
-    mapViewContainer: {
-        marginTop: 16,
-    },
     mapView: {
         height: 200,
+    },
+    mapViewLandscape: {
+        height: '100%',
+        flex: 1,
     },
 });

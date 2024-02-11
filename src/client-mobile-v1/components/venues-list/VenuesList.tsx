@@ -14,8 +14,6 @@ const VenuesList = (props: VenuesListProps) => {
         onVenuePress && onVenuePress(venue);
     };
 
-    const renderItem = ({ item }: { item: Venue }) => <VenueItem venue={item} onPress={handleVenuePress} />;
-
     if (!venueItems.length) {
         return (
             <View style={styles.rootContainer}>
@@ -28,7 +26,9 @@ const VenuesList = (props: VenuesListProps) => {
 
     return (
         <View style={styles.rootContainer}>
-            <FlatList data={venueItems} keyExtractor={(i) => i.guid} renderItem={renderItem} />
+            {venueItems.map((v, idx) => (
+                <VenueItem key={idx} venue={v} onPress={handleVenuePress} />
+            ))}
         </View>
     );
 };
