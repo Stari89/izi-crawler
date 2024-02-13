@@ -21,7 +21,11 @@ export interface PostCrawl extends Post {
 }
 
 export interface PostFollowerSuggestion extends Post {
-    users: User[];
+    followerSuggestions: FollowerSuggestion[];
+}
+
+interface FollowerSuggestion {
+    user: User;
     reason: FollowerSuggestionReason;
 }
 
