@@ -1,6 +1,7 @@
 import { Post } from '../../models';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import FeedItem from './FeedItem';
 
 interface FeedListProps {
     posts: Post[];
@@ -8,11 +9,7 @@ interface FeedListProps {
 const FeedList = (props: FeedListProps) => {
     const { posts } = props;
 
-    const renderItem = ({ item }: { item: Post }) => (
-        <>
-            <Text>Post</Text>
-        </>
-    );
+    const renderItem = ({ item }: { item: Post }) => <FeedItem post={item} />;
 
     if (!posts.length) {
         return (
