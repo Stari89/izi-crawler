@@ -1,4 +1,13 @@
-import { CrawlRoute, User } from '../models';
+import {
+    CrawlRoute,
+    FollowerSuggestionReason,
+    PostChallenge,
+    PostCrawl,
+    PostFollowerSuggestion,
+    PostType,
+    User,
+} from '../models';
+import { Post } from '../models';
 
 export const USERS: User[] = [
     {
@@ -297,12 +306,34 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         guid: 'fb7f97b1-16d1-4b29-99db-92c1b21803d3',
         createdBy: USERS[3],
         createdOn: new Date('2024-01-05'),
-        name: 'Zjutraj kofe',
+        name: 'Kofe',
         favorite: true,
         finishedBy: 55,
         expectedTimeToFinish: '0:00',
         distance: 0,
-        venues: [],
+        venues: [
+            {
+                guid: '7a87d486-09ad-492c-93e3-fb24fd922528',
+                name: 'Slaščičarna Antoni',
+                sortOrder: 1,
+                address: 'Pleteršnikova ulica 4a',
+                location: { latitude: 45.9090607, longitude: 15.597773 },
+            },
+            {
+                guid: 'b9f80751-29ef-42bc-90f7-2fba09a60fb2',
+                name: `Carllo's caffe`,
+                sortOrder: 2,
+                address: 'Pleteršnikova ulica 4a, 8250 Brežice',
+                location: { latitude: 45.9090607, longitude: 15.597773 },
+            },
+            {
+                guid: 'a4305081-13a5-4f80-a30d-b3d4c768a508',
+                name: 'Kafe bar Rosca',
+                sortOrder: 3,
+                address: 'Pleteršnikova ulica 2, 8250 Brežice',
+                location: { latitude: 45.9088501, longitude: 15.5972131 },
+            },
+        ],
     },
     {
         guid: 'd90896f2-a748-4419-840c-e2dadb1b25df',
@@ -370,4 +401,65 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         distance: 0,
         venues: [],
     },
+];
+
+export const FEED: Post[] = [
+    {
+        guid: 'e4aa9109-b775-4678-8e36-ca3d3686a9a7',
+        type: PostType.Crawl,
+        user: USERS[0],
+        name: 'Evening in Ljubljana',
+        location: 'Ljubljana, Slovenia',
+        created: new Date('2024-02-08'),
+        crawlRoute: CRAWL_ROUTES[0],
+    } as PostCrawl,
+    {
+        guid: '15eb9cfd-1844-41c8-8b31-826dbbae3121',
+        type: PostType.FollowerSuggestion,
+        followerSuggestions: [
+            {
+                user: USERS[1],
+                reason: FollowerSuggestionReason.CrawledTogether,
+            },
+            {
+                user: USERS[2],
+                reason: FollowerSuggestionReason.CrawledTogether,
+            },
+            {
+                user: USERS[3],
+                reason: FollowerSuggestionReason.MutualFollowers,
+            },
+            {
+                user: USERS[4],
+                reason: FollowerSuggestionReason.CrawledTogether,
+            },
+            {
+                user: USERS[5],
+                reason: FollowerSuggestionReason.Contacts,
+            },
+        ],
+    } as PostFollowerSuggestion,
+    {
+        guid: '1ba4f4d6-958d-4ca0-8962-a5feebf9366f',
+        type: PostType.Crawl,
+        user: USERS[3],
+        name: 'Kofe naslednji dan po pit poti',
+        location: 'Brežice, Slovenia',
+        created: new Date('2024-02-03'),
+        crawlRoute: CRAWL_ROUTES[7],
+    } as PostCrawl,
+    {
+        guid: 'dd168847-3504-4aff-8b1a-752de5d20990',
+        type: PostType.Crawl,
+        user: USERS[2],
+        name: 'Pit Pot 2024',
+        location: 'Brežice, Slovenia',
+        created: new Date('2024-02-02'),
+        crawlRoute: CRAWL_ROUTES[1],
+    } as PostCrawl,
+    {
+        guid: 'e40cc6b9-4bec-4c74-b444-4f5a48a5c25f',
+        type: PostType.Challenge,
+        crawlRoute: CRAWL_ROUTES[0],
+    } as PostChallenge,
 ];
