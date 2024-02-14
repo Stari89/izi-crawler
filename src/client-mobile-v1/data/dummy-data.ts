@@ -418,6 +418,7 @@ export const FEED: Post[] = [
         location: 'Ljubljana, Slovenia',
         created: new Date('2024-02-08'),
         crawlRoute: CRAWL_ROUTES[0],
+        participants: [USERS[0], USERS[3], USERS[5]],
     } as PostCrawl,
     {
         guid: '15eb9cfd-1844-41c8-8b31-826dbbae3121',
@@ -452,7 +453,8 @@ export const FEED: Post[] = [
         name: 'Kofe naslednji dan po pit poti',
         location: 'Brežice, Slovenia',
         created: new Date('2024-02-03'),
-        crawlRoute: CRAWL_ROUTES[7],
+        crawlRoute: CRAWL_ROUTES[6],
+        participants: [USERS[3], USERS[4]],
     } as PostCrawl,
     {
         guid: 'dd168847-3504-4aff-8b1a-752de5d20990',
@@ -462,6 +464,7 @@ export const FEED: Post[] = [
         location: 'Brežice, Slovenia',
         created: new Date('2024-02-02'),
         crawlRoute: CRAWL_ROUTES[1],
+        participants: [USERS[0], USERS[1], USERS[2], USERS[3], USERS[4]],
     } as PostCrawl,
     {
         guid: 'e40cc6b9-4bec-4c74-b444-4f5a48a5c25f',

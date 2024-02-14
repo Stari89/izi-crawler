@@ -18,6 +18,7 @@ export interface PostCrawl extends Post {
     location: string;
     created: Date;
     crawlRoute?: CrawlRoute;
+    participants: User[];
 }
 
 export interface PostFollowerSuggestion extends Post {
