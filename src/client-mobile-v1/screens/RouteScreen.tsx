@@ -73,7 +73,11 @@ const CrawlRouteScreen = () => {
         >
             <View style={[!isPortrait && styles.mainContainerLandscape]}>
                 <View style={styles.header}>
-                    <Avatar.Text label={crawlRoute?.createdBy.initials || ''} size={48} style={styles.avatar} />
+                    {crawlRoute?.createdBy.avatar ? (
+                        <Avatar.Image source={crawlRoute.createdBy.avatar} size={48} style={styles.avatar} />
+                    ) : (
+                        <Avatar.Text label={crawlRoute?.createdBy.initials || ''} size={48} style={styles.avatar} />
+                    )}
                     <View>
                         <Text variant="bodySmall" style={styles.createdInfo}>
                             Created by {crawlRoute?.createdBy.name} on {crawlRoute?.createdOn.toLocaleDateString()}
