@@ -14,7 +14,9 @@ const PostFollowerSuggestionItem = (props: PostFollowerSuggestionItemProps) => {
 
     return (
         <Surface style={styles.surface}>
-            <Text variant="titleMedium">Who to follow</Text>
+            <Text variant="titleMedium" style={styles.title}>
+                Who to follow
+            </Text>
             <FlatList
                 data={post.followerSuggestions}
                 keyExtractor={(i) => i.user.guid}
@@ -36,7 +38,7 @@ const FollowerSuggestionListItem = (props: FollowerSuggestionListItemProps) => {
         <Card style={styles.itemCard} mode="contained">
             <View style={styles.itemContainer}>
                 <Avatar.Image source={user.avatar} size={72} />
-                <Text>{user.name}</Text>
+                <Text style={styles.itemUserName}>{user.name}</Text>
                 <Text style={styles.itemReason} variant="bodySmall">
                     {reason}
                 </Text>
@@ -48,8 +50,11 @@ const FollowerSuggestionListItem = (props: FollowerSuggestionListItemProps) => {
 
 const styles = StyleSheet.create({
     surface: {
-        padding: 8,
+        paddingVertical: 8,
         marginVertical: 8,
+    },
+    title: {
+        marginHorizontal: 8,
     },
     itemCard: {
         padding: 8,
@@ -58,6 +63,10 @@ const styles = StyleSheet.create({
     itemContainer: {
         minWidth: 200,
         alignItems: 'center',
+    },
+    itemUserName: {
+        fontWeight: 'bold',
+        marginTop: 4,
     },
     itemReason: {
         opacity: 0.5,
