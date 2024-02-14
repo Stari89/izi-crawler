@@ -1,5 +1,5 @@
-import PostChallengeItem from './post-challenge-item';
-import PostCrawlItem from './post-crawl-item';
-import PostFollowerSuggestionItem from './post-follower-suggestion-item';
+import PostChallengeItem from './PostChallengeItem';
+import PostCrawlItem from './PostCrawlItem';
+import PostFollowerSuggestionItem from './PostFollowerSuggestionItem';
 
 export { PostChallengeItem, PostCrawlItem, PostFollowerSuggestionItem };

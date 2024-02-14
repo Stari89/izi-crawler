@@ -1,7 +1,7 @@
-import { AuthContext, AuthProvider } from './auth-context';
-import { CrawlRouteContext, CrawlRouteProvider } from './crawl-route-context';
-import { FeedContext, FeedProvider } from './feed-context';
-import { OrientationContext, OrientationProvider } from './orientation-context';
+import { AuthContext, AuthProvider } from './AuthContext';
+import { CrawlRouteContext, CrawlRouteProvider } from './CrawlRouteContext';
+import { FeedContext, FeedProvider } from './FeedContext';
+import { OrientationContext, OrientationProvider } from './OrientationContext';
 
 export {
     AuthContext,
