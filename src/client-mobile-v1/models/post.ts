@@ -24,7 +24,7 @@ export interface PostFollowerSuggestion extends Post {
     followerSuggestions: FollowerSuggestion[];
 }
 
-interface FollowerSuggestion {
+export interface FollowerSuggestion {
     user: User;
     reason: FollowerSuggestionReason;
 }
@@ -32,7 +32,7 @@ interface FollowerSuggestion {
 export enum FollowerSuggestionReason {
     CrawledTogether = 'You were in the same crawl.',
     MutualFollowers = 'You have mutual followers.',
-    Contacts = 'You have their contact on your phone.',
+    Contacts = 'One of your contacts.',
 }
 
 export interface PostChallenge extends Post {

@@ -19,6 +19,5 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        paddingHorizontal: 16,
     },
 });
