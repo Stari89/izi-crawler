@@ -315,8 +315,8 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         name: 'Kofe',
         favorite: true,
         finishedBy: 55,
-        expectedTimeToFinish: '0:00',
-        distance: 0,
+        expectedTimeToFinish: '0:45',
+        distance: 0.1,
         venues: [
             {
                 guid: '7a87d486-09ad-492c-93e3-fb24fd922528',
@@ -459,7 +459,7 @@ export const FEED: Post[] = [
     {
         guid: 'dd168847-3504-4aff-8b1a-752de5d20990',
         type: PostType.Crawl,
-        user: USERS[2],
+        user: USERS[1],
         name: 'Pit Pot 2024',
         location: 'Brežice, Slovenia',
         created: new Date('2024-02-02'),

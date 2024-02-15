@@ -7,9 +7,11 @@ import { Text } from 'react-native-paper';
 interface StatsTableProps {
     stats: Stat[];
     columns: number;
+    size?: 'normal' | 'small';
+    topBottomDividers?: boolean;
 }
 const StatsTable = (props: StatsTableProps) => {
-    const { stats, columns } = props;
+    const { stats, columns, size = 'normal', topBottomDividers = true } = props;
     const theme = useTheme();
 
     const statsTable: Stat[][] = [];
@@ -19,10 +21,10 @@ const StatsTable = (props: StatsTableProps) => {
     }
 
     return (
-        <>
+        <View style={[topBottomDividers && styles.container]}>
             {statsTable.map((statsRow, rowIdx) => (
                 <React.Fragment key={rowIdx}>
-                    <Divider style={styles.divider} />
+                    {(topBottomDividers || rowIdx > 0) && <Divider />}
                     <View style={styles.row}>
                         {statsRow.map((stat, statIdx) => (
                             <React.Fragment key={statIdx}>
@@ -35,7 +37,7 @@ const StatsTable = (props: StatsTableProps) => {
                                     <Text variant="labelSmall" style={styles.label}>
                                         {stat.label}
                                     </Text>
-                                    <Text variant="displaySmall" style={styles.value}>
+                                    <Text variant="displaySmall" style={[size == 'small' && styles.value]}>
                                         {stat.value}
                                     </Text>
                                 </View>
@@ -44,21 +46,27 @@ const StatsTable = (props: StatsTableProps) => {
                     </View>
                 </React.Fragment>
             ))}
-            <Divider style={styles.divider} />
-        </>
+            {topBottomDividers && <Divider />}
+        </View>
     );
 };
 
 export default StatsTable;
 
 const styles = StyleSheet.create({
+    container: {
+        marginVertical: 16,
+    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        marginVertical: 16,
     },
     cell: { alignItems: 'center', flex: 1 },
     label: { opacity: 0.5, fontWeight: '100' },
-    value: {},
+    value: {
+        fontSize: 24,
+    },
     divider: {
         marginVertical: 16,
     },

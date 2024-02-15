@@ -1,8 +1,9 @@
 import { Avatar, Divider, IconButton, Menu, Surface, Text } from 'react-native-paper';
-import { PostCrawl } from '../../models';
+import { PostCrawl, Stat } from '../../models';
 import { StyleSheet, View } from 'react-native';
 import RouteMapView from '../map/RouteMapView';
 import { useState } from 'react';
+import StatsTable from '../ui/StatsTable';
 
 interface PostCrawlItemProps {
     post: PostCrawl;
@@ -20,6 +21,21 @@ const PostCrawlItem = (props: PostCrawlItemProps) => {
     const handleMenuDismiss = () => {
         setMenuOpen(false);
     };
+
+    const stats: Stat[] = [
+        {
+            label: 'Venues visited',
+            value: crawlRoute?.venues.length,
+        },
+        {
+            label: 'Time taken',
+            value: crawlRoute?.expectedTimeToFinish,
+        },
+        {
+            label: 'Distance traveled',
+            value: `${crawlRoute?.distance.toFixed(2)} km`,
+        },
+    ];
 
     return (
         <Surface style={styles.surface}>
@@ -46,6 +62,7 @@ const PostCrawlItem = (props: PostCrawlItemProps) => {
                 <Text variant="titleLarge" style={styles.title}>
                     {name}
                 </Text>
+                <StatsTable stats={stats} columns={3} topBottomDividers={false} size="small" />
                 {crawlRoute && <RouteMapView venues={crawlRoute.venues} style={styles.mapView} />}
                 <View style={styles.participants}>
                     <Text style={styles.participantsLabel}>With</Text>
@@ -82,7 +99,6 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     title: {
-        marginBottom: 8,
         marginHorizontal: 8,
     },
     mapView: {
