@@ -38,4 +38,5 @@ export enum FollowerSuggestionReason {
 
 export interface PostChallenge extends Post {
     crawlRoute: CrawlRoute;
+    followingFinished: User[];
 }

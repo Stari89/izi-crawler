@@ -32,7 +32,7 @@ const PostCrawlItem = (props: PostCrawlItemProps) => {
             value: crawlRoute?.expectedTimeToFinish,
         },
         {
-            label: 'Distance traveled',
+            label: 'Distance crawled',
             value: `${crawlRoute?.distance.toFixed(2)} km`,
         },
     ];

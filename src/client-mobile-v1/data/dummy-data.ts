@@ -57,7 +57,7 @@ export const CRAWL_ROUTES: CrawlRoute[] = [
         createdOn: new Date('2024-01-01'),
         name: 'Test Route',
         favorite: false,
-        finishedBy: 0,
+        finishedBy: 40,
         expectedTimeToFinish: '2:45',
         distance: 3.2,
         venues: [
@@ -470,5 +470,6 @@ export const FEED: Post[] = [
         guid: 'e40cc6b9-4bec-4c74-b444-4f5a48a5c25f',
         type: PostType.Challenge,
         crawlRoute: CRAWL_ROUTES[0],
+        followingFinished: [USERS[1], USERS[2], USERS[3], USERS[5]],
     } as PostChallenge,
 ];
