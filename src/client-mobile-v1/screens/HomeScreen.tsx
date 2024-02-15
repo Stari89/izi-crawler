@@ -9,7 +9,9 @@ const HomeScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <FeedList posts={feed} />
+            <View style={styles.container}>
+                <FeedList posts={feed} />
+            </View>
         </View>
     );
 };
@@ -18,6 +20,11 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    container: {
+        maxWidth: 600,
         flex: 1,
     },
 });
