@@ -23,6 +23,6 @@ services:
         ports:
             - 3306:3306
         volumes:
-            - ./db-v1:/data/db
+            - ./server-db-v1:/data/db
         container_name: music-game-db
         command: --default-authentication-plugin=mysql_native_password
