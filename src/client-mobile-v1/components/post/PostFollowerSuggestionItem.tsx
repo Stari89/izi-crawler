@@ -13,7 +13,7 @@ const PostFollowerSuggestionItem = (props: PostFollowerSuggestionItemProps) => {
     );
 
     return (
-        <Surface style={styles.surface}>
+        <Surface style={styles.surface} elevation={3}>
             <Text variant="titleMedium" style={styles.title}>
                 Who to follow
             </Text>
@@ -52,7 +52,7 @@ const FollowerSuggestionListItem = (props: FollowerSuggestionListItemProps) => {
 const styles = StyleSheet.create({
     surface: {
         paddingTop: 8,
-        marginVertical: 8,
+        marginBottom: 24,
     },
     title: {
         marginHorizontal: 8,

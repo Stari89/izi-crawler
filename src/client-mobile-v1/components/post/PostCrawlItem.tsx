@@ -38,7 +38,7 @@ const PostCrawlItem = (props: PostCrawlItemProps) => {
     ];
 
     return (
-        <Surface style={styles.surface}>
+        <Surface style={styles.surface} elevation={3}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Avatar.Image source={user.avatar} size={48} />
@@ -81,7 +81,7 @@ export default PostCrawlItem;
 const styles = StyleSheet.create({
     surface: {
         paddingVertical: 8,
-        marginVertical: 8,
+        marginBottom: 24,
     },
     container: {},
     header: {

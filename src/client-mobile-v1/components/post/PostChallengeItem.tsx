@@ -12,7 +12,7 @@ const PostChallengeItem = (props: PostChallengeItemProps) => {
     const theme = useTheme();
 
     return (
-        <Surface style={styles.surface}>
+        <Surface style={styles.surface} elevation={3}>
             <Text style={styles.followingFinished}>
                 {followingFinished.map((ff) => ff.name).join(', ')} and {crawlRoute.finishedBy} others finished this
                 challenge.
@@ -44,7 +44,7 @@ export default PostChallengeItem;
 const styles = StyleSheet.create({
     surface: {
         paddingVertical: 8,
-        marginVertical: 8,
+        marginBottom: 24,
     },
     followingFinished: {
         marginHorizontal: 8,
