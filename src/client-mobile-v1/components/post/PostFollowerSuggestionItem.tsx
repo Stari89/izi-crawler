@@ -8,8 +8,8 @@ interface PostFollowerSuggestionItemProps {
 const PostFollowerSuggestionItem = (props: PostFollowerSuggestionItemProps) => {
     const { post } = props;
 
-    const renderItem = ({ item }: { item: FollowerSuggestion }) => (
-        <FollowerSuggestionListItem followerSuggestion={item} />
+    const renderItem = ({ item, index }: { item: FollowerSuggestion; index: number }) => (
+        <FollowerSuggestionListItem followerSuggestion={item} index={index} />
     );
 
     return (
@@ -30,12 +30,13 @@ export default PostFollowerSuggestionItem;
 
 interface FollowerSuggestionListItemProps {
     followerSuggestion: FollowerSuggestion;
+    index: number;
 }
 const FollowerSuggestionListItem = (props: FollowerSuggestionListItemProps) => {
-    const { followerSuggestion } = props;
+    const { followerSuggestion, index } = props;
     const { reason, user } = followerSuggestion;
     return (
-        <Card style={styles.itemCard} mode="contained">
+        <Card style={[styles.itemCard, index === 0 && styles.itemCardFirst]} mode="contained">
             <View style={styles.itemContainer}>
                 <Avatar.Image source={user.avatar} size={72} />
                 <Text style={styles.itemUserName}>{user.name}</Text>
@@ -50,15 +51,19 @@ const FollowerSuggestionListItem = (props: FollowerSuggestionListItemProps) => {
 
 const styles = StyleSheet.create({
     surface: {
-        paddingVertical: 8,
+        paddingTop: 8,
         marginVertical: 8,
     },
     title: {
         marginHorizontal: 8,
     },
+    itemCardFirst: {
+        marginLeft: 8,
+    },
     itemCard: {
         padding: 8,
-        margin: 4,
+        marginVertical: 8,
+        marginRight: 8,
     },
     itemContainer: {
         minWidth: 200,
