@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { Icon, IconButton, Text, useTheme } from 'react-native-paper';
 import { composeAppTitle } from '../../../../util/screen-title';
 import TabsDrawerContent from '../../../../components/ui/TabsDrawerContent';
@@ -6,6 +6,7 @@ import { Drawer } from 'expo-router/drawer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
 import { useOrientation } from '../../../../hooks';
+import { NAVIGATION_ROUTES } from '../../../../constants/navigation-routes';
 
 interface SimpleScreenOptions {
     name: string;
@@ -21,45 +22,51 @@ interface SimpleScreenOptions {
         | undefined;
 }
 
-const screenOptions: SimpleScreenOptions[] = [
-    {
-        name: 'index',
-        icon: 'home',
-        label: 'Home',
-        headerShown: false,
-    },
-    {
-        name: '(routes)',
-        icon: 'map-legend',
-        label: 'Routes',
-        headerShown: false,
-    },
-    {
-        name: 'crawl',
-        icon: 'beer',
-        label: 'Crawl',
-        headerShown: false,
-    },
-    {
-        name: 'explore',
-        icon: 'compass',
-        label: 'Explore',
-        headerShown: false,
-    },
-    {
-        name: '(profile)',
-        icon: 'account',
-        label: 'Profile',
-        headerShown: true,
-        headerRight: ({ tintColor }) => <IconButton iconColor={tintColor} icon="cog" />,
-    },
-];
-
 const TabsLayout = () => {
     const theme = useTheme();
 
     const { currentOrientation } = useOrientation();
     const [showDrawer, setShowDrawer] = useState(false);
+
+    const handleSettingsPress = () => {
+        router.navigate(NAVIGATION_ROUTES.settings);
+    };
+
+    const screenOptions: SimpleScreenOptions[] = [
+        {
+            name: 'index',
+            icon: 'home',
+            label: 'Home',
+            headerShown: false,
+        },
+        {
+            name: '(routes)',
+            icon: 'map-legend',
+            label: 'Routes',
+            headerShown: false,
+        },
+        {
+            name: 'crawl',
+            icon: 'beer',
+            label: 'Crawl',
+            headerShown: false,
+        },
+        {
+            name: 'explore',
+            icon: 'compass',
+            label: 'Explore',
+            headerShown: false,
+        },
+        {
+            name: '(user-profile)',
+            icon: 'account',
+            label: 'Profile',
+            headerShown: true,
+            headerRight: ({ tintColor }) => (
+                <IconButton iconColor={tintColor} icon="cog" onPress={handleSettingsPress} />
+            ),
+        },
+    ];
 
     useEffect(() => {
         const showDrawer =

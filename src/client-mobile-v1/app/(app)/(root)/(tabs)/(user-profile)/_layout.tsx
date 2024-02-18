@@ -28,7 +28,10 @@ const ProfileLayout = () => {
                 tabBarIndicatorStyle: { backgroundColor: theme.colors.onPrimary },
             }}
         >
-            <Tabs.Screen name="index" options={{ title: composeAppTitle('My Profile'), tabBarLabel: 'My Profile' }} />
+            <Tabs.Screen
+                name="my-profile"
+                options={{ title: composeAppTitle('My Profile'), tabBarLabel: 'My Profile' }}
+            />
             <Tabs.Screen
                 name="my-activity"
                 options={{ title: composeAppTitle('My Activity'), tabBarLabel: 'My Activity' }}

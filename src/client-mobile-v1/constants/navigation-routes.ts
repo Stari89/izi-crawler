@@ -5,10 +5,13 @@ export const NAVIGATION_ROUTES = {
     home: '/',
     index: '/',
     login: '/login',
+    myActivity: '/my-activity',
+    myProfile: '/my-profile',
     myRoutes: '/myRoutes',
     profile: '/profile',
     route: '/route/[guid]',
     routeMap: '/route/[guid]/map',
+    settings: '/settings',
     signup: '/signup',
     welcome: '/welcome',
 };

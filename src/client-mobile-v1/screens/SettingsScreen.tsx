@@ -1,16 +1,16 @@
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
-const ProfileScreen = () => {
+const SettingsScreen = () => {
     const theme = useTheme();
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <Text>Profile Screen</Text>
+            <Text>Settings Screen</Text>
         </View>
     );
 };
 
-export default ProfileScreen;
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
