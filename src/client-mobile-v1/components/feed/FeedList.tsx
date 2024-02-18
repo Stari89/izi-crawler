@@ -9,7 +9,13 @@ interface FeedListProps {
 const FeedList = (props: FeedListProps) => {
     const { posts } = props;
 
-    const renderItem = ({ item }: { item: Post }) => <FeedItem post={item} />;
+    const renderItem = ({ item }: { item: Post }) => (
+        <View style={styles.feedItemWrapper}>
+            <View style={styles.feedItemContainer}>
+                <FeedItem post={item} />
+            </View>
+        </View>
+    );
 
     if (!posts.length) {
         return (
@@ -37,5 +43,12 @@ const styles = StyleSheet.create({
     noItemsContainer: {
         alignItems: 'center',
         marginVertical: 16,
+    },
+    feedItemWrapper: {
+        alignItems: 'center',
+    },
+    feedItemContainer: {
+        maxWidth: 800,
+        width: '100%',
     },
 });
