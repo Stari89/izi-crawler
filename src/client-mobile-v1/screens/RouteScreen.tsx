@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     mainContainerLandscape: {
-        maxWidth: 420,
+        maxWidth: 600,
     },
     header: {
         flexDirection: 'row',

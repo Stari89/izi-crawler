@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Icon, useTheme } from 'react-native-paper';
+import { Icon, IconButton, Text, useTheme } from 'react-native-paper';
 import { composeAppTitle } from '../../../../util/screen-title';
 import TabsDrawerContent from '../../../../components/ui/TabsDrawerContent';
 import { Drawer } from 'expo-router/drawer';
@@ -11,6 +11,14 @@ interface SimpleScreenOptions {
     name: string;
     icon: string;
     label: string;
+    headerShown: boolean;
+    headerRight?:
+        | ((props: {
+              tintColor?: string | undefined;
+              pressColor?: string | undefined;
+              pressOpacity?: number | undefined;
+          }) => React.ReactNode)
+        | undefined;
 }
 
 const screenOptions: SimpleScreenOptions[] = [
@@ -18,26 +26,32 @@ const screenOptions: SimpleScreenOptions[] = [
         name: 'index',
         icon: 'home',
         label: 'Home',
+        headerShown: false,
     },
     {
         name: '(routes)',
         icon: 'map-legend',
         label: 'Routes',
+        headerShown: false,
     },
     {
         name: 'crawl',
         icon: 'beer',
         label: 'Crawl',
+        headerShown: false,
     },
     {
         name: 'explore',
         icon: 'compass',
         label: 'Explore',
+        headerShown: false,
     },
     {
-        name: 'profile',
+        name: '(profile)',
         icon: 'account',
         label: 'Profile',
+        headerShown: true,
+        headerRight: ({ tintColor }) => <IconButton iconColor={tintColor} icon="cog" />,
     },
 ];
 
@@ -58,11 +72,12 @@ const TabsLayout = () => {
         return (
             <Drawer
                 screenOptions={{
-                    headerStyle: { backgroundColor: theme.colors.background },
-                    headerTintColor: theme.colors.onBackground,
+                    headerStyle: { backgroundColor: theme.colors.primary },
+                    headerTintColor: theme.colors.onPrimary,
                     headerShown: false,
                     drawerType: 'permanent',
                     drawerStyle: { flexShrink: 1, width: 'auto', backgroundColor: theme.colors.background },
+                    headerLeft: () => null,
                 }}
                 drawerContent={(props) => <TabsDrawerContent {...props} />}
             >
@@ -80,6 +95,8 @@ const TabsLayout = () => {
                             ),
                             drawerLabel: s.label,
                             title: composeAppTitle(s.label),
+                            headerShown: s.headerShown,
+                            headerRight: s.headerRight,
                         }}
                     />
                 ))}
@@ -90,8 +107,8 @@ const TabsLayout = () => {
     return (
         <Tabs
             screenOptions={{
-                headerStyle: { backgroundColor: theme.colors.background },
-                headerTintColor: theme.colors.onBackground,
+                headerStyle: { backgroundColor: theme.colors.primary },
+                headerTintColor: theme.colors.onPrimary,
                 tabBarStyle: { backgroundColor: theme.colors.background },
                 tabBarActiveTintColor: theme.colors.primary,
                 headerShown: false,
@@ -111,6 +128,8 @@ const TabsLayout = () => {
                         ),
                         tabBarLabel: s.label,
                         title: composeAppTitle(s.label),
+                        headerShown: s.headerShown,
+                        headerRight: s.headerRight,
                     }}
                 />
             ))}
