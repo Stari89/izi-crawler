@@ -102,6 +102,7 @@ const TabsLayout = () => {
                             ),
                             drawerLabel: s.label,
                             title: composeAppTitle(s.label),
+                            headerTitle: s.label,
                             headerShown: s.headerShown,
                             headerRight: s.headerRight,
                         }}
@@ -135,6 +136,7 @@ const TabsLayout = () => {
                         ),
                         tabBarLabel: s.label,
                         title: composeAppTitle(s.label),
+                        headerTitle: s.label,
                         headerShown: s.headerShown,
                         headerRight: s.headerRight,
                     }}
