@@ -12,3 +12,17 @@ services:
         restart: on-failure
         volumes:
             - ./client-mobile-v1:/project/app
+    izi-cawler-db:
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_DATABASE: db
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: root_password
+        ports:
+            - 3306:3306
+        volumes:
+            - ./db-v1:/data/db
+        container_name: music-game-db
+        command: --default-authentication-plugin=mysql_native_password
