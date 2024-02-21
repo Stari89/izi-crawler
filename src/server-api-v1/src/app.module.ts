@@ -5,16 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities';
 import { UsersService } from './services';
 import { UsersController } from './controllers';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env.preview', '.env'] }),
         TypeOrmModule.forRoot({
             type: 'mysql',
-            host: 'localhost',
-            port: 3306,
-            username: 'admin',
-            password: 'password',
-            database: 'db',
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT || '3306', 10),
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_SCHEMA,
             entities: [User],
             synchronize: true,
         }),
