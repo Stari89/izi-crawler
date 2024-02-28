@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SignInDto, UserDto } from 'src/dtos';
+import { AuthDto, SignInDto } from 'src/dtos';
 import { AuthService } from 'src/services';
 
 @ApiTags('Auth')
@@ -8,9 +8,9 @@ import { AuthService } from 'src/services';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    @ApiOkResponse({ type: UserDto })
+    @ApiOkResponse({ type: AuthDto })
     @Post('sign-in')
-    signIn(@Body() signIn: SignInDto): Promise<UserDto> {
+    signIn(@Body() signIn: SignInDto): Promise<AuthDto> {
         return this.authService.signIn(signIn.email, signIn.password);
     }
 }
