@@ -1,6 +1,14 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthDto, SignInDto, SignUpDto, SignUpResponseDto } from 'src/dtos';
+import {
+    AuthResetPasswordDto,
+    AuthSignInDto,
+    AuthSignInResponseDto,
+    AuthSignUpDto,
+    AuthSignUpResponseDto,
+    AuthUpdatePasswordDto,
+} from 'src/dtos';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { obfuscateEmailHelper } from 'src/helpers/obfuscate-email.helper';
 import { AuthService } from 'src/services';
 
@@ -9,15 +17,15 @@ import { AuthService } from 'src/services';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    @ApiOkResponse({ type: AuthDto })
+    @ApiOkResponse({ type: AuthSignInResponseDto })
     @Post('sign-in')
-    signIn(@Body() signIn: SignInDto): Promise<AuthDto> {
+    signIn(@Body() signIn: AuthSignInDto): Promise<AuthSignInResponseDto> {
         return this.authService.signIn(signIn.email, signIn.password);
     }
 
-    @ApiOkResponse({ type: SignUpResponseDto })
+    @ApiOkResponse({ type: AuthSignUpResponseDto })
     @Post('sign-up')
-    signUp(@Body() signUp: SignUpDto): Promise<SignUpResponseDto> {
+    signUp(@Body() signUp: AuthSignUpDto): Promise<AuthSignUpResponseDto> {
         // TODO: check uniqueness
         // TODO: save to DB
         // TODO: send confirmation email
@@ -26,18 +34,34 @@ export class AuthController {
 
     // TODO: all of these
 
-    @Post('confirm-account')
-    confirmAccount() {}
+    @ApiOkResponse()
+    @Get('confirm-account/:token')
+    confirmAccount(@Param('token') token: string) {
+        return;
+    }
 
-    @Post('resend-confirm-email')
-    resendConfirmEmail() {}
+    @ApiOkResponse()
+    @Get('resend-confirm-email')
+    resendConfirmEmail(@Query('email') email: string) {
+        return;
+    }
 
-    @Post('forgot-password')
-    forgotPassword() {}
+    @ApiOkResponse()
+    @Get('forgot-password')
+    forgotPassword(@Query('email') email: string) {
+        return;
+    }
 
+    @ApiOkResponse()
     @Post('reset-password')
-    resetPassword() {}
+    resetPassword(@Body() resetPassword: AuthResetPasswordDto) {
+        return;
+    }
 
+    @ApiOkResponse()
     @Post('update-password')
-    updatePassword() {}
+    @UseGuards(AuthGuard)
+    updatePassword(@Body() updatePassword: AuthUpdatePasswordDto) {
+        return;
+    }
 }

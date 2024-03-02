@@ -1,6 +1,19 @@
-import { AuthDto } from './auth.dto';
-import { SignInDto } from './sign-in.dto';
-import { SignUpDto, SignUpResponseDto } from './sign-up.dto';
+import {
+    AuthResetPasswordDto,
+    AuthSignInDto,
+    AuthSignInResponseDto,
+    AuthSignUpDto,
+    AuthSignUpResponseDto,
+    AuthUpdatePasswordDto,
+} from './auth.dto';
 import { UserDto } from './user.dto';
 
-export { AuthDto, SignInDto, SignUpDto, SignUpResponseDto, UserDto };
+export {
+    AuthResetPasswordDto,
+    AuthSignInDto,
+    AuthSignInResponseDto,
+    AuthSignUpDto,
+    AuthSignUpResponseDto,
+    AuthUpdatePasswordDto,
+    UserDto,
+};
