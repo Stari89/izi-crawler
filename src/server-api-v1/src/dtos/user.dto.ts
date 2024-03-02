@@ -15,10 +15,6 @@ export class UserDto {
     @IsNotEmpty()
     email: string;
 
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    password: string;
-
     @ApiProperty({ type: 'boolean' })
     @IsNotEmpty()
     isActive: boolean;

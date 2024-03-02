@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
     AuthResetPasswordDto,
@@ -20,16 +20,18 @@ export class AuthController {
     @ApiOkResponse({ type: AuthSignInResponseDto })
     @Post('sign-in')
     signIn(@Body() signIn: AuthSignInDto): Promise<AuthSignInResponseDto> {
-        return this.authService.signIn(signIn.email, signIn.password);
+        return this.authService.signIn(signIn.email, signIn.password).catch((err) => {
+            throw new UnauthorizedException();
+        });
     }
 
     @ApiOkResponse({ type: AuthSignUpResponseDto })
     @Post('sign-up')
-    signUp(@Body() signUp: AuthSignUpDto): Promise<AuthSignUpResponseDto> {
-        // TODO: check uniqueness
-        // TODO: save to DB
+    async signUp(@Body() signUp: AuthSignUpDto): Promise<AuthSignUpResponseDto> {
+        const { email, password } = signUp;
+        await this.authService.signUp(email, password);
         // TODO: send confirmation email
-        return Promise.resolve({ obfuscatedEmail: obfuscateEmailHelper(signUp.email) });
+        return { obfuscatedEmail: obfuscateEmailHelper(signUp.email) };
     }
 
     // TODO: all of these

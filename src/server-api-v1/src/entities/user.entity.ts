@@ -12,7 +12,7 @@ export class User {
     email: string;
 
     @Column({ nullable: false })
-    password: string;
+    passwordHash: string;
 
     @Column({ default: true })
     isActive: boolean;
