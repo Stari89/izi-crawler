@@ -56,12 +56,8 @@ export class AuthService {
     }
 
     async resendConfirmEmail(email: string): Promise<void> {
-        try {
-            const user = await this.usersService.findOne(email);
-            await this.sendConfirmEmail(user);
-        } catch {
-            throw new UnauthorizedException();
-        }
+        const user = await this.usersService.findOne(email);
+        await this.sendConfirmEmail(user);
     }
 
     private async sendConfirmEmail(user: User): Promise<void> {

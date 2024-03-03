@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
 import { FieldMatch } from 'src/decorators/field-match.decorator';
 
@@ -23,17 +23,20 @@ class AuthSafePasswordDto {
     confirmPassword: string;
 }
 
+export class AuthEmailDto {
+    @ApiProperty({ type: 'string' })
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+}
+
 export class AuthResetPasswordDto extends AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     token: string;
 }
 
-export class AuthSignInDto {
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    email: string;
-
+export class AuthSignInDto extends AuthEmailDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     password: string;
@@ -45,12 +48,7 @@ export class AuthSignInResponseDto {
     accessToken: string;
 }
 
-export class AuthSignUpDto extends AuthSafePasswordDto {
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    @IsEmail()
-    email: string;
-}
+export class AuthSignUpDto extends IntersectionType(AuthEmailDto, AuthSafePasswordDto) {}
 
 export class AuthSignUpResponseDto {
     @ApiProperty({ type: 'string' })

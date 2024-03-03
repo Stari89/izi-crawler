@@ -1,4 +1,5 @@
 import {
+    AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignInResponseDto,
@@ -9,6 +10,7 @@ import {
 import { UserDto } from './user.dto';
 
 export {
+    AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignInResponseDto,

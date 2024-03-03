@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
+    AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignInResponseDto,
@@ -48,16 +49,16 @@ export class AuthController {
     }
 
     @ApiOkResponse()
-    @Get('resend-confirm-email')
-    async resendConfirmEmail(@Query('email') email: string): Promise<void> {
-        await this.authService.resendConfirmEmail(email).catch(() => {
+    @Post('resend-confirm-email')
+    async resendConfirmEmail(@Body() confirmEmail: AuthEmailDto): Promise<void> {
+        await this.authService.resendConfirmEmail(confirmEmail.email).catch(() => {
             throw new UnauthorizedException();
         });
     }
 
     @ApiOkResponse()
-    @Get('forgot-password')
-    forgotPassword(@Query('email') email: string) {
+    @Post('forgot-password')
+    forgotPassword(@Body() forgotPassword: AuthEmailDto) {
         return;
     }
 
