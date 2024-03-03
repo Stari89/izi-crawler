@@ -30,7 +30,6 @@ export class AuthController {
     async signUp(@Body() signUp: AuthSignUpDto): Promise<AuthSignUpResponseDto> {
         const { email, password } = signUp;
         await this.authService.signUp(email, password);
-        // TODO: send confirmation email
         return { obfuscatedEmail: obfuscateEmailHelper(signUp.email) };
     }
 

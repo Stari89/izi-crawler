@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities';
-import { AuthService, UsersService } from './services';
+import { AuthService, MailingService, UsersService } from './services';
 import { UsersController } from './controllers';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './controllers/auth.controller';
@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env.preview', '.env'] }),
+        ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env.preview', '.env.development', '.env'] }),
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: process.env.DB_HOST,
@@ -30,6 +30,6 @@ import { JwtModule } from '@nestjs/jwt';
         }),
     ],
     controllers: [AppController, AuthController, UsersController],
-    providers: [AppService, AuthService, UsersService],
+    providers: [AppService, AuthService, MailingService, UsersService],
 })
 export class AppModule {}
