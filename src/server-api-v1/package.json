@@ -18,7 +18,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "openapi-generate": "openapi-generator-cli generate -i http://localhost:3000/api-yaml -g typescript-axios -o ../client-mobile-v1/api-client --additional-properties=useSingleRequestParameter=true --remove-operation-id-prefix"
+        "openapi-generate": "del-cli --force ../client-mobile-v1/api-client && openapi-generator-cli generate -i http://localhost:3000/api-yaml -g typescript-fetch -o ../client-mobile-v1/api-client --remove-operation-id-prefix --additional-properties=nullSafeAdditionalProps=true,useSingleRequestParameter=false,prefixParameterInterfaces=true"
     },
     "dependencies": {
         "@nestjs/common": "^10.0.0",
@@ -50,6 +50,7 @@
         "@types/supertest": "^6.0.0",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
+        "del-cli": "^5.1.0",
         "eslint": "^8.42.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
