@@ -39,6 +39,7 @@ module.exports = {
             owner: 'stari89',
         },
         googleMapsApiKey: process.env.GOOGLE_API_KEY,
+        apiBasePAth: process.env.API_BASE_PATH,
     },
     scheme: 'your-app-scheme',
     owner: 'stari89',
