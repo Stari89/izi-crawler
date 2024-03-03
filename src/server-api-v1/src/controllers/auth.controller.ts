@@ -4,9 +4,9 @@ import {
     AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
-    AuthSignInResponseDto,
     AuthSignUpDto,
     AuthSignUpResponseDto,
+    AuthTokenDto,
     AuthUpdatePasswordDto,
 } from 'src/dtos';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -18,9 +18,9 @@ import { AuthService } from 'src/services';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    @ApiOkResponse({ type: AuthSignInResponseDto })
+    @ApiOkResponse({ type: AuthTokenDto })
     @Post('sign-in')
-    signIn(@Body() signIn: AuthSignInDto): Promise<AuthSignInResponseDto> {
+    signIn(@Body() signIn: AuthSignInDto): Promise<AuthTokenDto> {
         return this.authService.signIn(signIn.email, signIn.password).catch(() => {
             throw new UnauthorizedException();
         });
@@ -34,9 +34,7 @@ export class AuthController {
         return { obfuscatedEmail: obfuscateEmailHelper(signUp.email) };
     }
 
-    // TODO: all of these
-
-    @ApiOkResponse()
+    @ApiOkResponse({ type: 'string' })
     @Get('confirm-account/:token')
     async confirmAccount(@Param('token') token: string): Promise<string> {
         // We need to return text, because this will be done in browser
@@ -58,8 +56,10 @@ export class AuthController {
 
     @ApiOkResponse()
     @Post('forgot-password')
-    forgotPassword(@Body() forgotPassword: AuthEmailDto) {
-        return;
+    async forgotPassword(@Body() forgotPassword: AuthEmailDto): Promise<void> {
+        await this.authService.forgotPassword(forgotPassword.email).catch(() => {
+            throw new UnauthorizedException();
+        });
     }
 
     @ApiOkResponse()

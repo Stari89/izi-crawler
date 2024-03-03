@@ -1,10 +1,10 @@
 import { ConflictException, Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthSignInResponseDto } from 'src/dtos';
 import { compare, genSalt, hash } from 'bcrypt';
 import { MailingService } from './mailing.service';
 import { User } from 'src/entities';
+import { AuthTokenDto } from 'src/dtos';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +30,7 @@ export class AuthService {
         this.sendConfirmEmail(user);
     }
 
-    async signIn(email: string, password: string): Promise<AuthSignInResponseDto> {
+    async signIn(email: string, password: string): Promise<AuthTokenDto> {
         // Get user
         const user = await this.usersService.findOne(email);
 
@@ -58,6 +58,21 @@ export class AuthService {
     async resendConfirmEmail(email: string): Promise<void> {
         const user = await this.usersService.findOne(email);
         await this.sendConfirmEmail(user);
+    }
+
+    async forgotPassword(email: string): Promise<void> {
+        const user = await this.usersService.findOne(email);
+
+        // Generate confirmation token
+        const payload = { sub: user.uuid, username: user.email };
+        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
+
+        // Send token to email
+        await this.mailingService.sendEmail(
+            user.email,
+            'IZI CRAWLER Password Reset',
+            `TODO: link to open the app to the password reset form. For now use this token:<br /><strong>${token}</strong>`,
+        );
     }
 
     private async sendConfirmEmail(user: User): Promise<void> {

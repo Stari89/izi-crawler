@@ -30,22 +30,18 @@ export class AuthEmailDto {
     email: string;
 }
 
-export class AuthResetPasswordDto extends AuthSafePasswordDto {
+export class AuthTokenDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
-    token: string;
+    accessToken: string;
 }
+
+export class AuthResetPasswordDto extends IntersectionType(AuthTokenDto, AuthSafePasswordDto) {}
 
 export class AuthSignInDto extends AuthEmailDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     password: string;
-}
-
-export class AuthSignInResponseDto {
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    accessToken: string;
 }
 
 export class AuthSignUpDto extends IntersectionType(AuthEmailDto, AuthSafePasswordDto) {}
