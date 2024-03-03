@@ -1,9 +1,10 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthSignInResponseDto } from 'src/dtos';
 import { compare, genSalt, hash } from 'bcrypt';
 import { MailingService } from './mailing.service';
+import { User } from 'src/entities';
 
 @Injectable()
 export class AuthService {
@@ -26,17 +27,7 @@ export class AuthService {
         // Create new user
         const user = await this.usersService.create(email, passwordHash);
 
-        // Generate confirmation token
-        const payload = { sub: user.uuid, username: user.email };
-        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
-        const urlSafeToken = encodeURIComponent(token);
-
-        // Send confirmation email
-        await this.mailingService.sendEmail(
-            email,
-            'IZI CRAWLER Account Confirmation',
-            `Confirm account by clicking on this link: <a href="${process.env.APP_HOST}/auth/confirm-account/${urlSafeToken}">CONFIRM ACCOUNT</a>`,
-        );
+        this.sendConfirmEmail(user);
     }
 
     async signIn(email: string, password: string): Promise<AuthSignInResponseDto> {
@@ -56,15 +47,34 @@ export class AuthService {
     }
 
     async confirmAccount(token: string) {
+        const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
+            secret: process.env.JWT_SECRET,
+        });
+        const user = await this.usersService.findOne(payload.username);
+        user.emailConfirmed = true;
+        await this.usersService.save(user);
+    }
+
+    async resendConfirmEmail(email: string): Promise<void> {
         try {
-            const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
-                secret: process.env.JWT_SECRET,
-            });
-            const user = await this.usersService.findOne(payload.username);
-            user.emailConfirmed = true;
-            await this.usersService.save(user);
+            const user = await this.usersService.findOne(email);
+            await this.sendConfirmEmail(user);
         } catch {
             throw new UnauthorizedException();
         }
+    }
+
+    private async sendConfirmEmail(user: User): Promise<void> {
+        // Generate confirmation token
+        const payload = { sub: user.uuid, username: user.email };
+        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
+        const urlSafeToken = encodeURIComponent(token);
+
+        // Send confirmation email
+        await this.mailingService.sendEmail(
+            user.email,
+            'IZI CRAWLER Account Confirmation',
+            `Confirm account by clicking on this link: <a href="${process.env.APP_HOST}/auth/confirm-account/${urlSafeToken}">CONFIRM ACCOUNT</a>`,
+        );
     }
 }

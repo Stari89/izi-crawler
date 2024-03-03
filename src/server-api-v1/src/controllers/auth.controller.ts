@@ -20,7 +20,7 @@ export class AuthController {
     @ApiOkResponse({ type: AuthSignInResponseDto })
     @Post('sign-in')
     signIn(@Body() signIn: AuthSignInDto): Promise<AuthSignInResponseDto> {
-        return this.authService.signIn(signIn.email, signIn.password).catch((err) => {
+        return this.authService.signIn(signIn.email, signIn.password).catch(() => {
             throw new UnauthorizedException();
         });
     }
@@ -38,14 +38,21 @@ export class AuthController {
     @ApiOkResponse()
     @Get('confirm-account/:token')
     async confirmAccount(@Param('token') token: string): Promise<string> {
-        await this.authService.confirmAccount(token);
+        // We need to return text, because this will be done in browser
+        try {
+            await this.authService.confirmAccount(token);
+        } catch {
+            return 'Something went wrong.';
+        }
         return 'Your account has been confirmed. You may return to the IZI CRAWLER app and login.';
     }
 
     @ApiOkResponse()
     @Get('resend-confirm-email')
-    resendConfirmEmail(@Query('email') email: string) {
-        return;
+    async resendConfirmEmail(@Query('email') email: string): Promise<void> {
+        await this.authService.resendConfirmEmail(email).catch(() => {
+            throw new UnauthorizedException();
+        });
     }
 
     @ApiOkResponse()
