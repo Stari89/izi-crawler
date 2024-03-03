@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
+    AuthConfirmResponseDto,
     AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
@@ -34,16 +35,16 @@ export class AuthController {
         return { obfuscatedEmail: obfuscateEmailHelper(signUp.email) };
     }
 
-    @ApiOkResponse({ type: 'string' })
+    @ApiOkResponse({ type: AuthConfirmResponseDto })
     @Get('confirm-account/:token')
-    async confirmAccount(@Param('token') token: string): Promise<string> {
+    async confirmAccount(@Param('token') token: string): Promise<AuthConfirmResponseDto> {
         // We need to return text, because this will be done in browser
         try {
             await this.authService.confirmAccount(token);
         } catch {
-            return 'Something went wrong.';
+            return { message: 'Something went wrong.' };
         }
-        return 'Your account has been confirmed. You may return to the IZI CRAWLER app and login.';
+        return { message: 'Your account has been confirmed. You may return to the IZI CRAWLER app and login.' };
     }
 
     @ApiOkResponse()
