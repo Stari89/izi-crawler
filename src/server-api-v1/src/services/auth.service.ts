@@ -24,10 +24,19 @@ export class AuthService {
         const passwordHash = await hash(password, passwordSalt);
 
         // Create new user
-        await this.usersService.create(email, passwordHash);
+        const user = await this.usersService.create(email, passwordHash);
+
+        // Generate confirmation token
+        const payload = { sub: user.uuid, username: user.email };
+        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
+        const urlSafeToken = encodeURIComponent(token);
 
         // Send confirmation email
-        await this.mailingService.sendEmail(email, 'IZI CRAWLER Account Confirmation', 'TODO');
+        await this.mailingService.sendEmail(
+            email,
+            'IZI CRAWLER Account Confirmation',
+            `Confirm account by clicking on this link: <a href="${process.env.APP_HOST}/auth/confirm-account/${urlSafeToken}">CONFIRM ACCOUNT</a>`,
+        );
     }
 
     async signIn(email: string, password: string): Promise<AuthSignInResponseDto> {
@@ -44,5 +53,18 @@ export class AuthService {
         return {
             accessToken: await this.jwtService.signAsync(payload),
         };
+    }
+
+    async confirmAccount(token: string) {
+        try {
+            const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
+                secret: process.env.JWT_SECRET,
+            });
+            const user = await this.usersService.findOne(payload.username);
+            user.emailConfirmed = true;
+            await this.usersService.save(user);
+        } catch {
+            throw new UnauthorizedException();
+        }
     }
 }

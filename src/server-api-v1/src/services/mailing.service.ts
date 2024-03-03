@@ -19,13 +19,11 @@ export class MailingService {
     }
 
     async sendEmail(to: string, subject: string, text: string): Promise<void> {
-        const mailOptions = {
+        await this.transporter.sendMail({
             from: process.env.MAIL_USER,
             to,
             subject,
-            text,
-        };
-
-        await this.transporter.sendMail(mailOptions);
+            html: text,
+        });
     }
 }

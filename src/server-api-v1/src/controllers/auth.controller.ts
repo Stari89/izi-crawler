@@ -37,8 +37,9 @@ export class AuthController {
 
     @ApiOkResponse()
     @Get('confirm-account/:token')
-    confirmAccount(@Param('token') token: string) {
-        return;
+    async confirmAccount(@Param('token') token: string): Promise<string> {
+        await this.authService.confirmAccount(token);
+        return 'Your account has been confirmed. You may return to the IZI CRAWLER app and login.';
     }
 
     @ApiOkResponse()

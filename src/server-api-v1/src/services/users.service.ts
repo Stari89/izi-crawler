@@ -24,13 +24,17 @@ export class UsersService {
         return this.usersRepository.findOne({ where: { email } }).then((u) => !!u);
     }
 
-    async create(email: string, passwordHash: string): Promise<void> {
+    create(email: string, passwordHash: string): Promise<User> {
         const userEntity = new User();
         userEntity.email = email;
         userEntity.fullName = '';
         userEntity.emailConfirmed = false;
-        userEntity.isActive = false;
+        userEntity.isActive = true;
         userEntity.passwordHash = passwordHash;
-        await this.usersRepository.save(userEntity);
+        return this.usersRepository.save(userEntity);
+    }
+
+    save(user: User): Promise<User> {
+        return this.usersRepository.save(user);
     }
 }
