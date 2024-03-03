@@ -75,6 +75,36 @@ export class AuthService {
         );
     }
 
+    async resetPassword(token: string, password: string): Promise<void> {
+        const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
+            secret: process.env.JWT_SECRET,
+        });
+        const user = await this.usersService.findOne(payload.username);
+        await this.setPassword(user, password);
+    }
+
+    async updatePassword(email: string, oldPassword: string, password: string): Promise<void> {
+        // Get user
+        const user = await this.usersService.findOne(email);
+
+        // Check password
+        if (!(await compare(oldPassword, user.passwordHash))) {
+            throw new UnauthorizedException();
+        }
+
+        await this.setPassword(user, password);
+    }
+
+    async setPassword(user: User, password: string): Promise<void> {
+        // Generate salt and hash
+        const passwordSalt = await genSalt();
+        const passwordHash = await hash(password, passwordSalt);
+
+        user.passwordHash = passwordHash;
+
+        await this.usersService.save(user);
+    }
+
     private async sendConfirmEmail(user: User): Promise<void> {
         // Generate confirmation token
         const payload = { sub: user.uuid, username: user.email };

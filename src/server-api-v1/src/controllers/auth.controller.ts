@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
     AuthEmailDto,
@@ -64,14 +64,23 @@ export class AuthController {
 
     @ApiOkResponse()
     @Post('reset-password')
-    resetPassword(@Body() resetPassword: AuthResetPasswordDto) {
-        return;
+    async resetPassword(@Body() resetPassword: AuthResetPasswordDto): Promise<void> {
+        const { accessToken, password } = resetPassword;
+        await this.authService.resetPassword(accessToken, password).catch(() => {
+            throw new UnauthorizedException();
+        });
     }
 
     @ApiOkResponse()
     @Post('update-password')
     @UseGuards(AuthGuard)
-    updatePassword(@Body() updatePassword: AuthUpdatePasswordDto) {
-        return;
+    async updatePassword(
+        @Request() req: { user: { username: string } },
+        @Body() updatePassword: AuthUpdatePasswordDto,
+    ): Promise<void> {
+        const { password, oldPassword } = updatePassword;
+        await this.authService.updatePassword(req.user.username, oldPassword, password).catch(() => {
+            throw new UnauthorizedException();
+        });
     }
 }
