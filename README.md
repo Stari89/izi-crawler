@@ -22,6 +22,31 @@ Pub crawler app for my friend and anyone else who may be interested.
     nvm install 20.11.0
     nvm use 20.11.0
     ```
+
+##### API
+
+-   Make sure you have `.env.development` file with secrets in `/src/server-api-v1`. If not, contact the Principal Developer to supply you with one.
+-   Install [Docker](https://www.docker.com/).
+-   Run Docker.
+-   In terminal, navigate to `/src` folder where the `docker-compose.yml` file is located:
+    ```
+    cd ./src
+    ```
+-   Run the docker-compose command:
+    ```
+    docker-compose up -d
+    ```
+-   Navigate to `/src/server-api-v1` folder in your terminal:
+    ```
+    cd ./src/server-api-v1
+    ```
+-   Install npm packages:
+    ```
+    npm install
+    ```
+
+##### Client
+
 -   Navigate to `/src/client-mobile-v1` folder in your terminal:
     ```
     cd ./src/client-mobile-v1
@@ -30,8 +55,27 @@ Pub crawler app for my friend and anyone else who may be interested.
     ```
     npm install
     ```
+-   Navigate to `/src/server-api-v1` folder in your terminal:
+    ```
+    cd ./src/server-api-v1
+    ```
+-   Start the development server with command (`:dev` also starts up the watcher):
+    ```
+    npm run start:dev
+    ```
 
-### Debugging (development profile)
+### API Debugging (localhost)
+
+-   Make sure database container is running in Docker:
+    ```
+    docker-compose up -d
+    ```
+
+### Database migrations
+
+TypeORM takes care of everything.
+
+### Client Debugging (development profile)
 
 -   Make sure you have `.env.development` file with secrets in `/src/client-mobile-v1`. If not, contact the Principal Developer to supply you with one.
 -   Navigate to `/src/client-mobile-v1` folder in your terminal:
@@ -70,7 +114,7 @@ Pub crawler app for my friend and anyone else who may be interested.
 -   The 90% of the remaining 10% of problems is resolved by deleting the `/src/client-mobile-v1/node_modules` folder and running `npm install` command again.
 -   Contact the Principal Developer only after you tried first two bullet points.
 
-### Build (preview profile)
+### Client Build (preview profile)
 
 #### Android
 
@@ -117,7 +161,7 @@ docker-compose run izi-crawler-builder env
     ```
 -   **Undo changes** done on `.env`
 
-### Testing (installing app on your device)
+### Client Testing (installing app on your device)
 
 All build artifacts for testing are available on [Izi Crawler Build Artifacts](https://izi-crawler.dko.si/artifacts.php) page.
 
