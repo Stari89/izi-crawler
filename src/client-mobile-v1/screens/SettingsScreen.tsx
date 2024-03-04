@@ -1,11 +1,19 @@
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+import { Button } from 'react-native-paper';
+import { useAuth } from '../hooks';
 
 const SettingsScreen = () => {
     const theme = useTheme();
+    const { logout } = useAuth();
+
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <Text>Settings Screen</Text>
+            <View style={styles.container}>
+                <Button mode="outlined" textColor={theme.colors.error} onPress={logout}>
+                    Log Out
+                </Button>
+            </View>
         </View>
     );
 };
@@ -16,5 +24,11 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         paddingHorizontal: 16,
+        alignItems: 'center',
+    },
+    container: {
+        marginTop: 16,
+        maxWidth: 800,
+        width: '100%',
     },
 });
