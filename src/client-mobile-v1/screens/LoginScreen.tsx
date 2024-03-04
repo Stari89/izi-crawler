@@ -1,7 +1,7 @@
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-import { useApi } from '../hooks';
+import { useApi, useAuth } from '../hooks';
 import { ResponseError } from '../api-client';
 import { useState } from 'react';
 
@@ -13,6 +13,7 @@ type FormData = {
 const LoginScreen = () => {
     const theme = useTheme();
     const { authApi } = useApi();
+    const { login } = useAuth();
     const { control, formState, handleSubmit } = useForm<FormData>();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
@@ -21,7 +22,7 @@ const LoginScreen = () => {
     const handleSubmitForm = async (data: FormData) => {
         try {
             const response = await authApi.signIn(data);
-            console.log(response);
+            login(response.accessToken);
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
