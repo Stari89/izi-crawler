@@ -1,13 +1,29 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Divider, Text, TextInput, useTheme } from 'react-native-paper';
+import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../hooks/use-auth';
+import { Controller, useForm } from 'react-hook-form';
+import { useApi } from '../hooks';
+
+type FormData = {
+    email: string;
+    password: string;
+};
 
 const LoginScreen = () => {
     const theme = useTheme();
     const { login } = useAuth();
 
-    const handleLoginPress = () => {
-        login();
+    const { authApi } = useApi();
+
+    const { control, clearErrors, formState, handleSubmit } = useForm<FormData>();
+
+    const handleSubmitForm = async (data: FormData) => {
+        try {
+            const response = await authApi.signIn(data);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -15,12 +31,54 @@ const LoginScreen = () => {
             <Text style={styles.headline} variant="headlineMedium">
                 Log in to Izi Crawler
             </Text>
-            <TextInput style={styles.textInput} label="Email" mode="outlined" />
-            <TextInput style={styles.textInput} label="Password" mode="outlined" secureTextEntry />
+
+            <Controller
+                control={control}
+                defaultValue=""
+                name="email"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                        <TextInput
+                            style={styles.textInput}
+                            label="Email"
+                            mode="outlined"
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            error={!!formState.errors.email}
+                        />
+                        {formState.errors.email && <HelperText type="error">Error</HelperText>}
+                    </>
+                )}
+            />
+
+            <Controller
+                control={control}
+                defaultValue=""
+                name="password"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                        <TextInput
+                            style={styles.textInput}
+                            label="Password"
+                            mode="outlined"
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            secureTextEntry
+                            error={!!formState.errors.password}
+                        />
+                        {formState.errors.password && <HelperText type="error">Error</HelperText>}
+                    </>
+                )}
+            />
+
             <View style={styles.forgotPasswordContainer}>
                 <Button>Forgot Password?</Button>
             </View>
-            <Button style={styles.loginButton} mode="contained" onPress={handleLoginPress}>
+            <Button style={styles.loginButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
                 Log In
             </Button>
             <Divider style={styles.divider} />
