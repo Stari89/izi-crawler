@@ -1,8 +1,9 @@
-import { StyleSheet, View } from 'react-native';
-import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
-import { useAuth } from '../hooks/use-auth';
+import { Alert, StyleSheet, View } from 'react-native';
+import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
 import { useApi } from '../hooks';
+import { ResponseError } from '../api-client';
+import { useState } from 'react';
 
 type FormData = {
     email: string;
@@ -11,18 +12,38 @@ type FormData = {
 
 const LoginScreen = () => {
     const theme = useTheme();
-    const { login } = useAuth();
-
     const { authApi } = useApi();
+    const { control, formState, handleSubmit } = useForm<FormData>();
 
-    const { control, clearErrors, formState, handleSubmit } = useForm<FormData>();
+    const [snackBarVisible, setSnackBarVisible] = useState(false);
+    const [snackBarText, setSnackBarText] = useState('');
 
     const handleSubmitForm = async (data: FormData) => {
         try {
             const response = await authApi.signIn(data);
             console.log(response);
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            switch (err.constructor) {
+                case ResponseError:
+                    switch ((err as ResponseError).response.status) {
+                        case 400:
+                            setSnackBarText('Malformed input (TODO)');
+                            setSnackBarVisible(true);
+                            break;
+                        case 401:
+                            setSnackBarText('Incorrect email or password.');
+                            setSnackBarVisible(true);
+                            break;
+                        default:
+                            setSnackBarText('Something went wrong.');
+                            setSnackBarVisible(true);
+                            break;
+                    }
+                    break;
+                default:
+                    setSnackBarText('Something went wrong.');
+                    setSnackBarVisible(true);
+            }
         }
     };
 
@@ -40,6 +61,8 @@ const LoginScreen = () => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
+                            autoCapitalize="none"
+                            autoComplete="email"
                             style={styles.textInput}
                             label="Email"
                             mode="outlined"
@@ -61,6 +84,8 @@ const LoginScreen = () => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
+                            autoCapitalize="none"
+                            autoComplete="password"
                             style={styles.textInput}
                             label="Password"
                             mode="outlined"
@@ -91,6 +116,9 @@ const LoginScreen = () => {
             <Button style={styles.continueWithButton} mode="outlined" icon="apple">
                 Continue with Apple
             </Button>
+            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)}>
+                {snackBarText}
+            </Snackbar>
         </View>
     );
 };

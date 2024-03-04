@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import {
     AuthConfirmResponseDto,
     AuthEmailDto,
@@ -20,6 +20,8 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @ApiOkResponse({ type: AuthTokenDto })
+    @ApiUnauthorizedResponse()
+    @ApiBadRequestResponse()
     @Post('sign-in')
     signIn(@Body() signIn: AuthSignInDto): Promise<AuthTokenDto> {
         return this.authService.signIn(signIn.email, signIn.password).catch(() => {
