@@ -2,24 +2,19 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
 import { useApi, useAuth } from '../hooks';
-import { ResponseError } from '../api-client';
+import { AuthSignInDto, ResponseError } from '../api-client';
 import { useState } from 'react';
-
-type FormData = {
-    email: string;
-    password: string;
-};
 
 const LoginScreen = () => {
     const theme = useTheme();
     const { authApi } = useApi();
     const { login } = useAuth();
-    const { control, formState, handleSubmit } = useForm<FormData>();
+    const { control, formState, handleSubmit } = useForm<AuthSignInDto>();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
 
-    const handleSubmitForm = async (data: FormData) => {
+    const handleSubmitForm = async (data: AuthSignInDto) => {
         try {
             const response = await authApi.signIn(data);
             login(response.accessToken);
@@ -117,7 +112,7 @@ const LoginScreen = () => {
             <Button style={styles.continueWithButton} mode="outlined" icon="apple">
                 Continue with Apple
             </Button>
-            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)}>
+            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
                 {snackBarText}
             </Snackbar>
         </View>

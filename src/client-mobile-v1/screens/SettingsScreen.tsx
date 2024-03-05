@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 import { useAuth } from '../hooks';
 

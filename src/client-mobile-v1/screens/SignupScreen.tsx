@@ -1,24 +1,129 @@
-import { View, StyleSheet } from 'react-native';
-import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
-import { useAuth } from '../hooks/use-auth';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
+import { useApi } from '../hooks';
+import { Controller, useForm } from 'react-hook-form';
+import { AuthSignUpDto, ResponseError } from '../api-client';
+import { useState } from 'react';
 
 const SignupScreen = () => {
     const theme = useTheme();
-    const { login } = useAuth();
+    const { authApi } = useApi();
+    const { control, formState, handleSubmit } = useForm<AuthSignUpDto>();
 
-    const handleSignupPress = () => {
-        login();
+    const [snackBarVisible, setSnackBarVisible] = useState(false);
+    const [snackBarText, setSnackBarText] = useState('');
+
+    const handleSubmitForm = async (data: AuthSignUpDto) => {
+        try {
+            const response = await authApi.signUp(data);
+        } catch (err: any) {
+            switch (err.constructor) {
+                case ResponseError:
+                    console.log((err as ResponseError).response.status);
+                    switch ((err as ResponseError).response.status) {
+                        case 400:
+                            setSnackBarText('Malformed input (TODO)');
+                            setSnackBarVisible(true);
+                            break;
+                        case 401:
+                            setSnackBarText('Incorrect email or password.');
+                            setSnackBarVisible(true);
+                            break;
+                        case 409:
+                            setSnackBarText('Email is already registered.');
+                            setSnackBarVisible(true);
+                            break;
+                        default:
+                            setSnackBarText('Something went wrong.');
+                            setSnackBarVisible(true);
+                            break;
+                    }
+                    break;
+                default:
+                    setSnackBarText('Something went wrong.');
+                    setSnackBarVisible(true);
+            }
+        }
     };
 
     return (
-        <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
+        <ScrollView style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <Text style={styles.headline} variant="headlineMedium">
                 Create an Account
             </Text>
-            <TextInput style={styles.textInput} label="Email" mode="outlined" />
-            <TextInput style={styles.textInput} label="Password" mode="outlined" secureTextEntry />
+
+            <Controller
+                control={control}
+                defaultValue=""
+                name="email"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                        <TextInput
+                            autoCapitalize="none"
+                            autoComplete="email"
+                            style={styles.textInput}
+                            label="Email"
+                            mode="outlined"
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            error={!!formState.errors.email}
+                        />
+                        {formState.errors.email && <HelperText type="error">Error</HelperText>}
+                    </>
+                )}
+            />
+            <Controller
+                control={control}
+                defaultValue=""
+                name="password"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                        <TextInput
+                            autoCapitalize="none"
+                            autoComplete="password"
+                            style={styles.textInput}
+                            label="Password"
+                            mode="outlined"
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            secureTextEntry
+                            error={!!formState.errors.password}
+                        />
+                        {formState.errors.password && <HelperText type="error">Error</HelperText>}
+                    </>
+                )}
+            />
             <HelperText type="info">Password must contain at least 8 characters.</HelperText>
-            <Button style={styles.signupButton} mode="contained" onPress={handleSignupPress}>
+
+            <Controller
+                control={control}
+                defaultValue=""
+                name="confirmPassword"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                        <TextInput
+                            autoCapitalize="none"
+                            autoComplete="password"
+                            style={styles.textInput}
+                            label="Confirm Password"
+                            mode="outlined"
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            secureTextEntry
+                            error={!!formState.errors.confirmPassword}
+                        />
+                        {formState.errors.confirmPassword && <HelperText type="error">Error</HelperText>}
+                    </>
+                )}
+            />
+
+            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
                 Sign Up
             </Button>
             <HelperText type="info">By continuing you agree to Terms and Conditions.</HelperText>
@@ -32,7 +137,10 @@ const SignupScreen = () => {
             <Button style={styles.continueWithButton} mode="outlined" icon="apple">
                 Continue with Apple
             </Button>
-        </View>
+            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
+                {snackBarText}
+            </Snackbar>
+        </ScrollView>
     );
 };
 
