@@ -53,7 +53,13 @@ const LoginScreen = () => {
                 control={control}
                 defaultValue=""
                 name="email"
-                rules={{ required: true }}
+                rules={{
+                    required: 'Email is required.',
+                    pattern: {
+                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                        message: 'Invalid email.',
+                    },
+                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
@@ -67,7 +73,9 @@ const LoginScreen = () => {
                             value={value}
                             error={!!formState.errors.email}
                         />
-                        {formState.errors.email && <HelperText type="error">Error</HelperText>}
+                        {formState.errors.email && (
+                            <HelperText type="error">{formState.errors.email.message}</HelperText>
+                        )}
                     </>
                 )}
             />
@@ -76,7 +84,9 @@ const LoginScreen = () => {
                 control={control}
                 defaultValue=""
                 name="password"
-                rules={{ required: true }}
+                rules={{
+                    required: 'Password is required.',
+                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
@@ -91,7 +101,9 @@ const LoginScreen = () => {
                             secureTextEntry
                             error={!!formState.errors.password}
                         />
-                        {formState.errors.password && <HelperText type="error">Error</HelperText>}
+                        {formState.errors.password && (
+                            <HelperText type="error">{formState.errors.password.message}</HelperText>
+                        )}
                     </>
                 )}
             />
