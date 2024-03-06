@@ -24,5 +24,5 @@ services:
             - 3306:3306
         volumes:
             - ./server-db-v1:/data/db
-        container_name: music-game-db
+        container_name: izi-crawler-db
         command: --default-authentication-plugin=mysql_native_password
