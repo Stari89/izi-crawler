@@ -21,10 +21,11 @@ export class AuthController {
     @ApiUnauthorizedResponse()
     @ApiBadRequestResponse()
     @Post('sign-in')
-    signIn(@Body() signIn: AuthSignInDto): Promise<AuthTokenDto> {
-        return this.authService.signIn(signIn.email, signIn.password).catch(() => {
+    async signIn(@Body() signIn: AuthSignInDto): Promise<AuthTokenDto> {
+        const token = await this.authService.signIn(signIn.email, signIn.password).catch(() => {
             throw new UnauthorizedException();
         });
+        return { accessToken: token };
     }
 
     @ApiOkResponse({ type: AuthTokenDto })
@@ -44,27 +45,24 @@ export class AuthController {
         });
     }
 
-    @ApiOkResponse()
+    @ApiOkResponse({ type: AuthTokenDto })
     @Post('resend-confirm-code')
-    async resendConfirmCode(@Body() confirmEmail: AuthEmailDto): Promise<void> {
-        await this.authService.resendConfirmCode(confirmEmail.email).catch(() => {
+    async resendConfirmCode(@Body() confirmEmail: AuthEmailDto): Promise<AuthTokenDto> {
+        const token = await this.authService.resendConfirmCode(confirmEmail.email).catch(() => {
             throw new UnauthorizedException();
         });
-    }
-
-    @ApiOkResponse()
-    @Post('forgot-password')
-    async forgotPassword(@Body() forgotPassword: AuthEmailDto): Promise<void> {
-        await this.authService.forgotPassword(forgotPassword.email).catch(() => {
-            throw new UnauthorizedException();
-        });
+        return { accessToken: token };
     }
 
     @ApiOkResponse()
     @Post('reset-password')
-    async resetPassword(@Body() resetPassword: AuthResetPasswordDto): Promise<void> {
-        const { accessToken, password } = resetPassword;
-        await this.authService.resetPassword(accessToken, password).catch(() => {
+    @UseGuards(AuthGuard)
+    async resetPassword(
+        @Request() req: { user: { username: string } },
+        @Body() resetPassword: AuthResetPasswordDto,
+    ): Promise<void> {
+        const { confirmationCode, password } = resetPassword;
+        await this.authService.resetPassword(req.user.username, confirmationCode, password).catch(() => {
             throw new UnauthorizedException();
         });
     }

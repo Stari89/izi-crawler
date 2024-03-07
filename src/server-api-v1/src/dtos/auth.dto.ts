@@ -42,7 +42,7 @@ export class AuthTokenDto {
     accessToken: string;
 }
 
-export class AuthResetPasswordDto extends IntersectionType(AuthTokenDto, AuthSafePasswordDto) {}
+export class AuthResetPasswordDto extends IntersectionType(AuthSafePasswordDto, AuthConfirmDto) {}
 
 export class AuthSignInDto extends AuthEmailDto {
     @ApiProperty({ type: 'string' })

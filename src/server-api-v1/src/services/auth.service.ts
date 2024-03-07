@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
 import { MailingService } from './mailing.service';
 import { User } from 'src/entities';
-import { AuthTokenDto } from 'src/dtos';
 import { randomStringGeneratorHelper } from 'src/helpers/random-string-generator.helper';
 
 @Injectable()
@@ -29,14 +28,10 @@ export class AuthService {
         const user = await this.usersService.create(email, passwordHash, randomStringGeneratorHelper(5, 'numeric'));
 
         this.sendConfirmEmail(user);
-
-        // Generate confirmation token
-        const payload = { sub: user.uuid, username: user.email };
-        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
-        return token;
+        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
-    async signIn(email: string, password: string): Promise<AuthTokenDto> {
+    async signIn(email: string, password: string): Promise<string> {
         // Get user
         const user = await this.usersService.findOne(email);
 
@@ -44,51 +39,34 @@ export class AuthService {
         if (!(await compare(password, user.passwordHash))) {
             throw new UnauthorizedException();
         }
-
-        // Assemble payload and generate JWT token
-        const payload = { sub: user.uuid, username: user.email };
-        return {
-            accessToken: await this.jwtService.signAsync(payload),
-        };
+        return await this.generateUserToken(user, process.env.TOKEN_EXP_GLOBAL);
     }
 
     async confirmAccount(email: string, confirmationCode: string) {
         const user = await this.usersService.findOne(email);
-        if (user.confirmationCodeExpiry < new Date()) {
-            throw new UnauthorizedException();
-        }
-        if (user.confirmationCode !== confirmationCode) {
-            throw new UnauthorizedException();
-        }
+        this.assertConfirmCode(user, email);
         user.emailConfirmed = true;
         await this.usersService.save(user);
     }
 
-    async resendConfirmCode(email: string): Promise<void> {
+    async resendConfirmCode(email: string): Promise<string> {
         const user = await this.usersService.findOne(email);
+
+        const confirmationCodeExpiry = new Date();
+        confirmationCodeExpiry.setMinutes(confirmationCodeExpiry.getMinutes() + 5);
+
+        user.confirmationCodeExpiry = confirmationCodeExpiry;
+        user.confirmationCode = randomStringGeneratorHelper(5, 'numeric');
+
+        this.usersService.save(user);
+
         await this.sendConfirmEmail(user);
+        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
-    async forgotPassword(email: string): Promise<void> {
+    async resetPassword(email: string, confirmCode: string, password: string): Promise<void> {
         const user = await this.usersService.findOne(email);
-
-        // Generate confirmation token
-        const payload = { sub: user.uuid, username: user.email };
-        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
-
-        // Send token to email
-        await this.mailingService.sendEmail(
-            user.email,
-            'IZI CRAWLER Password Reset',
-            `TODO: link to open the app to the password reset form. For now use this token:<br /><strong>${token}</strong>`,
-        );
-    }
-
-    async resetPassword(token: string, password: string): Promise<void> {
-        const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
-            secret: process.env.JWT_SECRET,
-        });
-        const user = await this.usersService.findOne(payload.username);
+        this.assertConfirmCode(user, confirmCode);
         await this.setPassword(user, password);
     }
 
@@ -114,6 +92,15 @@ export class AuthService {
         await this.usersService.save(user);
     }
 
+    private assertConfirmCode(user: User, confirmationCode: string) {
+        if (user.confirmationCodeExpiry < new Date()) {
+            throw new UnauthorizedException();
+        }
+        if (user.confirmationCode !== confirmationCode) {
+            throw new UnauthorizedException();
+        }
+    }
+
     private async sendConfirmEmail(user: User): Promise<void> {
         // Send confirmation email
         await this.mailingService.sendEmail(
@@ -121,5 +108,14 @@ export class AuthService {
             'IZI CRAWLER Activation Code',
             `Your code is <strong>${user.confirmationCode}</strong>. It will only be active for ${process.env.TOKEN_EXP_CONFIRM_ACCOUNT}!`,
         );
+    }
+
+    private async generateUserToken(
+        user: User,
+        expiresIn: string | undefined = process.env.TOKEN_EXP_CONFIRM_ACCOUNT,
+    ): Promise<string> {
+        const payload = { sub: user.uuid, username: user.email };
+        const token = await this.jwtService.signAsync(payload, { expiresIn });
+        return token;
     }
 }
