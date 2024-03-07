@@ -23,10 +23,10 @@ class AuthSafePasswordDto {
     confirmPassword: string;
 }
 
-export class AuthConfirmResponseDto {
+export class AuthConfirmDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
-    message: string;
+    confirmationCode: string;
 }
 
 export class AuthEmailDto {

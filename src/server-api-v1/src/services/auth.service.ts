@@ -52,16 +52,19 @@ export class AuthService {
         };
     }
 
-    async confirmAccount(token: string) {
-        const payload = await this.jwtService.verifyAsync(decodeURIComponent(token), {
-            secret: process.env.JWT_SECRET,
-        });
-        const user = await this.usersService.findOne(payload.username);
+    async confirmAccount(email: string, confirmationCode: string) {
+        const user = await this.usersService.findOne(email);
+        if (user.confirmationCodeExpiry < new Date()) {
+            throw new UnauthorizedException();
+        }
+        if (user.confirmationCode !== confirmationCode) {
+            throw new UnauthorizedException();
+        }
         user.emailConfirmed = true;
         await this.usersService.save(user);
     }
 
-    async resendConfirmEmail(email: string): Promise<void> {
+    async resendConfirmCode(email: string): Promise<void> {
         const user = await this.usersService.findOne(email);
         await this.sendConfirmEmail(user);
     }

@@ -26,6 +26,8 @@ export class UsersService {
 
     create(email: string, passwordHash: string, confirmationCode: string): Promise<User> {
         const now = new Date();
+        const confirmationCodeExpiry = new Date(now);
+        confirmationCodeExpiry.setMinutes(confirmationCodeExpiry.getMinutes() + 5);
 
         const userEntity = new User();
         userEntity.email = email;
@@ -34,7 +36,7 @@ export class UsersService {
         userEntity.isActive = true;
         userEntity.passwordHash = passwordHash;
         userEntity.confirmationCode = confirmationCode;
-        userEntity.confirmationCodeCreated = now;
+        userEntity.confirmationCodeExpiry = confirmationCodeExpiry;
         return this.usersRepository.save(userEntity);
     }
 

@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import {
-    AuthConfirmResponseDto,
     AuthEmailDto,
     AuthResetPasswordDto,
     AuthSignInDto,
@@ -9,6 +8,7 @@ import {
     AuthTokenDto,
     AuthUpdatePasswordDto,
 } from 'src/dtos';
+import { AuthConfirmDto } from 'src/dtos/auth.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { AuthService } from 'src/services';
 
@@ -35,22 +35,19 @@ export class AuthController {
         return { accessToken: token };
     }
 
-    @ApiOkResponse({ type: AuthConfirmResponseDto })
-    @Get('confirm-account/:token')
-    async confirmAccount(@Param('token') token: string): Promise<AuthConfirmResponseDto> {
-        // We need to return text, because this will be done in browser
-        try {
-            await this.authService.confirmAccount(token);
-        } catch {
-            return { message: 'Something went wrong.' };
-        }
-        return { message: 'Your account has been confirmed. You may return to the IZI CRAWLER app and login.' };
+    @ApiOkResponse()
+    @Post('confirm-account')
+    @UseGuards(AuthGuard)
+    async confirmAccount(@Request() req: { user: { username: string } }, @Body() body: AuthConfirmDto): Promise<void> {
+        await this.authService.confirmAccount(req.user.username, body.confirmationCode).catch(() => {
+            throw new UnauthorizedException();
+        });
     }
 
     @ApiOkResponse()
-    @Post('resend-confirm-email')
-    async resendConfirmEmail(@Body() confirmEmail: AuthEmailDto): Promise<void> {
-        await this.authService.resendConfirmEmail(confirmEmail.email).catch(() => {
+    @Post('resend-confirm-code')
+    async resendConfirmCode(@Body() confirmEmail: AuthEmailDto): Promise<void> {
+        await this.authService.resendConfirmCode(confirmEmail.email).catch(() => {
             throw new UnauthorizedException();
         });
     }

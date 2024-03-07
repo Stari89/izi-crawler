@@ -24,5 +24,5 @@ export class User {
     confirmationCode: string;
 
     @Column({ nullable: true })
-    confirmationCodeCreated: Date;
+    confirmationCodeExpiry: Date;
 }
