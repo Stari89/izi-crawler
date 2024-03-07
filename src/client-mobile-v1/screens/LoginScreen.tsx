@@ -13,6 +13,7 @@ const LoginScreen = () => {
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSignInDto) => {
         try {
@@ -41,6 +42,10 @@ const LoginScreen = () => {
                     setSnackBarVisible(true);
             }
         }
+    };
+
+    const handlePasswordVisibleToggle = () => {
+        setPasswordVisible((curr) => !curr);
     };
 
     return (
@@ -98,8 +103,14 @@ const LoginScreen = () => {
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
                             value={value}
-                            secureTextEntry
+                            secureTextEntry={!passwordVisible}
                             error={!!formState.errors.password}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye-off' : 'eye'}
+                                    onPress={handlePasswordVisibleToggle}
+                                />
+                            }
                         />
                         {formState.errors.password && (
                             <HelperText type="error">{formState.errors.password.message}</HelperText>

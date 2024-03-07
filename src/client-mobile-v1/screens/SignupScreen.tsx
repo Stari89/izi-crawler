@@ -12,6 +12,7 @@ const SignupScreen = () => {
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSignUpDto) => {
         try {
@@ -39,6 +40,10 @@ const SignupScreen = () => {
                     setSnackBarVisible(true);
             }
         }
+    };
+
+    const handlePasswordVisibleToggle = () => {
+        setPasswordVisible((curr) => !curr);
     };
 
     return (
@@ -113,8 +118,14 @@ const SignupScreen = () => {
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
                             value={value}
-                            secureTextEntry
+                            secureTextEntry={!passwordVisible}
                             error={!!formState.errors.password}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye-off' : 'eye'}
+                                    onPress={handlePasswordVisibleToggle}
+                                />
+                            }
                         />
                         {formState.errors.password && (
                             <HelperText type="error">{formState.errors.password.message}</HelperText>
@@ -142,8 +153,14 @@ const SignupScreen = () => {
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
                             value={value}
-                            secureTextEntry
+                            secureTextEntry={!passwordVisible}
                             error={!!formState.errors.confirmPassword}
+                            right={
+                                <TextInput.Icon
+                                    icon={passwordVisible ? 'eye-off' : 'eye'}
+                                    onPress={handlePasswordVisibleToggle}
+                                />
+                            }
                         />
                         {formState.errors.confirmPassword && (
                             <HelperText type="error">{formState.errors.confirmPassword.message}</HelperText>
