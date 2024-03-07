@@ -24,13 +24,17 @@ export class UsersService {
         return this.usersRepository.findOne({ where: { email } }).then((u) => !!u);
     }
 
-    create(email: string, passwordHash: string): Promise<User> {
+    create(email: string, passwordHash: string, confirmationCode: string): Promise<User> {
+        const now = new Date();
+
         const userEntity = new User();
         userEntity.email = email;
-        userEntity.fullName = '';
         userEntity.emailConfirmed = false;
+        userEntity.created = now;
         userEntity.isActive = true;
         userEntity.passwordHash = passwordHash;
+        userEntity.confirmationCode = confirmationCode;
+        userEntity.confirmationCodeCreated = now;
         return this.usersRepository.save(userEntity);
     }
 

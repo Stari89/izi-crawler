@@ -9,10 +9,6 @@ export class UserDto {
 
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
-    fullName: string;
-
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
     email: string;
 
     @ApiProperty({ type: 'boolean' })

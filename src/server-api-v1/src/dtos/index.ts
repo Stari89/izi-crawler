@@ -4,7 +4,6 @@ import {
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignUpDto,
-    AuthSignUpResponseDto,
     AuthTokenDto,
     AuthUpdatePasswordDto,
 } from './auth.dto';
@@ -16,7 +15,6 @@ export {
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignUpDto,
-    AuthSignUpResponseDto,
     AuthTokenDto,
     AuthUpdatePasswordDto,
     UserDto,

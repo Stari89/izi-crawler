@@ -6,12 +6,10 @@ import {
     AuthResetPasswordDto,
     AuthSignInDto,
     AuthSignUpDto,
-    AuthSignUpResponseDto,
     AuthTokenDto,
     AuthUpdatePasswordDto,
 } from 'src/dtos';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { obfuscateEmailHelper } from 'src/helpers/obfuscate-email.helper';
 import { AuthService } from 'src/services';
 
 @ApiTags('Auth')
@@ -29,12 +27,12 @@ export class AuthController {
         });
     }
 
-    @ApiOkResponse({ type: AuthSignUpResponseDto })
+    @ApiOkResponse({ type: AuthTokenDto })
     @Post('sign-up')
-    async signUp(@Body() signUp: AuthSignUpDto): Promise<AuthSignUpResponseDto> {
+    async signUp(@Body() signUp: AuthSignUpDto): Promise<AuthTokenDto> {
         const { email, password } = signUp;
-        await this.authService.signUp(email, password);
-        return { obfuscatedEmail: obfuscateEmailHelper(signUp.email) };
+        const token = await this.authService.signUp(email, password);
+        return { accessToken: token };
     }
 
     @ApiOkResponse({ type: AuthConfirmResponseDto })

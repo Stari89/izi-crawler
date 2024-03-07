@@ -52,12 +52,6 @@ export class AuthSignInDto extends AuthEmailDto {
 
 export class AuthSignUpDto extends IntersectionType(AuthEmailDto, AuthSafePasswordDto) {}
 
-export class AuthSignUpResponseDto {
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    obfuscatedEmail: string;
-}
-
 export class AuthUpdatePasswordDto extends AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()

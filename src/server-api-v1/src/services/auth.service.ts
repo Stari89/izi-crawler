@@ -5,6 +5,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { MailingService } from './mailing.service';
 import { User } from 'src/entities';
 import { AuthTokenDto } from 'src/dtos';
+import { randomStringGeneratorHelper } from 'src/helpers/random-string-generator.helper';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
         private readonly mailingService: MailingService,
     ) {}
 
-    async signUp(email: string, password: string): Promise<void> {
+    async signUp(email: string, password: string): Promise<string> {
         // Assert if user already exists
         if (await this.usersService.userExists(email)) {
             throw new ConflictException();
@@ -25,9 +26,14 @@ export class AuthService {
         const passwordHash = await hash(password, passwordSalt);
 
         // Create new user
-        const user = await this.usersService.create(email, passwordHash);
+        const user = await this.usersService.create(email, passwordHash, randomStringGeneratorHelper(5, 'numeric'));
 
         this.sendConfirmEmail(user);
+
+        // Generate confirmation token
+        const payload = { sub: user.uuid, username: user.email };
+        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
+        return token;
     }
 
     async signIn(email: string, password: string): Promise<AuthTokenDto> {
@@ -106,16 +112,11 @@ export class AuthService {
     }
 
     private async sendConfirmEmail(user: User): Promise<void> {
-        // Generate confirmation token
-        const payload = { sub: user.uuid, username: user.email };
-        const token = await this.jwtService.signAsync(payload, { expiresIn: process.env.TOKEN_EXP_CONFIRM_ACCOUNT });
-        const urlSafeToken = encodeURIComponent(token);
-
         // Send confirmation email
         await this.mailingService.sendEmail(
             user.email,
-            'IZI CRAWLER Account Confirmation',
-            `Confirm account by clicking on this link: <a href="${process.env.APP_HOST}/auth/confirm-account/${urlSafeToken}">CONFIRM ACCOUNT</a>`,
+            'IZI CRAWLER Activation Code',
+            `Your code is <strong>${user.confirmationCode}</strong>. It will only be active for ${process.env.TOKEN_EXP_CONFIRM_ACCOUNT}!`,
         );
     }
 }
