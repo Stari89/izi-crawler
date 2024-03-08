@@ -43,17 +43,17 @@ const MainLayout = () => {
     return (
         <OrientationProvider>
             <PaperProvider theme={theme}>
-                <ApiProvider>
-                    <AuthProvider>
-                        <FeedProvider>
-                            <CrawlRouteProvider>
-                                <SnackProvider>
+                <SnackProvider>
+                    <ApiProvider>
+                        <AuthProvider>
+                            <FeedProvider>
+                                <CrawlRouteProvider>
                                     <LayoutContent />
-                                </SnackProvider>
-                            </CrawlRouteProvider>
-                        </FeedProvider>
-                    </AuthProvider>
-                </ApiProvider>
+                                </CrawlRouteProvider>
+                            </FeedProvider>
+                        </AuthProvider>
+                    </ApiProvider>
+                </SnackProvider>
             </PaperProvider>
         </OrientationProvider>
     );

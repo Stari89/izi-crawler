@@ -1,5 +1,5 @@
-import { useTheme, Text, TextInput, HelperText, Snackbar, Button } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
+import { useAuth, useSnack } from '../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthSafePasswordDto, ResponseError } from '../api-client';
@@ -8,10 +8,9 @@ import { ScrollView, StyleSheet } from 'react-native';
 const SetPasswordScreen = () => {
     const theme = useTheme();
     const { resetPassword } = useAuth();
+    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit, watch } = useForm<AuthSafePasswordDto>();
 
-    const [snackBarVisible, setSnackBarVisible] = useState(false);
-    const [snackBarText, setSnackBarText] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSafePasswordDto) => {
@@ -22,22 +21,19 @@ const SetPasswordScreen = () => {
                 case ResponseError:
                     switch ((err as ResponseError).response.status) {
                         case 400:
-                            setSnackBarText('Malformed input (TODO)');
-                            setSnackBarVisible(true);
+                            pushSnack('Malformed input (TODO)');
                             break;
                         case 401:
-                            setSnackBarText("You're not allowed to do that.");
-                            setSnackBarVisible(true);
+                            pushSnack("You're not allowed to do that.");
                             break;
                         default:
-                            setSnackBarText('Something went wrong.');
-                            setSnackBarVisible(true);
+                            pushSnack('Something went wrong.');
                             break;
                     }
                     break;
                 default:
-                    setSnackBarText('Something went wrong.');
-                    setSnackBarVisible(true);
+                    pushSnack('Something went wrong.');
+                    break;
             }
         }
     };
@@ -143,9 +139,6 @@ const SetPasswordScreen = () => {
             <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
                 Set new password
             </Button>
-            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
-                {snackBarText}
-            </Snackbar>
         </ScrollView>
     );
 };

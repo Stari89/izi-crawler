@@ -1,16 +1,14 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { useTheme, Text, TextInput, HelperText, Button, Snackbar } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
+import { useAuth, useSnack } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthConfirmDto, ResponseError } from '../api-client';
-import { useState } from 'react';
 
 const ConfirmationCodeScreen = () => {
     const theme = useTheme();
     const { emailToConfirm, confirmEmail } = useAuth();
+    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit } = useForm<AuthConfirmDto>();
-    const [snackBarVisible, setSnackBarVisible] = useState(false);
-    const [snackBarText, setSnackBarText] = useState('');
     const handleSubmitForm = async (data: AuthConfirmDto) => {
         try {
             await confirmEmail(data);
@@ -19,22 +17,19 @@ const ConfirmationCodeScreen = () => {
                 case ResponseError:
                     switch ((err as ResponseError).response.status) {
                         case 400:
-                            setSnackBarText('Malformed input (TODO)');
-                            setSnackBarVisible(true);
+                            pushSnack('Malformed input (TODO).');
                             break;
                         case 401:
-                            setSnackBarText('Confirmation code was wrong.');
-                            setSnackBarVisible(true);
+                            pushSnack('Confirmation code was wrong.');
                             break;
                         default:
-                            setSnackBarText('Something went wrong.');
-                            setSnackBarVisible(true);
+                            pushSnack('Something went wrong.');
                             break;
                     }
                     break;
                 default:
-                    setSnackBarText('Something went wrong.');
-                    setSnackBarVisible(true);
+                    pushSnack('Something went wrong.');
+                    break;
             }
         }
     };
@@ -83,9 +78,6 @@ const ConfirmationCodeScreen = () => {
             <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
                 Confirm Email
             </Button>
-            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
-                {snackBarText}
-            </Snackbar>
         </ScrollView>
     );
 };

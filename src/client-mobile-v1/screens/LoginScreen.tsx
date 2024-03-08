@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
+import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-import { useApi, useAuth } from '../hooks';
+import { useApi, useAuth, useSnack } from '../hooks';
 import { AuthSignInDto, ResponseError } from '../api-client';
 import { useState } from 'react';
 
@@ -9,10 +9,9 @@ const LoginScreen = () => {
     const theme = useTheme();
     const { authApi } = useApi();
     const { login } = useAuth();
+    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit } = useForm<AuthSignInDto>();
 
-    const [snackBarVisible, setSnackBarVisible] = useState(false);
-    const [snackBarText, setSnackBarText] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSignInDto) => {
@@ -24,22 +23,19 @@ const LoginScreen = () => {
                 case ResponseError:
                     switch ((err as ResponseError).response.status) {
                         case 400:
-                            setSnackBarText('Malformed input (TODO)');
-                            setSnackBarVisible(true);
+                            pushSnack('Malformed input (TODO)');
                             break;
                         case 401:
-                            setSnackBarText('Incorrect email or password.');
-                            setSnackBarVisible(true);
+                            pushSnack('Incorrect email or password.');
                             break;
                         default:
-                            setSnackBarText('Something went wrong.');
-                            setSnackBarVisible(true);
+                            pushSnack('Something went wrong.');
                             break;
                     }
                     break;
                 default:
-                    setSnackBarText('Something went wrong.');
-                    setSnackBarVisible(true);
+                    pushSnack('Something went wrong.');
+                    break;
             }
         }
     };
@@ -138,9 +134,6 @@ const LoginScreen = () => {
             <Button style={styles.continueWithButton} mode="outlined" icon="apple">
                 Continue with Apple
             </Button>
-            <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
-                {snackBarText}
-            </Snackbar>
         </ScrollView>
     );
 };
