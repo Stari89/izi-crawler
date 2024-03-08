@@ -30,12 +30,6 @@ export interface UserDto {
      * @type {string}
      * @memberof UserDto
      */
-    fullName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserDto
-     */
     email: string;
     /**
      * 
@@ -57,7 +51,6 @@ export interface UserDto {
 export function instanceOfUserDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "uuid" in value;
-    isInstance = isInstance && "fullName" in value;
     isInstance = isInstance && "email" in value;
     isInstance = isInstance && "isActive" in value;
     isInstance = isInstance && "emailConfirmed" in value;
@@ -76,7 +69,6 @@ export function UserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): U
     return {
         
         'uuid': json['uuid'],
-        'fullName': json['fullName'],
         'email': json['email'],
         'isActive': json['isActive'],
         'emailConfirmed': json['emailConfirmed'],
@@ -93,7 +85,6 @@ export function UserDtoToJSON(value?: UserDto | null): any {
     return {
         
         'uuid': value.uuid,
-        'fullName': value.fullName,
         'email': value.email,
         'isActive': value.isActive,
         'emailConfirmed': value.emailConfirmed,

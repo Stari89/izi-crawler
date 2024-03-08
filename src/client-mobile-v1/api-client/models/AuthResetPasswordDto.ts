@@ -24,12 +24,6 @@ export interface AuthResetPasswordDto {
      * @type {string}
      * @memberof AuthResetPasswordDto
      */
-    accessToken: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuthResetPasswordDto
-     */
     password: string;
     /**
      * 
@@ -37,6 +31,12 @@ export interface AuthResetPasswordDto {
      * @memberof AuthResetPasswordDto
      */
     confirmPassword: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthResetPasswordDto
+     */
+    confirmationCode: string;
 }
 
 /**
@@ -44,9 +44,9 @@ export interface AuthResetPasswordDto {
  */
 export function instanceOfAuthResetPasswordDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "accessToken" in value;
     isInstance = isInstance && "password" in value;
     isInstance = isInstance && "confirmPassword" in value;
+    isInstance = isInstance && "confirmationCode" in value;
 
     return isInstance;
 }
@@ -61,9 +61,9 @@ export function AuthResetPasswordDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'accessToken': json['accessToken'],
         'password': json['password'],
         'confirmPassword': json['confirmPassword'],
+        'confirmationCode': json['confirmationCode'],
     };
 }
 
@@ -76,9 +76,9 @@ export function AuthResetPasswordDtoToJSON(value?: AuthResetPasswordDto | null):
     }
     return {
         
-        'accessToken': value.accessToken,
         'password': value.password,
         'confirmPassword': value.confirmPassword,
+        'confirmationCode': value.confirmationCode,
     };
 }
 

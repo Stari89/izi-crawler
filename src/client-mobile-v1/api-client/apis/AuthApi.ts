@@ -15,28 +15,22 @@
 
 import * as runtime from '../runtime';
 import type {
-  AuthConfirmResponseDto,
+  AuthConfirmDto,
   AuthEmailDto,
   AuthResetPasswordDto,
   AuthSignInDto,
-  AuthSignUpDto,
-  AuthSignUpResponseDto,
   AuthTokenDto,
   AuthUpdatePasswordDto,
 } from '../models/index';
 import {
-    AuthConfirmResponseDtoFromJSON,
-    AuthConfirmResponseDtoToJSON,
+    AuthConfirmDtoFromJSON,
+    AuthConfirmDtoToJSON,
     AuthEmailDtoFromJSON,
     AuthEmailDtoToJSON,
     AuthResetPasswordDtoFromJSON,
     AuthResetPasswordDtoToJSON,
     AuthSignInDtoFromJSON,
     AuthSignInDtoToJSON,
-    AuthSignUpDtoFromJSON,
-    AuthSignUpDtoToJSON,
-    AuthSignUpResponseDtoFromJSON,
-    AuthSignUpResponseDtoToJSON,
     AuthTokenDtoFromJSON,
     AuthTokenDtoToJSON,
     AuthUpdatePasswordDtoFromJSON,
@@ -44,14 +38,10 @@ import {
 } from '../models/index';
 
 export interface AuthApiConfirmAccountRequest {
-    token: string;
+    authConfirmDto: AuthConfirmDto;
 }
 
-export interface AuthApiForgotPasswordRequest {
-    authEmailDto: AuthEmailDto;
-}
-
-export interface AuthApiResendConfirmEmailRequest {
+export interface AuthApiConfirmationCodeRequest {
     authEmailDto: AuthEmailDto;
 }
 
@@ -64,7 +54,7 @@ export interface AuthApiSignInRequest {
 }
 
 export interface AuthApiSignUpRequest {
-    authSignUpDto: AuthSignUpDto;
+    authEmailDto: AuthEmailDto;
 }
 
 export interface AuthApiUpdatePasswordRequest {
@@ -78,90 +68,63 @@ export class AuthApi extends runtime.BaseAPI {
 
     /**
      */
-    async confirmAccountRaw(requestParameters: AuthApiConfirmAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthConfirmResponseDto>> {
-        if (requestParameters.token === null || requestParameters.token === undefined) {
-            throw new runtime.RequiredError('token','Required parameter requestParameters.token was null or undefined when calling confirmAccount.');
+    async confirmAccountRaw(requestParameters: AuthApiConfirmAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.authConfirmDto === null || requestParameters.authConfirmDto === undefined) {
+            throw new runtime.RequiredError('authConfirmDto','Required parameter requestParameters.authConfirmDto was null or undefined when calling confirmAccount.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
-            path: `/auth/confirm-account/{token}`.replace(`{${"token"}}`, encodeURIComponent(String(requestParameters.token))),
-            method: 'GET',
+            path: `/auth/confirm-account`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: AuthConfirmDtoToJSON(requestParameters.authConfirmDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthConfirmResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      */
-    async confirmAccount(token: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthConfirmResponseDto> {
-        const response = await this.confirmAccountRaw({ token: token }, initOverrides);
+    async confirmAccount(authConfirmDto: AuthConfirmDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.confirmAccountRaw({ authConfirmDto: authConfirmDto }, initOverrides);
+    }
+
+    /**
+     */
+    async confirmationCodeRaw(requestParameters: AuthApiConfirmationCodeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
+        if (requestParameters.authEmailDto === null || requestParameters.authEmailDto === undefined) {
+            throw new runtime.RequiredError('authEmailDto','Required parameter requestParameters.authEmailDto was null or undefined when calling confirmationCode.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/auth/confirmation-code`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AuthEmailDtoToJSON(requestParameters.authEmailDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async confirmationCode(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenDto> {
+        const response = await this.confirmationCodeRaw({ authEmailDto: authEmailDto }, initOverrides);
         return await response.value();
-    }
-
-    /**
-     */
-    async forgotPasswordRaw(requestParameters: AuthApiForgotPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.authEmailDto === null || requestParameters.authEmailDto === undefined) {
-            throw new runtime.RequiredError('authEmailDto','Required parameter requestParameters.authEmailDto was null or undefined when calling forgotPassword.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/auth/forgot-password`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AuthEmailDtoToJSON(requestParameters.authEmailDto),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async forgotPassword(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.forgotPasswordRaw({ authEmailDto: authEmailDto }, initOverrides);
-    }
-
-    /**
-     */
-    async resendConfirmEmailRaw(requestParameters: AuthApiResendConfirmEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.authEmailDto === null || requestParameters.authEmailDto === undefined) {
-            throw new runtime.RequiredError('authEmailDto','Required parameter requestParameters.authEmailDto was null or undefined when calling resendConfirmEmail.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/auth/resend-confirm-email`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AuthEmailDtoToJSON(requestParameters.authEmailDto),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async resendConfirmEmail(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.resendConfirmEmailRaw({ authEmailDto: authEmailDto }, initOverrides);
     }
 
     /**
@@ -227,9 +190,9 @@ export class AuthApi extends runtime.BaseAPI {
 
     /**
      */
-    async signUpRaw(requestParameters: AuthApiSignUpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthSignUpResponseDto>> {
-        if (requestParameters.authSignUpDto === null || requestParameters.authSignUpDto === undefined) {
-            throw new runtime.RequiredError('authSignUpDto','Required parameter requestParameters.authSignUpDto was null or undefined when calling signUp.');
+    async signUpRaw(requestParameters: AuthApiSignUpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.authEmailDto === null || requestParameters.authEmailDto === undefined) {
+            throw new runtime.RequiredError('authEmailDto','Required parameter requestParameters.authEmailDto was null or undefined when calling signUp.');
         }
 
         const queryParameters: any = {};
@@ -243,17 +206,16 @@ export class AuthApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AuthSignUpDtoToJSON(requestParameters.authSignUpDto),
+            body: AuthEmailDtoToJSON(requestParameters.authEmailDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthSignUpResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      */
-    async signUp(authSignUpDto: AuthSignUpDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthSignUpResponseDto> {
-        const response = await this.signUpRaw({ authSignUpDto: authSignUpDto }, initOverrides);
-        return await response.value();
+    async signUp(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.signUpRaw({ authEmailDto: authEmailDto }, initOverrides);
     }
 
     /**
