@@ -2,19 +2,18 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { useApi } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthSignUpDto, ResponseError } from '../api-client';
+import { AuthEmailDto, ResponseError } from '../api-client';
 import { useState } from 'react';
 
 const SignupScreen = () => {
     const theme = useTheme();
     const { authApi } = useApi();
-    const { control, formState, handleSubmit, watch } = useForm<AuthSignUpDto>();
+    const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const handleSubmitForm = async (data: AuthSignUpDto) => {
+    const handleSubmitForm = async (data: AuthEmailDto) => {
         try {
             const response = await authApi.signUp(data);
         } catch (err: any) {
@@ -40,10 +39,6 @@ const SignupScreen = () => {
                     setSnackBarVisible(true);
             }
         }
-    };
-
-    const handlePasswordVisibleToggle = () => {
-        setPasswordVisible((curr) => !curr);
     };
 
     return (
@@ -78,92 +73,6 @@ const SignupScreen = () => {
                         />
                         {formState.errors.email && (
                             <HelperText type="error">{formState.errors.email.message}</HelperText>
-                        )}
-                    </>
-                )}
-            />
-            <Controller
-                control={control}
-                defaultValue=""
-                name="password"
-                rules={{
-                    required: 'Password is required.',
-                    minLength: {
-                        value: 8,
-                        message: 'Password must be at least 8 characters long.',
-                    },
-                    maxLength: {
-                        value: 50,
-                        message: 'Password must not exceed 50 characters.',
-                    },
-                    validate: {
-                        oneUpper: (value) =>
-                            /[A-Z]/.test(value) || 'Password must contain a least one uppercase letter.',
-                        oneLower: (value) =>
-                            /[a-z]/.test(value) || 'Password must contain a least one lowercase letter.',
-                        oneNumber: (value) => /\d/.test(value) || 'Password must contain a least one number.',
-                        oneSpecial: (value) =>
-                            /.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-].*/.test(value) ||
-                            'Password must contain a least one special character.',
-                    },
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <>
-                        <TextInput
-                            autoCapitalize="none"
-                            autoComplete="password"
-                            style={styles.textInput}
-                            label="Password"
-                            mode="outlined"
-                            onBlur={onBlur}
-                            onChangeText={(value) => onChange(value)}
-                            value={value}
-                            secureTextEntry={!passwordVisible}
-                            error={!!formState.errors.password}
-                            right={
-                                <TextInput.Icon
-                                    icon={passwordVisible ? 'eye-off' : 'eye'}
-                                    onPress={handlePasswordVisibleToggle}
-                                />
-                            }
-                        />
-                        {formState.errors.password && (
-                            <HelperText type="error">{formState.errors.password.message}</HelperText>
-                        )}
-                    </>
-                )}
-            />
-            <Controller
-                control={control}
-                defaultValue=""
-                name="confirmPassword"
-                rules={{
-                    validate: {
-                        isEqual: (value) => value === watch('password') || 'Passwords must match.',
-                    },
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <>
-                        <TextInput
-                            autoCapitalize="none"
-                            autoComplete="password"
-                            style={styles.textInput}
-                            label="Repeat Password"
-                            mode="outlined"
-                            onBlur={onBlur}
-                            onChangeText={(value) => onChange(value)}
-                            value={value}
-                            secureTextEntry={!passwordVisible}
-                            error={!!formState.errors.confirmPassword}
-                            right={
-                                <TextInput.Icon
-                                    icon={passwordVisible ? 'eye-off' : 'eye'}
-                                    onPress={handlePasswordVisibleToggle}
-                                />
-                            }
-                        />
-                        {formState.errors.confirmPassword && (
-                            <HelperText type="error">{formState.errors.confirmPassword.message}</HelperText>
                         )}
                     </>
                 )}
