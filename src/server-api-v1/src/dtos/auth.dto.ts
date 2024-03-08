@@ -50,8 +50,6 @@ export class AuthSignInDto extends AuthEmailDto {
     password: string;
 }
 
-export class AuthSignUpDto extends IntersectionType(AuthEmailDto, AuthSafePasswordDto) {}
-
 export class AuthUpdatePasswordDto extends AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()

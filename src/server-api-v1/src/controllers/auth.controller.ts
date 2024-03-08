@@ -1,13 +1,6 @@
 import { Body, Controller, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import {
-    AuthEmailDto,
-    AuthResetPasswordDto,
-    AuthSignInDto,
-    AuthSignUpDto,
-    AuthTokenDto,
-    AuthUpdatePasswordDto,
-} from 'src/dtos';
+import { AuthEmailDto, AuthResetPasswordDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto } from 'src/dtos';
 import { AuthConfirmDto } from 'src/dtos/auth.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { AuthService } from 'src/services';
@@ -21,19 +14,18 @@ export class AuthController {
     @ApiUnauthorizedResponse()
     @ApiBadRequestResponse()
     @Post('sign-in')
-    async signIn(@Body() signIn: AuthSignInDto): Promise<AuthTokenDto> {
-        const token = await this.authService.signIn(signIn.email, signIn.password).catch(() => {
+    async signIn(@Body() body: AuthSignInDto): Promise<AuthTokenDto> {
+        const token = await this.authService.signIn(body.email, body.password).catch(() => {
             throw new UnauthorizedException();
         });
         return { accessToken: token };
     }
 
-    @ApiOkResponse({ type: AuthTokenDto })
+    @ApiOkResponse()
     @Post('sign-up')
-    async signUp(@Body() signUp: AuthSignUpDto): Promise<AuthTokenDto> {
-        const { email, password } = signUp;
-        const token = await this.authService.signUp(email, password);
-        return { accessToken: token };
+    async signUp(@Body() body: AuthEmailDto): Promise<void> {
+        const { email } = body;
+        await this.authService.signUp(email);
     }
 
     @ApiOkResponse()
@@ -46,9 +38,9 @@ export class AuthController {
     }
 
     @ApiOkResponse({ type: AuthTokenDto })
-    @Post('resend-confirm-code')
-    async resendConfirmCode(@Body() confirmEmail: AuthEmailDto): Promise<AuthTokenDto> {
-        const token = await this.authService.resendConfirmCode(confirmEmail.email).catch(() => {
+    @Post('confirmation-code')
+    async confirmationCode(@Body() body: AuthEmailDto): Promise<AuthTokenDto> {
+        const token = await this.authService.sendConfirmCode(body.email).catch(() => {
             throw new UnauthorizedException();
         });
         return { accessToken: token };
@@ -72,9 +64,9 @@ export class AuthController {
     @UseGuards(AuthGuard)
     async updatePassword(
         @Request() req: { user: { username: string } },
-        @Body() updatePassword: AuthUpdatePasswordDto,
+        @Body() body: AuthUpdatePasswordDto,
     ): Promise<void> {
-        const { password, oldPassword } = updatePassword;
+        const { password, oldPassword } = body;
         await this.authService.updatePassword(req.user.username, oldPassword, password).catch(() => {
             throw new UnauthorizedException();
         });

@@ -14,21 +14,14 @@ export class AuthService {
         private readonly mailingService: MailingService,
     ) {}
 
-    async signUp(email: string, password: string): Promise<string> {
+    async signUp(email: string): Promise<void> {
         // Assert if user already exists
         if (await this.usersService.userExists(email)) {
             throw new ConflictException();
         }
 
-        // Generate salt and hash
-        const passwordSalt = await genSalt();
-        const passwordHash = await hash(password, passwordSalt);
-
         // Create new user
-        const user = await this.usersService.create(email, passwordHash, randomStringGeneratorHelper(5, 'numeric'));
-
-        this.sendConfirmEmail(user);
-        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
+        await this.usersService.create(email);
     }
 
     async signIn(email: string, password: string): Promise<string> {
@@ -44,12 +37,12 @@ export class AuthService {
 
     async confirmAccount(email: string, confirmationCode: string) {
         const user = await this.usersService.findOne(email);
-        this.assertConfirmCode(user, email);
+        this.assertConfirmCode(user, confirmationCode);
         user.emailConfirmed = true;
         await this.usersService.save(user);
     }
 
-    async resendConfirmCode(email: string): Promise<string> {
+    async sendConfirmCode(email: string): Promise<string> {
         const user = await this.usersService.findOne(email);
 
         const confirmationCodeExpiry = new Date();
@@ -64,9 +57,10 @@ export class AuthService {
         return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
-    async resetPassword(email: string, confirmCode: string, password: string): Promise<void> {
+    async resetPassword(email: string, confirmationCode: string, password: string): Promise<void> {
         const user = await this.usersService.findOne(email);
-        this.assertConfirmCode(user, confirmCode);
+        this.assertConfirmCode(user, confirmationCode);
+        user.emailConfirmed = true;
         await this.setPassword(user, password);
     }
 
