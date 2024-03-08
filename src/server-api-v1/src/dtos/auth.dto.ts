@@ -1,8 +1,8 @@
-import { ApiProperty, IntersectionType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
 import { FieldMatch } from 'src/decorators/field-match.decorator';
 
-class AuthSafePasswordDto {
+export class AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     @MinLength(8)
@@ -41,8 +41,6 @@ export class AuthTokenDto {
     @IsNotEmpty()
     accessToken: string;
 }
-
-export class AuthResetPasswordDto extends IntersectionType(AuthSafePasswordDto, AuthConfirmDto) {}
 
 export class AuthSignInDto extends AuthEmailDto {
     @ApiProperty({ type: 'string' })

@@ -57,10 +57,8 @@ export class AuthService {
         return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
-    async resetPassword(email: string, confirmationCode: string, password: string): Promise<void> {
+    async resetPassword(email: string, password: string): Promise<void> {
         const user = await this.usersService.findOne(email);
-        this.assertConfirmCode(user, confirmationCode);
-        user.emailConfirmed = true;
         await this.setPassword(user, password);
     }
 
