@@ -1,45 +1,21 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-import { useApi, useAuth, useSnack } from '../hooks';
-import { AuthSignInDto, ResponseError } from '../api-client';
+import { useAuth } from '../hooks';
+import { AuthSignInDto } from '../api-client';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
 const LoginScreen = () => {
     const theme = useTheme();
-    const { authApi } = useApi();
     const { login } = useAuth();
-    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit } = useForm<AuthSignInDto>();
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSignInDto) => {
-        try {
-            const response = await authApi.signIn(data);
-            login(response.accessToken);
-        } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    switch ((err as ResponseError).response.status) {
-                        case 400:
-                            pushSnack('Malformed input (TODO)');
-                            break;
-                        case 401:
-                            pushSnack('Incorrect email or password.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
-        }
+        await login(data);
     };
 
     const handlePasswordVisibleToggle = () => {

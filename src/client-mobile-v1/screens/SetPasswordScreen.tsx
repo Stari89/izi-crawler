@@ -1,41 +1,19 @@
 import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
-import { useAuth, useSnack } from '../hooks';
+import { useAuth } from '../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthSafePasswordDto, ResponseError } from '../api-client';
+import { AuthSafePasswordDto } from '../api-client';
 import { ScrollView, StyleSheet } from 'react-native';
 
 const SetPasswordScreen = () => {
     const theme = useTheme();
     const { resetPassword } = useAuth();
-    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit, watch } = useForm<AuthSafePasswordDto>();
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleSubmitForm = async (data: AuthSafePasswordDto) => {
-        try {
-            await resetPassword(data);
-        } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    switch ((err as ResponseError).response.status) {
-                        case 400:
-                            pushSnack('Malformed input (TODO)');
-                            break;
-                        case 401:
-                            pushSnack("You're not allowed to do that.");
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
-        }
+        await resetPassword(data);
     };
 
     const handlePasswordVisibleToggle = () => {

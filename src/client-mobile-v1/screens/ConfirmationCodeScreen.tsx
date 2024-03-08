@@ -1,37 +1,15 @@
 import { StyleSheet, ScrollView } from 'react-native';
 import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
-import { useAuth, useSnack } from '../hooks';
+import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthConfirmDto, ResponseError } from '../api-client';
+import { AuthConfirmDto } from '../api-client';
 
 const ConfirmationCodeScreen = () => {
     const theme = useTheme();
     const { emailToConfirm, confirmEmail } = useAuth();
-    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit } = useForm<AuthConfirmDto>();
     const handleSubmitForm = async (data: AuthConfirmDto) => {
-        try {
-            await confirmEmail(data);
-        } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    switch ((err as ResponseError).response.status) {
-                        case 400:
-                            pushSnack('Malformed input (TODO).');
-                            break;
-                        case 401:
-                            pushSnack('Confirmation code was wrong.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
-        }
+        await confirmEmail(data);
     };
 
     return (

@@ -1,38 +1,16 @@
 import { StyleSheet, ScrollView } from 'react-native';
 import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
-import { useAuth, useSnack } from '../hooks';
+import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthEmailDto, ResponseError } from '../api-client';
+import { AuthEmailDto } from '../api-client';
 
 const SignupScreen = () => {
     const theme = useTheme();
     const { signup } = useAuth();
-    const { pushSnack } = useSnack();
     const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
 
     const handleSubmitForm = async (data: AuthEmailDto) => {
-        try {
-            await signup(data);
-        } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    switch ((err as ResponseError).response.status) {
-                        case 400:
-                            pushSnack('Malformed input (TODO).');
-                            break;
-                        case 409:
-                            pushSnack('Email is already registered.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
-        }
+        await signup(data);
     };
 
     return (
