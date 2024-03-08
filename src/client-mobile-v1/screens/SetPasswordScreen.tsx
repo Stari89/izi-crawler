@@ -1,20 +1,46 @@
-import { useTheme, Text, TextInput, HelperText, Snackbar } from 'react-native-paper';
-import { useApi } from '../hooks';
+import { useTheme, Text, TextInput, HelperText, Snackbar, Button } from 'react-native-paper';
+import { useApi, useAuth } from '../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthResetPasswordDto } from '../api-client';
+import { AuthSafePasswordDto, ResponseError } from '../api-client';
 import { ScrollView, StyleSheet } from 'react-native';
 
 const SetPasswordScreen = () => {
     const theme = useTheme();
-    const { authApi } = useApi();
-    const { control, formState, handleSubmit, watch } = useForm<AuthResetPasswordDto>();
+    const { resetPassword } = useAuth();
+    const { control, formState, handleSubmit, watch } = useForm<AuthSafePasswordDto>();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const handleSubmitform = async (data: AuthResetPasswordDto) => {};
+    const handleSubmitForm = async (data: AuthSafePasswordDto) => {
+        try {
+            await resetPassword(data);
+        } catch (err: any) {
+            switch (err.constructor) {
+                case ResponseError:
+                    switch ((err as ResponseError).response.status) {
+                        case 400:
+                            setSnackBarText('Malformed input (TODO)');
+                            setSnackBarVisible(true);
+                            break;
+                        case 401:
+                            setSnackBarText("You're not allowed to do that.");
+                            setSnackBarVisible(true);
+                            break;
+                        default:
+                            setSnackBarText('Something went wrong.');
+                            setSnackBarVisible(true);
+                            break;
+                    }
+                    break;
+                default:
+                    setSnackBarText('Something went wrong.');
+                    setSnackBarVisible(true);
+            }
+        }
+    };
 
     const handlePasswordVisibleToggle = () => {
         setPasswordVisible((curr) => !curr);
@@ -23,7 +49,7 @@ const SetPasswordScreen = () => {
     return (
         <ScrollView style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <Text style={styles.headline} variant="headlineMedium">
-                Create an Account
+                Set new password
             </Text>
             <Controller
                 control={control}
@@ -111,6 +137,9 @@ const SetPasswordScreen = () => {
                     </>
                 )}
             />
+            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                Set new password
+            </Button>
             <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
                 {snackBarText}
             </Snackbar>

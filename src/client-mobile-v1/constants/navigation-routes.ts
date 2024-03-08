@@ -13,6 +13,7 @@ export const NAVIGATION_ROUTES = {
     route: '/route/[guid]',
     routeMap: '/route/[guid]/map',
     settings: '/settings',
+    setPassword: '/set-password',
     signup: '/signup',
     welcome: '/welcome',
 };

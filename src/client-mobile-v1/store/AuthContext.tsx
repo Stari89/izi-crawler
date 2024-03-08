@@ -3,7 +3,7 @@ import { ReactNode, createContext, useEffect, useState } from 'react';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApi } from '../hooks';
-import { AuthConfirmDto, AuthEmailDto, AuthTokenDto } from '../api-client';
+import { AuthConfirmDto, AuthEmailDto, AuthSafePasswordDto, AuthTokenDto } from '../api-client';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';
 
@@ -14,6 +14,7 @@ interface AuthContextValue {
     signup: (data: AuthEmailDto) => Promise<void>;
     emailToConfirm?: string;
     confirmEmail: (data: AuthConfirmDto) => Promise<void>;
+    resetPassword: (data: AuthSafePasswordDto) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -62,13 +63,25 @@ export const AuthProvider = (props: AuthProviderProps) => {
     };
 
     const confirmEmail = async (data: AuthConfirmDto) => {
-        const response = await authApi.confirmAccount(data, ({ init, context }) =>
+        // TODO: handle errors here instead of on the component
+        await authApi.confirmAccount(data, ({ init }) =>
             Promise.resolve({
                 ...init,
                 headers: { ...init.headers, Authorization: `Bearer ${emailConfirmationToken}` },
             }),
         );
-        console.log(response);
+        router.replace(NAVIGATION_ROUTES.setPassword);
+    };
+
+    const resetPassword = async (data: AuthSafePasswordDto) => {
+        // TODO: handle errors here instead of on the component
+        await authApi.resetPassword(data, ({ init }) =>
+            Promise.resolve({
+                ...init,
+                headers: { ...init.headers, Authorization: `Bearer ${emailConfirmationToken}` },
+            }),
+        );
+        // todo: navigate to success screen
     };
 
     const contextValue: AuthContextValue = {
@@ -78,6 +91,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         signup,
         emailToConfirm,
         confirmEmail,
+        resetPassword,
     };
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
