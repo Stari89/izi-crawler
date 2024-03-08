@@ -1,21 +1,19 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
+import { useTheme, Text, TextInput, HelperText, Button, Snackbar } from 'react-native-paper';
 import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthEmailDto, ResponseError } from '../api-client';
+import { AuthConfirmDto, ResponseError } from '../api-client';
 import { useState } from 'react';
 
-const SignupScreen = () => {
+const ConfirmationCodeScreen = () => {
     const theme = useTheme();
-    const { signup } = useAuth();
-    const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
-
+    const { emailToConfirm, confirmEmail } = useAuth();
+    const { control, formState, handleSubmit } = useForm<AuthConfirmDto>();
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
-
-    const handleSubmitForm = async (data: AuthEmailDto) => {
+    const handleSubmitForm = async (data: AuthConfirmDto) => {
         try {
-            await signup(data);
+            await confirmEmail(data);
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
@@ -24,8 +22,8 @@ const SignupScreen = () => {
                             setSnackBarText('Malformed input (TODO)');
                             setSnackBarVisible(true);
                             break;
-                        case 409:
-                            setSnackBarText('Email is already registered.');
+                        case 401:
+                            setSnackBarText('Confirmation code was wrong.');
                             setSnackBarVisible(true);
                             break;
                         default:
@@ -44,53 +42,43 @@ const SignupScreen = () => {
     return (
         <ScrollView style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
             <Text style={styles.headline} variant="headlineMedium">
-                Create an Account
+                Confirm your email
             </Text>
-
+            <Text style={styles.text} variant="bodyMedium">
+                Let us know this email belongs to you. Enter the code in the email sent to {emailToConfirm}.
+            </Text>
             <Controller
                 control={control}
                 defaultValue=""
-                name="email"
+                name="confirmationCode"
                 rules={{
-                    required: 'Email is required.',
+                    required: 'Confirmation code is required.',
                     pattern: {
-                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        message: 'Invalid email.',
+                        value: /^\d{5}$/,
+                        message: 'Confirmation code must be 5 numbers.',
                     },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
                             autoCapitalize="none"
-                            autoComplete="email"
                             style={styles.textInput}
-                            label="Email"
+                            label="Confirmation code"
                             mode="outlined"
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
                             value={value}
-                            error={!!formState.errors.email}
+                            error={!!formState.errors.confirmationCode}
+                            keyboardType="numeric"
                         />
-                        {formState.errors.email && (
-                            <HelperText type="error">{formState.errors.email.message}</HelperText>
+                        {formState.errors.confirmationCode && (
+                            <HelperText type="error">{formState.errors.confirmationCode.message}</HelperText>
                         )}
                     </>
                 )}
             />
-
             <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Sign Up
-            </Button>
-            <HelperText type="info">By continuing you agree to Terms and Conditions.</HelperText>
-            <Divider style={styles.divider} />
-            <Button style={styles.continueWithButton} mode="outlined" icon="google">
-                Continue with Google
-            </Button>
-            <Button style={styles.continueWithButton} mode="outlined" icon="facebook">
-                Continue with Facebook
-            </Button>
-            <Button style={styles.continueWithButton} mode="outlined" icon="apple">
-                Continue with Apple
+                Confirm Email
             </Button>
             <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
                 {snackBarText}
@@ -99,7 +87,7 @@ const SignupScreen = () => {
     );
 };
 
-export default SignupScreen;
+export default ConfirmationCodeScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -108,6 +96,9 @@ const styles = StyleSheet.create({
     },
     headline: {
         marginVertical: 32,
+    },
+    text: {
+        marginBottom: 32,
     },
     textInput: {
         marginVertical: 4,

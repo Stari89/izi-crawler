@@ -1,4 +1,5 @@
 export const NAVIGATION_ROUTES = {
+    confirmationCode: '/confirmation-code',
     crawl: '/crawl',
     explore: '/explore',
     favoriteRoutes: '/favorite-routes',
