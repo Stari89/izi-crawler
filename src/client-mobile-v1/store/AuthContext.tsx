@@ -6,6 +6,7 @@ import { useApi } from '../hooks';
 import { AuthConfirmDto, AuthEmailDto, AuthSafePasswordDto, AuthTokenDto } from '../api-client';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';
+type PasswordSetMode = 'create' | 'reset';
 
 interface AuthContextValue {
     isAuthenticated: boolean;
@@ -16,6 +17,7 @@ interface AuthContextValue {
     confirmEmail: (data: AuthConfirmDto) => Promise<void>;
     resetPassword: (data: AuthSafePasswordDto) => Promise<void>;
     forgotPassword: (data: AuthEmailDto) => Promise<void>;
+    mode: PasswordSetMode;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -29,6 +31,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [emailToConfirm, setEmailToConfirm] = useState<string>();
     const [emailConfirmationToken, setEmailConfirmationToken] = useState<string>();
+    const [mode, setMode] = useState<PasswordSetMode>('create');
 
     const { authApi } = useApi();
 
@@ -55,6 +58,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     };
 
     const signup = async (data: AuthEmailDto) => {
+        setMode('create');
         // TODO: handle errors here instead of on the component
         await authApi.signUp(data);
         setEmailToConfirm(data.email);
@@ -75,6 +79,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     };
 
     const resetPassword = async (data: AuthSafePasswordDto) => {
+        setMode('reset');
         // TODO: handle errors here instead of on the component
         await authApi.resetPassword(data, ({ init }) =>
             Promise.resolve({
@@ -101,6 +106,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         confirmEmail,
         resetPassword,
         forgotPassword,
+        mode,
     };
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

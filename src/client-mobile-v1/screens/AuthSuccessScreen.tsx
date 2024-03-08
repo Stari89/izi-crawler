@@ -2,9 +2,11 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTheme, Text, Button, Icon } from 'react-native-paper';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
+import { useAuth } from '../hooks';
 
 const AuthSuccessScreen = () => {
     const theme = useTheme();
+    const { mode } = useAuth();
 
     const handleContinuePress = () => {
         router.replace(NAVIGATION_ROUTES.login);
@@ -17,7 +19,7 @@ const AuthSuccessScreen = () => {
                     Success!
                 </Text>
                 <Text style={styles.message} variant="bodyMedium">
-                    Your account has been created.
+                    {mode === 'create' ? 'Your account has been created.' : 'Your password was reset.'}
                 </Text>
                 <View style={styles.checkIcon}>
                     <Icon color={theme.colors.secondary} size={256} source="check-decagram" />
