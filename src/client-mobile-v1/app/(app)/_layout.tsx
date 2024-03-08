@@ -20,6 +20,7 @@ const AppLayout = () => {
             <Stack.Screen name="signup" />
             <Stack.Screen name="welcome" />
             <Stack.Screen name="confirmation-code" />
+            <Stack.Screen name="forgot-password" />
             <Stack.Screen name="set-password" />
             <Stack.Screen name="auth-success" />
         </Stack>

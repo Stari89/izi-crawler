@@ -15,6 +15,7 @@ interface AuthContextValue {
     emailToConfirm?: string;
     confirmEmail: (data: AuthConfirmDto) => Promise<void>;
     resetPassword: (data: AuthSafePasswordDto) => Promise<void>;
+    forgotPassword: (data: AuthEmailDto) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -84,6 +85,13 @@ export const AuthProvider = (props: AuthProviderProps) => {
         router.replace(NAVIGATION_ROUTES.authSuccessScreen);
     };
 
+    const forgotPassword = async (data: AuthEmailDto) => {
+        setEmailToConfirm(data.email);
+        const response = await authApi.confirmationCode(data);
+        setEmailConfirmationToken(response.accessToken);
+        router.replace(NAVIGATION_ROUTES.confirmationCode);
+    };
+
     const contextValue: AuthContextValue = {
         isAuthenticated: !!accessToken,
         login,
@@ -92,6 +100,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         emailToConfirm,
         confirmEmail,
         resetPassword,
+        forgotPassword,
     };
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

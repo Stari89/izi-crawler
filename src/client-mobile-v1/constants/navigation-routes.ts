@@ -4,6 +4,7 @@ export const NAVIGATION_ROUTES = {
     crawl: '/crawl',
     explore: '/explore',
     favoriteRoutes: '/favorite-routes',
+    forgotPassword: '/forgot-password',
     home: '/',
     index: '/',
     login: '/login',

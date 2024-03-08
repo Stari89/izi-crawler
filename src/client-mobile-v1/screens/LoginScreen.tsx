@@ -4,6 +4,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { useApi, useAuth, useSnack } from '../hooks';
 import { AuthSignInDto, ResponseError } from '../api-client';
 import { useState } from 'react';
+import { router } from 'expo-router';
+import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
 const LoginScreen = () => {
     const theme = useTheme();
@@ -42,6 +44,10 @@ const LoginScreen = () => {
 
     const handlePasswordVisibleToggle = () => {
         setPasswordVisible((curr) => !curr);
+    };
+
+    const handleForgotPasswordPress = () => {
+        router.replace(NAVIGATION_ROUTES.forgotPassword);
     };
 
     return (
@@ -119,7 +125,7 @@ const LoginScreen = () => {
             />
 
             <View style={styles.forgotPasswordContainer}>
-                <Button>Forgot Password?</Button>
+                <Button onPress={handleForgotPasswordPress}>Forgot Password?</Button>
             </View>
             <Button style={styles.loginButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
                 Log In
