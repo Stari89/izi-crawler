@@ -81,7 +81,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
                 headers: { ...init.headers, Authorization: `Bearer ${emailConfirmationToken}` },
             }),
         );
-        // todo: navigate to success screen
+        router.replace(NAVIGATION_ROUTES.authSuccessScreen);
     };
 
     const contextValue: AuthContextValue = {

@@ -1,4 +1,5 @@
 export const NAVIGATION_ROUTES = {
+    authSuccessScreen: '/auth-success',
     confirmationCode: '/confirmation-code',
     crawl: '/crawl',
     explore: '/explore',

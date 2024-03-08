@@ -1,5 +1,5 @@
 import { useTheme, Text, TextInput, HelperText, Snackbar, Button } from 'react-native-paper';
-import { useApi, useAuth } from '../hooks';
+import { useAuth } from '../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthSafePasswordDto, ResponseError } from '../api-client';
