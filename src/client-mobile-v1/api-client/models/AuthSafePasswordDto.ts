@@ -16,46 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AuthResetPasswordDto
+ * @interface AuthSafePasswordDto
  */
-export interface AuthResetPasswordDto {
+export interface AuthSafePasswordDto {
     /**
      * 
      * @type {string}
-     * @memberof AuthResetPasswordDto
+     * @memberof AuthSafePasswordDto
      */
     password: string;
     /**
      * 
      * @type {string}
-     * @memberof AuthResetPasswordDto
+     * @memberof AuthSafePasswordDto
      */
     confirmPassword: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuthResetPasswordDto
-     */
-    confirmationCode: string;
 }
 
 /**
- * Check if a given object implements the AuthResetPasswordDto interface.
+ * Check if a given object implements the AuthSafePasswordDto interface.
  */
-export function instanceOfAuthResetPasswordDto(value: object): boolean {
+export function instanceOfAuthSafePasswordDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "password" in value;
     isInstance = isInstance && "confirmPassword" in value;
-    isInstance = isInstance && "confirmationCode" in value;
 
     return isInstance;
 }
 
-export function AuthResetPasswordDtoFromJSON(json: any): AuthResetPasswordDto {
-    return AuthResetPasswordDtoFromJSONTyped(json, false);
+export function AuthSafePasswordDtoFromJSON(json: any): AuthSafePasswordDto {
+    return AuthSafePasswordDtoFromJSONTyped(json, false);
 }
 
-export function AuthResetPasswordDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuthResetPasswordDto {
+export function AuthSafePasswordDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuthSafePasswordDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -63,11 +56,10 @@ export function AuthResetPasswordDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'password': json['password'],
         'confirmPassword': json['confirmPassword'],
-        'confirmationCode': json['confirmationCode'],
     };
 }
 
-export function AuthResetPasswordDtoToJSON(value?: AuthResetPasswordDto | null): any {
+export function AuthSafePasswordDtoToJSON(value?: AuthSafePasswordDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -78,7 +70,6 @@ export function AuthResetPasswordDtoToJSON(value?: AuthResetPasswordDto | null):
         
         'password': value.password,
         'confirmPassword': value.confirmPassword,
-        'confirmationCode': value.confirmationCode,
     };
 }
 

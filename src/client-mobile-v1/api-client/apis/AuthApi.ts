@@ -17,7 +17,7 @@ import * as runtime from '../runtime';
 import type {
   AuthConfirmDto,
   AuthEmailDto,
-  AuthResetPasswordDto,
+  AuthSafePasswordDto,
   AuthSignInDto,
   AuthTokenDto,
   AuthUpdatePasswordDto,
@@ -27,8 +27,8 @@ import {
     AuthConfirmDtoToJSON,
     AuthEmailDtoFromJSON,
     AuthEmailDtoToJSON,
-    AuthResetPasswordDtoFromJSON,
-    AuthResetPasswordDtoToJSON,
+    AuthSafePasswordDtoFromJSON,
+    AuthSafePasswordDtoToJSON,
     AuthSignInDtoFromJSON,
     AuthSignInDtoToJSON,
     AuthTokenDtoFromJSON,
@@ -46,7 +46,7 @@ export interface AuthApiConfirmationCodeRequest {
 }
 
 export interface AuthApiResetPasswordRequest {
-    authResetPasswordDto: AuthResetPasswordDto;
+    authSafePasswordDto: AuthSafePasswordDto;
 }
 
 export interface AuthApiSignInRequest {
@@ -130,8 +130,8 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      */
     async resetPasswordRaw(requestParameters: AuthApiResetPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.authResetPasswordDto === null || requestParameters.authResetPasswordDto === undefined) {
-            throw new runtime.RequiredError('authResetPasswordDto','Required parameter requestParameters.authResetPasswordDto was null or undefined when calling resetPassword.');
+        if (requestParameters.authSafePasswordDto === null || requestParameters.authSafePasswordDto === undefined) {
+            throw new runtime.RequiredError('authSafePasswordDto','Required parameter requestParameters.authSafePasswordDto was null or undefined when calling resetPassword.');
         }
 
         const queryParameters: any = {};
@@ -145,7 +145,7 @@ export class AuthApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AuthResetPasswordDtoToJSON(requestParameters.authResetPasswordDto),
+            body: AuthSafePasswordDtoToJSON(requestParameters.authSafePasswordDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -153,8 +153,8 @@ export class AuthApi extends runtime.BaseAPI {
 
     /**
      */
-    async resetPassword(authResetPasswordDto: AuthResetPasswordDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.resetPasswordRaw({ authResetPasswordDto: authResetPasswordDto }, initOverrides);
+    async resetPassword(authSafePasswordDto: AuthSafePasswordDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.resetPasswordRaw({ authSafePasswordDto: authSafePasswordDto }, initOverrides);
     }
 
     /**
