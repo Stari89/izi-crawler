@@ -12,18 +12,20 @@ const AuthSuccessScreen = () => {
 
     return (
         <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
-            <Text style={styles.headline} variant="displayLarge">
-                Success!
-            </Text>
-            <Text style={styles.message} variant="bodyMedium">
-                Your account has been created.
-            </Text>
-            <View style={styles.checkIcon}>
-                <Icon color={theme.colors.secondary} size={256} source="check-decagram" />
+            <View style={styles.innerContainer}>
+                <Text style={styles.headline} variant="displayLarge">
+                    Success!
+                </Text>
+                <Text style={styles.message} variant="bodyMedium">
+                    Your account has been created.
+                </Text>
+                <View style={styles.checkIcon}>
+                    <Icon color={theme.colors.secondary} size={256} source="check-decagram" />
+                </View>
+                <Button style={styles.continueButton} mode="contained" onPress={handleContinuePress}>
+                    Continue
+                </Button>
             </View>
-            <Button style={styles.continueButton} mode="contained" onPress={handleContinuePress}>
-                Continue
-            </Button>
         </View>
     );
 };
@@ -35,6 +37,11 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         justifyContent: 'center',
+    },
+    innerContainer: {
+        alignSelf: 'center',
+        maxWidth: 800,
+        width: '100%',
     },
     headline: {
         textAlign: 'center',

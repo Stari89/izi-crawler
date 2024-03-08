@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, HelperText, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
 import { useApi, useAuth } from '../hooks';
@@ -49,7 +49,10 @@ const LoginScreen = () => {
     };
 
     return (
-        <View style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
+        <ScrollView
+            style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}
+            contentContainerStyle={styles.innerContainer}
+        >
             <Text style={styles.headline} variant="headlineMedium">
                 Log in to Izi Crawler
             </Text>
@@ -138,7 +141,7 @@ const LoginScreen = () => {
             <Snackbar visible={snackBarVisible} onDismiss={() => setSnackBarVisible(false)} wrapperStyle={{ top: 0 }}>
                 {snackBarText}
             </Snackbar>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -148,6 +151,11 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         paddingHorizontal: 16,
+    },
+    innerContainer: {
+        alignSelf: 'center',
+        maxWidth: 800,
+        width: '100%',
     },
     headline: {
         marginVertical: 32,

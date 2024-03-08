@@ -42,7 +42,10 @@ const SignupScreen = () => {
     };
 
     return (
-        <ScrollView style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}>
+        <ScrollView
+            style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}
+            contentContainerStyle={styles.innerContainer}
+        >
             <Text style={styles.headline} variant="headlineMedium">
                 Create an Account
             </Text>
@@ -105,6 +108,11 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         paddingHorizontal: 16,
+    },
+    innerContainer: {
+        alignSelf: 'center',
+        maxWidth: 800,
+        width: '100%',
     },
     headline: {
         marginVertical: 32,
