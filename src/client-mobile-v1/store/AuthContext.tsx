@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import { ReactNode, createContext, useEffect, useState } from 'react';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useApi, useSnack } from '../hooks';
+import { useApi } from '../hooks/use-api';
+import { useSnack } from '../hooks/use-snack';
 import { AuthConfirmDto, AuthEmailDto, AuthSafePasswordDto, AuthSignInDto, ResponseError } from '../api-client';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';

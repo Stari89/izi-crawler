@@ -1,6 +1,10 @@
 import { useColorScheme } from 'react-native';
 import { DARK_THEME, LIGHT_THEME } from '../../constants';
 import { PaperProvider, Portal, Snackbar } from 'react-native-paper';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
+import { Slot } from 'expo-router';
+import { useSnack } from '../../hooks/use-snack';
 import {
     ApiProvider,
     AuthProvider,
@@ -9,10 +13,6 @@ import {
     OrientationProvider,
     SnackProvider,
 } from '../../store';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
-import { Slot } from 'expo-router';
-import { useSnack } from '../../hooks/use-snack';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { OrientationContext } from '../store';
+import { OrientationContext } from '../store/OrientationContext';
 
 export const useOrientation = () => {
     const contextValue = useContext(OrientationContext);

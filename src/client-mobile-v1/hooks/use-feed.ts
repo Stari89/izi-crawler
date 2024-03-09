@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FeedContext } from '../store';
+import { FeedContext } from '../store/FeedContext';
 
 export const useFeed = () => {
     const contextValue = useContext(FeedContext);
