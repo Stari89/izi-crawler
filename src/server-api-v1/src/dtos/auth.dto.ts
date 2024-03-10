@@ -23,17 +23,17 @@ export class AuthSafePasswordDto {
     confirmPassword: string;
 }
 
-export class AuthConfirmDto {
-    @ApiProperty({ type: 'string' })
-    @IsNotEmpty({ message: 'Confirmation code is required.' })
-    confirmationCode: string;
-}
-
 export class AuthEmailDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty({ message: 'Email is required.' })
     @IsEmail(undefined, { message: 'Email must be valid.' })
     email: string;
+}
+
+export class AuthConfirmDto extends AuthEmailDto {
+    @ApiProperty({ type: 'string' })
+    @IsNotEmpty({ message: 'Confirmation code is required.' })
+    confirmationCode: string;
 }
 
 export class AuthTokenDto {

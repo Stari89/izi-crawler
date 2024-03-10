@@ -42,7 +42,7 @@ export class AuthService {
         await this.usersService.save(user);
     }
 
-    async sendConfirmCode(email: string): Promise<string> {
+    async sendConfirmCode(email: string): Promise<void> {
         const user = await this.usersService.findOne(email);
 
         const confirmationCodeExpiry = new Date();
@@ -54,7 +54,6 @@ export class AuthService {
         this.usersService.save(user);
 
         await this.sendConfirmEmail(user);
-        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
     async resetPassword(email: string, password: string): Promise<void> {

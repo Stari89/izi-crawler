@@ -68,23 +68,22 @@ export class AuthController {
 
     @Post('confirmation-code')
     @ApiOkResponse({
-        type: AuthTokenDto,
         description:
             'Generated confirmation code and sent it to email. Use accessToken in response and the code to confirm account.',
     })
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiNotFoundResponse({ description: 'No user with email.' })
     @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
-    async confirmationCode(@Body() body: AuthEmailDto): Promise<AuthTokenDto> {
-        const token = await this.authService.sendConfirmCode(body.email).catch((err) => {
+    async confirmationCode(@Body() body: AuthEmailDto): Promise<void> {
+        const { email } = body;
+        await this.authService.sendConfirmCode(email).catch((err) => {
             switch (err.constructor) {
                 case EntityNotFoundError:
-                    throw new NotFoundException(`No user with email ${body.email}`);
+                    throw new NotFoundException(`No user with email ${email}`);
                 default:
                     throw new InternalServerErrorException('Something went wrong.');
             }
         });
-        return { accessToken: token };
     }
 
     @Post('confirm-account')
@@ -92,9 +91,9 @@ export class AuthController {
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token or code.' })
     @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
-    @UseGuards(AuthGuard)
-    async confirmAccount(@Request() req: { user: { username: string } }, @Body() body: AuthConfirmDto): Promise<void> {
-        await this.authService.confirmAccount(req.user.username, body.confirmationCode).catch((err) => {
+    async confirmAccount(@Body() body: AuthConfirmDto): Promise<void> {
+        const { email, confirmationCode } = body;
+        await this.authService.confirmAccount(email, confirmationCode).catch((err) => {
             switch (err.constructor) {
                 case EntityNotFoundError:
                     throw new UnauthorizedException('Incorrect email or confirmation code.');
