@@ -1,16 +1,23 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthEmailDto } from '../api-client';
+import { useState } from 'react';
 
 const ForgotPasswordScreen = () => {
     const theme = useTheme();
     const { forgotPassword } = useAuth();
     const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthEmailDto) => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         await forgotPassword(data);
+        setIsLoading(false);
     };
 
     return (
@@ -55,8 +62,8 @@ const ForgotPasswordScreen = () => {
                 )}
             />
 
-            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Reset password
+            <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Reset Password'}
             </Button>
         </ScrollView>
     );
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
     textInput: {
         marginVertical: 4,
     },
-    signupButton: {
+    submitButton: {
         marginVertical: 8,
     },
 });

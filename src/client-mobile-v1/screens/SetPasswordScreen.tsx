@@ -1,4 +1,4 @@
-import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
+import { useTheme, Text, TextInput, HelperText, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,11 +9,16 @@ const SetPasswordScreen = () => {
     const theme = useTheme();
     const { resetPassword } = useAuth();
     const { control, formState, handleSubmit, watch } = useForm<AuthSafePasswordDto>();
-
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthSafePasswordDto) => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         await resetPassword(data);
+        setIsLoading(false);
     };
 
     const handlePasswordVisibleToggle = () => {
@@ -114,8 +119,8 @@ const SetPasswordScreen = () => {
                     </>
                 )}
             />
-            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Set new password
+            <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Set New Password'}
             </Button>
         </ScrollView>
     );
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     textInput: {
         marginVertical: 4,
     },
-    signupButton: {
+    submitButton: {
         marginVertical: 8,
     },
     divider: {

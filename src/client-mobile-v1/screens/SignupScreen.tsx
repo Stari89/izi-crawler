@@ -1,16 +1,23 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthEmailDto } from '../api-client';
+import { useState } from 'react';
 
 const SignupScreen = () => {
     const theme = useTheme();
     const { signup } = useAuth();
     const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthEmailDto) => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         await signup(data);
+        setIsLoading(false);
     };
 
     return (
@@ -53,8 +60,8 @@ const SignupScreen = () => {
                 )}
             />
 
-            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Sign Up
+            <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Sign Up'}
             </Button>
             <HelperText type="info">By continuing you agree to Terms and Conditions.</HelperText>
             <Divider style={styles.divider} />
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
     textInput: {
         marginVertical: 4,
     },
-    signupButton: {
+    submitButton: {
         marginVertical: 8,
     },
     divider: {

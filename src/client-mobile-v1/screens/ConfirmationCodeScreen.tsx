@@ -1,15 +1,23 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { useTheme, Text, TextInput, HelperText, Button } from 'react-native-paper';
+import { useTheme, Text, TextInput, HelperText, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { AuthConfirmDto } from '../api-client';
+import { useState } from 'react';
 
 const ConfirmationCodeScreen = () => {
     const theme = useTheme();
     const { emailToConfirm, confirmEmail } = useAuth();
     const { control, formState, handleSubmit } = useForm<AuthConfirmDto>();
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSubmitForm = async (data: AuthConfirmDto) => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         await confirmEmail(data);
+        setIsLoading(false);
     };
 
     return (
@@ -53,8 +61,8 @@ const ConfirmationCodeScreen = () => {
                     </>
                 )}
             />
-            <Button style={styles.signupButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Confirm Email
+            <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Confirm Email'}
             </Button>
         </ScrollView>
     );
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
     textInput: {
         marginVertical: 4,
     },
-    signupButton: {
+    submitButton: {
         marginVertical: 8,
     },
     divider: {

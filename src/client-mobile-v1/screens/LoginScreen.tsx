@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
 import { useAuth } from '../hooks';
 import { AuthSignInDto } from '../api-client';
@@ -11,11 +11,16 @@ const LoginScreen = () => {
     const theme = useTheme();
     const { login } = useAuth();
     const { control, formState, handleSubmit } = useForm<AuthSignInDto>();
-
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthSignInDto) => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         await login(data);
+        setIsLoading(false);
     };
 
     const handlePasswordVisibleToggle = () => {
@@ -103,8 +108,8 @@ const LoginScreen = () => {
             <View style={styles.forgotPasswordContainer}>
                 <Button onPress={handleForgotPasswordPress}>Forgot Password?</Button>
             </View>
-            <Button style={styles.loginButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                Log In
+            <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Log In'}
             </Button>
             <Divider style={styles.divider} />
             <Button style={styles.continueWithButton} mode="outlined" icon="google">
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
         marginBottom: 8,
     },
-    loginButton: {
+    submitButton: {
         marginVertical: 8,
     },
     divider: {
