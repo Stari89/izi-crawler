@@ -1,6 +1,7 @@
 import { ReactNode, createContext } from 'react';
-import { AuthApi, Configuration, DefaultApi } from '../api-client';
+import { AuthApi, Configuration, DefaultApi, Middleware } from '../api-client';
 import Constants from 'expo-constants';
+import { useSnack } from '../hooks';
 
 // Add new apis here
 interface ApiContextValue {
@@ -15,6 +16,25 @@ interface ApiProviderProps {
 }
 export const ApiProvider = (props: ApiProviderProps) => {
     const { children } = props;
+    const { pushSnack } = useSnack();
+
+    const errorMiddleWare: Middleware = {
+        post: async (context) => {
+            const { response } = context;
+            if (response.status >= 200 && response.status < 300) {
+                return context.response;
+            }
+            const responseClone = response.clone();
+            const payload = await responseClone.json();
+            if (payload.message) {
+                pushSnack(payload.message);
+            } else {
+                pushSnack('Something went wrong.');
+            }
+            return response;
+        },
+    };
+
     const apiConfiguration = new Configuration({
         basePath: Constants.expoConfig?.extra?.apiBasePath,
         headers: {
@@ -22,6 +42,7 @@ export const ApiProvider = (props: ApiProviderProps) => {
             'Content-Type': 'application/json',
         },
         credentials: 'omit',
+        middleware: [errorMiddleWare],
     });
 
     // Add new apis here

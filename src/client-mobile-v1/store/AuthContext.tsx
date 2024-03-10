@@ -3,7 +3,6 @@ import { ReactNode, createContext, useEffect, useState } from 'react';
 import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApi } from '../hooks/use-api';
-import { useSnack } from '../hooks/use-snack';
 import {
     AuthConfirmDto,
     AuthEmailDto,
@@ -43,7 +42,6 @@ export const AuthProvider = (props: AuthProviderProps) => {
     const [mode, setMode] = useState<PasswordSetMode>('create');
 
     const { authApi } = useApi();
-    const { pushSnack } = useSnack();
 
     useEffect(() => {
         const tryLogin = async () => {
@@ -64,25 +62,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
             setAccessToken(token);
             router.replace(NAVIGATION_ROUTES.index);
         } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    const responseError = err as ResponseError;
-                    switch (responseError.response.status) {
-                        case 400:
-                            handleBadRequestErrors(responseError, setError);
-                            break;
-                        case 401:
-                            pushSnack('Incorrect email or password.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
+            handleBadRequestErrors(err, setError);
         }
     };
 
@@ -100,28 +80,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
             setEmailConfirmationToken(response.accessToken);
             router.replace(NAVIGATION_ROUTES.confirmationCode);
         } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    const responseError = err as ResponseError;
-                    switch (responseError.response.status) {
-                        case 400:
-                            handleBadRequestErrors(responseError, setError);
-                            break;
-                        case 401:
-                            pushSnack('Email is not registered.');
-                            break;
-                        case 409:
-                            pushSnack('Email is already registered.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
+            handleBadRequestErrors(err, setError);
         }
     };
 
@@ -135,25 +94,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
             );
             router.replace(NAVIGATION_ROUTES.setPassword);
         } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    const responseError = err as ResponseError;
-                    switch (responseError.response.status) {
-                        case 400:
-                            handleBadRequestErrors(responseError, setError);
-                            break;
-                        case 401:
-                            pushSnack('Confirmation code was wrong.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
+            handleBadRequestErrors(err, setError);
         }
     };
 
@@ -167,25 +108,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
             );
             router.replace(NAVIGATION_ROUTES.authSuccessScreen);
         } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    const responseError = err as ResponseError;
-                    switch (responseError.response.status) {
-                        case 400:
-                            handleBadRequestErrors(responseError, setError);
-                            break;
-                        case 401:
-                            pushSnack("You're not allowed to do that.");
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
+            handleBadRequestErrors(err, setError);
         }
     };
 
@@ -197,25 +120,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
             setEmailConfirmationToken(response.accessToken);
             router.replace(NAVIGATION_ROUTES.confirmationCode);
         } catch (err: any) {
-            switch (err.constructor) {
-                case ResponseError:
-                    const responseError = err as ResponseError;
-                    switch (responseError.response.status) {
-                        case 400:
-                            handleBadRequestErrors(responseError, setError);
-                            break;
-                        case 401:
-                            pushSnack('Email is not registered.');
-                            break;
-                        default:
-                            pushSnack('Something went wrong.');
-                            break;
-                    }
-                    break;
-                default:
-                    pushSnack('Something went wrong.');
-                    break;
-            }
+            handleBadRequestErrors(err, setError);
         }
     };
 
@@ -234,7 +139,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
-const handleBadRequestErrors = async (responseError: ResponseError, setError: UseFormSetError<any>) => {
+const handleBadRequestErrors = async (responseError: any, setError: UseFormSetError<any>) => {
+    if (responseError.constructor !== ResponseError || responseError.response.status !== 400) {
+        return;
+    }
     const { errors } = BadRequestDtoFromJSON(await responseError.response.json());
     // @ts-ignore
     Object.keys(errors).forEach((e) => setError(e.toString(), { message: errors[e] }));
