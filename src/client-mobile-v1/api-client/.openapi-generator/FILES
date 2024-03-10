@@ -10,6 +10,7 @@ models/AuthSafePasswordDto.ts
 models/AuthSignInDto.ts
 models/AuthTokenDto.ts
 models/AuthUpdatePasswordDto.ts
+models/BadRequestDto.ts
 models/UserDto.ts
 models/index.ts
 runtime.ts

@@ -21,6 +21,7 @@ import type {
   AuthSignInDto,
   AuthTokenDto,
   AuthUpdatePasswordDto,
+  BadRequestDto,
 } from '../models/index';
 import {
     AuthConfirmDtoFromJSON,
@@ -35,6 +36,8 @@ import {
     AuthTokenDtoToJSON,
     AuthUpdatePasswordDtoFromJSON,
     AuthUpdatePasswordDtoToJSON,
+    BadRequestDtoFromJSON,
+    BadRequestDtoToJSON,
 } from '../models/index';
 
 export interface AuthApiConfirmAccountRequest {

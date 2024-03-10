@@ -6,4 +6,5 @@ export * from './AuthSafePasswordDto';
 export * from './AuthSignInDto';
 export * from './AuthTokenDto';
 export * from './AuthUpdatePasswordDto';
+export * from './BadRequestDto';
 export * from './UserDto';
