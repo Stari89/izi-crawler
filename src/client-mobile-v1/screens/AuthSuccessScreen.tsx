@@ -44,17 +44,19 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         maxWidth: 800,
         width: '100%',
+        flex: 1,
     },
     headline: {
         textAlign: 'center',
+        marginVertical: 32,
     },
     message: {
         textAlign: 'center',
-        marginVertical: 32,
     },
     checkIcon: {
+        flex: 1,
         alignItems: 'center',
-        marginVertical: 64,
+        justifyContent: 'center',
     },
     continueButton: {
         marginVertical: 32,
