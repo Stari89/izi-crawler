@@ -76,8 +76,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         setEmailToConfirm(data.email);
         try {
             await authApi.signUp(data);
-            const response = await authApi.confirmationCode(data);
-            setEmailConfirmationToken(response.accessToken);
+            await authApi.confirmationCode(data);
             router.replace(NAVIGATION_ROUTES.confirmationCode);
         } catch (err: any) {
             handleBadRequestErrors(err, setError);
@@ -86,12 +85,11 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
     const confirmEmail = async (data: AuthConfirmDto, setError: UseFormSetError<AuthConfirmDto>) => {
         try {
-            await authApi.confirmAccount(data, ({ init }) =>
-                Promise.resolve({
-                    ...init,
-                    headers: { ...init.headers, Authorization: `Bearer ${emailConfirmationToken}` },
-                }),
-            );
+            if (!emailToConfirm) {
+                return;
+            }
+            const response = await authApi.confirmAccount({ ...data, email: emailToConfirm });
+            setEmailConfirmationToken(response.accessToken);
             router.replace(NAVIGATION_ROUTES.setPassword);
         } catch (err: any) {
             handleBadRequestErrors(err, setError);
@@ -116,8 +114,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         setMode('reset');
         setEmailToConfirm(data.email);
         try {
-            const response = await authApi.confirmationCode(data);
-            setEmailConfirmationToken(response.accessToken);
+            await authApi.confirmationCode(data);
             router.replace(NAVIGATION_ROUTES.confirmationCode);
         } catch (err: any) {
             handleBadRequestErrors(err, setError);

@@ -22,7 +22,7 @@ export const ApiProvider = (props: ApiProviderProps) => {
         post: async (context) => {
             const { response } = context;
             if (response.status >= 200 && response.status < 300) {
-                return context.response;
+                return response;
             }
             const responseClone = response.clone();
             const payload = await responseClone.json();
