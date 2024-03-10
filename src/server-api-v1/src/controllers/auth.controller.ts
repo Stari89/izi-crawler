@@ -87,13 +87,13 @@ export class AuthController {
     }
 
     @Post('confirm-account')
-    @ApiOkResponse({ description: 'Account confrimed.' })
+    @ApiOkResponse({ type: AuthTokenDto, description: 'Account confrimed.' })
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token or code.' })
     @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
-    async confirmAccount(@Body() body: AuthConfirmDto): Promise<void> {
+    async confirmAccount(@Body() body: AuthConfirmDto): Promise<AuthTokenDto> {
         const { email, confirmationCode } = body;
-        await this.authService.confirmAccount(email, confirmationCode).catch((err) => {
+        const token = await this.authService.confirmAccount(email, confirmationCode).catch((err) => {
             switch (err.constructor) {
                 case EntityNotFoundError:
                     throw new UnauthorizedException('Incorrect email or confirmation code.');
@@ -101,6 +101,7 @@ export class AuthController {
                     throw new InternalServerErrorException('Something went wrong.');
             }
         });
+        return { accessToken: token };
     }
 
     @Post('reset-password')

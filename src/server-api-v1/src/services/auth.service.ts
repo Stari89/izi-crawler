@@ -40,6 +40,7 @@ export class AuthService {
         this.assertConfirmCode(user, confirmationCode);
         user.emailConfirmed = true;
         await this.usersService.save(user);
+        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
     }
 
     async sendConfirmCode(email: string): Promise<void> {
