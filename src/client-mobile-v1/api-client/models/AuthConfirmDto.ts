@@ -24,6 +24,12 @@ export interface AuthConfirmDto {
      * @type {string}
      * @memberof AuthConfirmDto
      */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthConfirmDto
+     */
     confirmationCode: string;
 }
 
@@ -32,6 +38,7 @@ export interface AuthConfirmDto {
  */
 export function instanceOfAuthConfirmDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "email" in value;
     isInstance = isInstance && "confirmationCode" in value;
 
     return isInstance;
@@ -47,6 +54,7 @@ export function AuthConfirmDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
+        'email': json['email'],
         'confirmationCode': json['confirmationCode'],
     };
 }
@@ -60,6 +68,7 @@ export function AuthConfirmDtoToJSON(value?: AuthConfirmDto | null): any {
     }
     return {
         
+        'email': value.email,
         'confirmationCode': value.confirmationCode,
     };
 }

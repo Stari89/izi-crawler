@@ -101,7 +101,7 @@ export class AuthApi extends runtime.BaseAPI {
 
     /**
      */
-    async confirmationCodeRaw(requestParameters: AuthApiConfirmationCodeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
+    async confirmationCodeRaw(requestParameters: AuthApiConfirmationCodeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.authEmailDto === null || requestParameters.authEmailDto === undefined) {
             throw new runtime.RequiredError('authEmailDto','Required parameter requestParameters.authEmailDto was null or undefined when calling confirmationCode.');
         }
@@ -120,14 +120,13 @@ export class AuthApi extends runtime.BaseAPI {
             body: AuthEmailDtoToJSON(requestParameters.authEmailDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      */
-    async confirmationCode(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenDto> {
-        const response = await this.confirmationCodeRaw({ authEmailDto: authEmailDto }, initOverrides);
-        return await response.value();
+    async confirmationCode(authEmailDto: AuthEmailDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.confirmationCodeRaw({ authEmailDto: authEmailDto }, initOverrides);
     }
 
     /**
