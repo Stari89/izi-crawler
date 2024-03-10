@@ -64,7 +64,7 @@ export default MainLayout;
 const LayoutContent = () => {
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [snackBarText, setSnackBarText] = useState('');
-    const { snack } = useSnack();
+    const { snack, pushSnack } = useSnack();
 
     useEffect(() => {
         if (!snack) return;
@@ -72,15 +72,16 @@ const LayoutContent = () => {
         setSnackBarVisible(true);
     }, [snack]);
 
+    const handleSnackbarDismiss = () => {
+        setSnackBarVisible(false);
+        pushSnack('');
+    };
+
     return (
         <>
             <Slot />
             <Portal>
-                <Snackbar
-                    visible={snackBarVisible}
-                    onDismiss={() => setSnackBarVisible(false)}
-                    wrapperStyle={{ top: 0 }}
-                >
+                <Snackbar visible={snackBarVisible} onDismiss={handleSnackbarDismiss} wrapperStyle={{ top: 0 }}>
                     {snackBarText}
                 </Snackbar>
             </Portal>
