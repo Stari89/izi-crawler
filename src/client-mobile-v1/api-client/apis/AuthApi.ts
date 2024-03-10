@@ -71,7 +71,7 @@ export class AuthApi extends runtime.BaseAPI {
 
     /**
      */
-    async confirmAccountRaw(requestParameters: AuthApiConfirmAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async confirmAccountRaw(requestParameters: AuthApiConfirmAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
         if (requestParameters.authConfirmDto === null || requestParameters.authConfirmDto === undefined) {
             throw new runtime.RequiredError('authConfirmDto','Required parameter requestParameters.authConfirmDto was null or undefined when calling confirmAccount.');
         }
@@ -90,13 +90,14 @@ export class AuthApi extends runtime.BaseAPI {
             body: AuthConfirmDtoToJSON(requestParameters.authConfirmDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async confirmAccount(authConfirmDto: AuthConfirmDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.confirmAccountRaw({ authConfirmDto: authConfirmDto }, initOverrides);
+    async confirmAccount(authConfirmDto: AuthConfirmDto, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenDto> {
+        const response = await this.confirmAccountRaw({ authConfirmDto: authConfirmDto }, initOverrides);
+        return await response.value();
     }
 
     /**
