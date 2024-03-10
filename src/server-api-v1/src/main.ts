@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { BadRequestDto } from './dtos/bad-request.dto';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -13,6 +14,16 @@ async function bootstrap() {
             forbidNonWhitelisted: true,
             forbidUnknownValues: true,
             transform: true,
+            exceptionFactory: (errors) => {
+                const result: BadRequestDto = { errors: {} };
+                errors.forEach((err) => {
+                    if (!err.property || !err.constraints) {
+                        return;
+                    }
+                    result.errors[err.property] = Object.values(err.constraints);
+                });
+                return new BadRequestException(result);
+            },
         }),
     );
     const configService = app.get(ConfigService);

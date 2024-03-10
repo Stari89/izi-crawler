@@ -4,52 +4,52 @@ import { FieldMatch } from 'src/decorators/field-match.decorator';
 
 export class AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    @MinLength(8)
-    @MaxLength(50)
-    @Matches(/[A-Z]/, { message: ({ property }) => `${property} must contain at least one uppercase letter` })
-    @Matches(/[a-z]/, { message: ({ property }) => `${property} must contain at least one lowercase letter` })
-    @Matches(/\d/, { message: ({ property }) => `${property} must contain at least one number` })
+    @IsNotEmpty({ message: 'Password is required.' })
+    @MinLength(8, { message: 'Password must be at least 8 characters long.' })
+    @MaxLength(50, { message: 'Password must not exceed 50 characters.' })
+    @Matches(/[A-Z]/, { message: 'Password must contain at least one uppercase letter.' })
+    @Matches(/[a-z]/, { message: 'Password must contain at least one lowercase letter.' })
+    @Matches(/\d/, { message: 'Password must contain at least one number.' })
     @Matches(/.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-].*/, {
-        message: ({ property }) => `${property} must contain at least one special character`,
+        message: 'Password must contain at least one special character.',
     })
     password: string;
 
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Confirm password is required.' })
     @FieldMatch('password', {
-        message: ({ property, constraints }) => `${property} must match ${constraints[0]}`,
+        message: 'Passwords must match.',
     })
     confirmPassword: string;
 }
 
 export class AuthConfirmDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Confirmation code is required.' })
     confirmationCode: string;
 }
 
 export class AuthEmailDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
-    @IsEmail()
+    @IsNotEmpty({ message: 'Email is required.' })
+    @IsEmail(undefined, { message: 'Email must be valid.' })
     email: string;
 }
 
 export class AuthTokenDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
+    @IsNotEmpty(/* no message, only for responses*/)
     accessToken: string;
 }
 
 export class AuthSignInDto extends AuthEmailDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Password is required.' })
     password: string;
 }
 
 export class AuthUpdatePasswordDto extends AuthSafePasswordDto {
     @ApiProperty({ type: 'string' })
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Old password is required.' })
     oldPassword: string;
 }

@@ -1,15 +1,26 @@
-import { Body, Controller, Post, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Post,
+    UnauthorizedException,
+    UseGuards,
+    Request,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiConflictResponse,
+    ApiInternalServerErrorResponse,
     ApiOkResponse,
     ApiTags,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthEmailDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto } from 'src/dtos';
 import { AuthConfirmDto, AuthSafePasswordDto } from 'src/dtos/auth.dto';
+import { BadRequestDto } from 'src/dtos/bad-request.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { AuthService } from 'src/services';
+import { EntityNotFoundError } from 'typeorm';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -18,18 +29,27 @@ export class AuthController {
 
     @Post('sign-in')
     @ApiOkResponse({ type: AuthTokenDto, description: 'User logged in.' })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Wrong email or password.' })
+    @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
     async signIn(@Body() body: AuthSignInDto): Promise<AuthTokenDto> {
-        const token = await this.authService.signIn(body.email, body.password).catch(() => {
-            throw new UnauthorizedException();
+        const token = await this.authService.signIn(body.email, body.password).catch((err) => {
+            // console.log(err);
+            switch (err.constructor) {
+                case EntityNotFoundError:
+                    throw new UnauthorizedException('Wrong email or password.');
+                case UnauthorizedException:
+                    throw new UnauthorizedException('Wrong email or password.');
+                default:
+                    throw new InternalServerErrorException('Something went wrong.');
+            }
         });
         return { accessToken: token };
     }
 
     @Post('sign-up')
     @ApiOkResponse({ description: 'User created. Request confirmation code next.' })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiConflictResponse({ description: 'User already exists.' })
     async signUp(@Body() body: AuthEmailDto): Promise<void> {
         const { email } = body;
@@ -42,7 +62,7 @@ export class AuthController {
         description:
             'Generated confirmation code and sent it to email. Use accessToken in response and the code to confirm account.',
     })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Wrong email.' })
     async confirmationCode(@Body() body: AuthEmailDto): Promise<AuthTokenDto> {
         const token = await this.authService.sendConfirmCode(body.email).catch(() => {
@@ -53,7 +73,7 @@ export class AuthController {
 
     @Post('confirm-account')
     @ApiOkResponse({ description: 'Account confrimed.' })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token or code.' })
     @UseGuards(AuthGuard)
     async confirmAccount(@Request() req: { user: { username: string } }, @Body() body: AuthConfirmDto): Promise<void> {
@@ -64,7 +84,7 @@ export class AuthController {
 
     @Post('reset-password')
     @ApiOkResponse({ description: 'Password was reset.' })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token.' })
     @UseGuards(AuthGuard)
     async resetPassword(
@@ -79,7 +99,7 @@ export class AuthController {
 
     @Post('update-password')
     @ApiOkResponse({ description: 'Password was updated.' })
-    @ApiBadRequestResponse({ description: 'Invalid data.' })
+    @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token or old password.' })
     @UseGuards(AuthGuard)
     async updatePassword(
