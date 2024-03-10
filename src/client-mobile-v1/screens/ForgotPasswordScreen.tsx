@@ -8,7 +8,7 @@ import { useState } from 'react';
 const ForgotPasswordScreen = () => {
     const theme = useTheme();
     const { forgotPassword } = useAuth();
-    const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
+    const { control, formState, handleSubmit, setError } = useForm<AuthEmailDto>();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthEmailDto) => {
@@ -16,7 +16,7 @@ const ForgotPasswordScreen = () => {
             return;
         }
         setIsLoading(true);
-        await forgotPassword(data);
+        await forgotPassword(data, setError);
         setIsLoading(false);
     };
 

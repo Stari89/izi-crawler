@@ -8,7 +8,7 @@ import { useState } from 'react';
 const ConfirmationCodeScreen = () => {
     const theme = useTheme();
     const { emailToConfirm, confirmEmail } = useAuth();
-    const { control, formState, handleSubmit } = useForm<AuthConfirmDto>();
+    const { control, formState, handleSubmit, setError } = useForm<AuthConfirmDto>();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthConfirmDto) => {
@@ -16,7 +16,7 @@ const ConfirmationCodeScreen = () => {
             return;
         }
         setIsLoading(true);
-        await confirmEmail(data);
+        await confirmEmail(data, setError);
         setIsLoading(false);
     };
 

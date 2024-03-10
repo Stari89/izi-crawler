@@ -10,7 +10,7 @@ import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 const LoginScreen = () => {
     const theme = useTheme();
     const { login } = useAuth();
-    const { control, formState, handleSubmit } = useForm<AuthSignInDto>();
+    const { control, formState, handleSubmit, setError } = useForm<AuthSignInDto>();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +19,7 @@ const LoginScreen = () => {
             return;
         }
         setIsLoading(true);
-        await login(data);
+        await login(data, setError);
         setIsLoading(false);
     };
 

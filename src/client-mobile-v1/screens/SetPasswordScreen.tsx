@@ -8,7 +8,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 const SetPasswordScreen = () => {
     const theme = useTheme();
     const { resetPassword } = useAuth();
-    const { control, formState, handleSubmit, watch } = useForm<AuthSafePasswordDto>();
+    const { control, formState, handleSubmit, watch, setError } = useForm<AuthSafePasswordDto>();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +17,7 @@ const SetPasswordScreen = () => {
             return;
         }
         setIsLoading(true);
-        await resetPassword(data);
+        await resetPassword(data, setError);
         setIsLoading(false);
     };
 

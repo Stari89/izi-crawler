@@ -8,7 +8,7 @@ import { useState } from 'react';
 const SignupScreen = () => {
     const theme = useTheme();
     const { signup } = useAuth();
-    const { control, formState, handleSubmit } = useForm<AuthEmailDto>();
+    const { control, formState, handleSubmit, setError } = useForm<AuthEmailDto>();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: AuthEmailDto) => {
@@ -16,7 +16,7 @@ const SignupScreen = () => {
             return;
         }
         setIsLoading(true);
-        await signup(data);
+        await signup(data, setError);
         setIsLoading(false);
     };
 

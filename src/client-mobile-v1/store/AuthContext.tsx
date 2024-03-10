@@ -4,21 +4,29 @@ import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApi } from '../hooks/use-api';
 import { useSnack } from '../hooks/use-snack';
-import { AuthConfirmDto, AuthEmailDto, AuthSafePasswordDto, AuthSignInDto, ResponseError } from '../api-client';
+import {
+    AuthConfirmDto,
+    AuthEmailDto,
+    AuthSafePasswordDto,
+    AuthSignInDto,
+    BadRequestDtoFromJSON,
+    ResponseError,
+} from '../api-client';
+import { UseFormSetError } from 'react-hook-form';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';
 type PasswordSetMode = 'create' | 'reset';
 
 interface AuthContextValue {
-    isAuthenticated: boolean;
-    login: (data: AuthSignInDto) => Promise<void>;
+    login: (data: AuthSignInDto, setError: UseFormSetError<AuthSignInDto>) => Promise<void>;
+    signup: (data: AuthEmailDto, setError: UseFormSetError<AuthEmailDto>) => Promise<void>;
+    confirmEmail: (data: AuthConfirmDto, setError: UseFormSetError<AuthConfirmDto>) => Promise<void>;
+    resetPassword: (data: AuthSafePasswordDto, setError: UseFormSetError<AuthSafePasswordDto>) => Promise<void>;
+    forgotPassword: (data: AuthEmailDto, setError: UseFormSetError<AuthEmailDto>) => Promise<void>;
     logout: () => Promise<void>;
-    signup: (data: AuthEmailDto) => Promise<void>;
     emailToConfirm?: string;
-    confirmEmail: (data: AuthConfirmDto) => Promise<void>;
-    resetPassword: (data: AuthSafePasswordDto) => Promise<void>;
-    forgotPassword: (data: AuthEmailDto) => Promise<void>;
     mode: PasswordSetMode;
+    isAuthenticated: boolean;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -48,7 +56,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         tryLogin();
     }, []);
 
-    const login = async (data: AuthSignInDto) => {
+    const login = async (data: AuthSignInDto, setError: UseFormSetError<AuthSignInDto>) => {
         try {
             const response = authApi.signIn(data);
             const token = (await response).accessToken;
@@ -58,9 +66,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
-                    switch ((err as ResponseError).response.status) {
+                    const responseError = err as ResponseError;
+                    switch (responseError.response.status) {
                         case 400:
-                            pushSnack('Malformed input. (TODO)');
+                            handleBadRequestErrors(responseError, setError);
                             break;
                         case 401:
                             pushSnack('Incorrect email or password.');
@@ -82,7 +91,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         router.replace(NAVIGATION_ROUTES.welcome);
     };
 
-    const signup = async (data: AuthEmailDto) => {
+    const signup = async (data: AuthEmailDto, setError: UseFormSetError<AuthEmailDto>) => {
         setMode('create');
         setEmailToConfirm(data.email);
         try {
@@ -93,9 +102,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
-                    switch ((err as ResponseError).response.status) {
+                    const responseError = err as ResponseError;
+                    switch (responseError.response.status) {
                         case 400:
-                            pushSnack('Invalid data. (TODO)');
+                            handleBadRequestErrors(responseError, setError);
                             break;
                         case 401:
                             pushSnack('Email is not registered.');
@@ -115,7 +125,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
     };
 
-    const confirmEmail = async (data: AuthConfirmDto) => {
+    const confirmEmail = async (data: AuthConfirmDto, setError: UseFormSetError<AuthConfirmDto>) => {
         try {
             await authApi.confirmAccount(data, ({ init }) =>
                 Promise.resolve({
@@ -127,9 +137,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
-                    switch ((err as ResponseError).response.status) {
+                    const responseError = err as ResponseError;
+                    switch (responseError.response.status) {
                         case 400:
-                            pushSnack('Malformed input. (TODO)');
+                            handleBadRequestErrors(responseError, setError);
                             break;
                         case 401:
                             pushSnack('Confirmation code was wrong.');
@@ -146,7 +157,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
     };
 
-    const resetPassword = async (data: AuthSafePasswordDto) => {
+    const resetPassword = async (data: AuthSafePasswordDto, setError: UseFormSetError<AuthSafePasswordDto>) => {
         try {
             await authApi.resetPassword(data, ({ init }) =>
                 Promise.resolve({
@@ -158,9 +169,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
-                    switch ((err as ResponseError).response.status) {
+                    const responseError = err as ResponseError;
+                    switch (responseError.response.status) {
                         case 400:
-                            pushSnack('Malformed input. (TODO)');
+                            handleBadRequestErrors(responseError, setError);
                             break;
                         case 401:
                             pushSnack("You're not allowed to do that.");
@@ -177,7 +189,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
     };
 
-    const forgotPassword = async (data: AuthEmailDto) => {
+    const forgotPassword = async (data: AuthEmailDto, setError: UseFormSetError<AuthEmailDto>) => {
         setMode('reset');
         setEmailToConfirm(data.email);
         try {
@@ -187,9 +199,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
         } catch (err: any) {
             switch (err.constructor) {
                 case ResponseError:
-                    switch ((err as ResponseError).response.status) {
+                    const responseError = err as ResponseError;
+                    switch (responseError.response.status) {
                         case 400:
-                            pushSnack('Malformed input. (TODO)');
+                            handleBadRequestErrors(responseError, setError);
                             break;
                         case 401:
                             pushSnack('Email is not registered.');
@@ -219,4 +232,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
     };
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+};
+
+const handleBadRequestErrors = async (responseError: ResponseError, setError: UseFormSetError<any>) => {
+    const { errors } = BadRequestDtoFromJSON(await responseError.response.json());
+    // @ts-ignore
+    Object.keys(errors).forEach((e) => setError(e.toString(), { message: errors[e] }));
 };
