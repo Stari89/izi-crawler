@@ -17,5 +17,6 @@ export const NAVIGATION_ROUTES = {
     settings: '/settings',
     setPassword: '/set-password',
     signup: '/signup',
+    updatePassword: '/update-password',
     welcome: '/welcome',
 };

@@ -24,6 +24,10 @@ const AppLayout = () => {
             <Stack.Screen name="(tabs)" options={{ headerShown: false, contentStyle: { paddingTop: insets.top } }} />
             <Stack.Screen name="route/[guid]/map" options={{ headerTitle: 'Map', title: composeAppTitle('Map') }} />
             <Stack.Screen name="settings" options={{ headerTitle: 'Settings', title: composeAppTitle('Settings') }} />
+            <Stack.Screen
+                name="update-password"
+                options={{ headerTitle: 'Update Password', title: composeAppTitle('Update Password') }}
+            />
         </Stack>
     );
 };

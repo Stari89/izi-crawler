@@ -8,10 +8,12 @@ import {
     AuthEmailDto,
     AuthSafePasswordDto,
     AuthSignInDto,
+    AuthUpdatePasswordDto,
     BadRequestDtoFromJSON,
     ResponseError,
 } from '../api-client';
 import { UseFormSetError } from 'react-hook-form';
+import { useSnack } from '../hooks';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';
 type PasswordSetMode = 'create' | 'reset';
@@ -22,6 +24,7 @@ interface AuthContextValue {
     confirmEmail: (data: AuthConfirmDto, setError: UseFormSetError<AuthConfirmDto>) => Promise<void>;
     resetPassword: (data: AuthSafePasswordDto, setError: UseFormSetError<AuthSafePasswordDto>) => Promise<void>;
     forgotPassword: (data: AuthEmailDto, setError: UseFormSetError<AuthEmailDto>) => Promise<void>;
+    updatePassword: (data: AuthUpdatePasswordDto, setError: UseFormSetError<AuthUpdatePasswordDto>) => Promise<void>;
     logout: () => Promise<void>;
     emailToConfirm?: string;
     mode: PasswordSetMode;
@@ -42,6 +45,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     const [mode, setMode] = useState<PasswordSetMode>('create');
 
     const { authApi } = useApi();
+    const { pushSnack } = useSnack();
 
     useEffect(() => {
         const tryLogin = async () => {
@@ -121,6 +125,21 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
     };
 
+    const updatePassword = async (data: AuthUpdatePasswordDto, setError: UseFormSetError<AuthUpdatePasswordDto>) => {
+        try {
+            await authApi.updatePassword(data, ({ init }) =>
+                Promise.resolve({
+                    ...init,
+                    headers: { ...init.headers, Authorization: `Bearer ${accessToken}` },
+                }),
+            );
+            pushSnack('Password updated.');
+            router.back();
+        } catch (err: any) {
+            handleBadRequestErrors(err, setError);
+        }
+    };
+
     const contextValue: AuthContextValue = {
         isAuthenticated: !!accessToken,
         login,
@@ -130,6 +149,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         confirmEmail,
         resetPassword,
         forgotPassword,
+        updatePassword,
         mode,
     };
 
