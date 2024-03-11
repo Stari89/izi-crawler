@@ -1,11 +1,11 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-import { useAuth } from '../hooks';
-import { AuthSignInDto } from '../api-client';
+import { useAuth } from '../../hooks';
+import { AuthSignInDto } from '../../api-client';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
+import { NAVIGATION_ROUTES } from '../../constants/navigation-routes';
 
 const LoginScreen = () => {
     const theme = useTheme();

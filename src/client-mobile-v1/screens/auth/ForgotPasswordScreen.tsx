@@ -1,13 +1,13 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { ActivityIndicator, Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { ActivityIndicator, Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
+import { useAuth } from '../../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthEmailDto } from '../api-client';
+import { AuthEmailDto } from '../../api-client';
 import { useState } from 'react';
 
-const SignupScreen = () => {
+const ForgotPasswordScreen = () => {
     const theme = useTheme();
-    const { signup } = useAuth();
+    const { forgotPassword } = useAuth();
     const { control, formState, handleSubmit, setError } = useForm<AuthEmailDto>();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +16,7 @@ const SignupScreen = () => {
             return;
         }
         setIsLoading(true);
-        await signup(data, setError);
+        await forgotPassword(data, setError);
         setIsLoading(false);
     };
 
@@ -26,9 +26,11 @@ const SignupScreen = () => {
             contentContainerStyle={styles.innerContainer}
         >
             <Text style={styles.headline} variant="headlineMedium">
-                Create an Account
+                Forgot password
             </Text>
-
+            <Text style={styles.text} variant="bodyMedium">
+                We will send a confirmation code to your email and then you will be able to change your password.
+            </Text>
             <Controller
                 control={control}
                 defaultValue=""
@@ -61,24 +63,13 @@ const SignupScreen = () => {
             />
 
             <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Sign Up'}
-            </Button>
-            <HelperText type="info">By continuing you agree to Terms and Conditions.</HelperText>
-            <Divider style={styles.divider} />
-            <Button style={styles.continueWithButton} mode="outlined" icon="google">
-                Continue with Google
-            </Button>
-            <Button style={styles.continueWithButton} mode="outlined" icon="facebook">
-                Continue with Facebook
-            </Button>
-            <Button style={styles.continueWithButton} mode="outlined" icon="apple">
-                Continue with Apple
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Reset Password'}
             </Button>
         </ScrollView>
     );
 };
 
-export default SignupScreen;
+export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -93,16 +84,13 @@ const styles = StyleSheet.create({
     headline: {
         marginVertical: 32,
     },
+    text: {
+        marginBottom: 32,
+    },
     textInput: {
         marginVertical: 4,
     },
     submitButton: {
         marginVertical: 8,
-    },
-    divider: {
-        marginVertical: 32,
-    },
-    continueWithButton: {
-        marginVertical: 4,
     },
 });

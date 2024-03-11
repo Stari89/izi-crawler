@@ -1,22 +1,22 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { useTheme, Text, TextInput, HelperText, Button, ActivityIndicator } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { ActivityIndicator, Button, Divider, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
+import { useAuth } from '../../hooks';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthConfirmDto } from '../api-client';
+import { AuthEmailDto } from '../../api-client';
 import { useState } from 'react';
 
-const ConfirmationCodeScreen = () => {
+const SignupScreen = () => {
     const theme = useTheme();
-    const { emailToConfirm, confirmEmail } = useAuth();
-    const { control, formState, handleSubmit, setError } = useForm<AuthConfirmDto>();
+    const { signup } = useAuth();
+    const { control, formState, handleSubmit, setError } = useForm<AuthEmailDto>();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmitForm = async (data: AuthConfirmDto) => {
+    const handleSubmitForm = async (data: AuthEmailDto) => {
         if (isLoading) {
             return;
         }
         setIsLoading(true);
-        await confirmEmail(data, setError);
+        await signup(data, setError);
         setIsLoading(false);
     };
 
@@ -26,49 +26,59 @@ const ConfirmationCodeScreen = () => {
             contentContainerStyle={styles.innerContainer}
         >
             <Text style={styles.headline} variant="headlineMedium">
-                Confirm your email
+                Create an Account
             </Text>
-            <Text style={styles.text} variant="bodyMedium">
-                Let us know this email belongs to you. Enter the code in the email sent to {emailToConfirm}.
-            </Text>
+
             <Controller
                 control={control}
                 defaultValue=""
-                name="confirmationCode"
+                name="email"
                 rules={{
-                    required: 'Confirmation code is required.',
+                    required: 'Email is required.',
                     pattern: {
-                        value: /^\d{5}$/,
-                        message: 'Confirmation code must be 5 numbers.',
+                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                        message: 'Invalid email.',
                     },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
                             autoCapitalize="none"
+                            autoComplete="email"
                             style={styles.textInput}
-                            label="Confirmation code"
+                            label="Email"
                             mode="outlined"
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
                             value={value}
-                            error={!!formState.errors.confirmationCode}
-                            keyboardType="numeric"
+                            error={!!formState.errors.email}
                         />
-                        {formState.errors.confirmationCode && (
-                            <HelperText type="error">{formState.errors.confirmationCode.message}</HelperText>
+                        {formState.errors.email && (
+                            <HelperText type="error">{formState.errors.email.message}</HelperText>
                         )}
                     </>
                 )}
             />
+
             <Button style={styles.submitButton} mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Confirm Email'}
+                {(isLoading && <ActivityIndicator color={theme.colors.onPrimary} size={20} />) || 'Sign Up'}
+            </Button>
+            <HelperText type="info">By continuing you agree to Terms and Conditions.</HelperText>
+            <Divider style={styles.divider} />
+            <Button style={styles.continueWithButton} mode="outlined" icon="google">
+                Continue with Google
+            </Button>
+            <Button style={styles.continueWithButton} mode="outlined" icon="facebook">
+                Continue with Facebook
+            </Button>
+            <Button style={styles.continueWithButton} mode="outlined" icon="apple">
+                Continue with Apple
             </Button>
         </ScrollView>
     );
 };
 
-export default ConfirmationCodeScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -82,9 +92,6 @@ const styles = StyleSheet.create({
     },
     headline: {
         marginVertical: 32,
-    },
-    text: {
-        marginBottom: 32,
     },
     textInput: {
         marginVertical: 4,

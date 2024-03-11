@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTheme, Text, Button, Icon } from 'react-native-paper';
-import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
-import { useAuth } from '../hooks';
+import { NAVIGATION_ROUTES } from '../../constants/navigation-routes';
+import { useAuth } from '../../hooks';
 
 const AuthSuccessScreen = () => {
     const theme = useTheme();

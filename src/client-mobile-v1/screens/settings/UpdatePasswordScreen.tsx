@@ -1,8 +1,8 @@
 import { useTheme, Text, TextInput, HelperText, Button, ActivityIndicator, Divider } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthUpdatePasswordDto } from '../api-client';
+import { AuthUpdatePasswordDto } from '../../api-client';
 import { ScrollView, StyleSheet } from 'react-native';
 
 const UpdatePasswordScreen = () => {

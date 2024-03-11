@@ -1,1 +1,1 @@
-export { default } from '../../../screens/UpdatePasswordScreen';
+export { default } from '../../../screens/settings/UpdatePasswordScreen';

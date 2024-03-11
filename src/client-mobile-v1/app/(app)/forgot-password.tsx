@@ -1,1 +1,1 @@
-export { default } from '../../screens/ForgotPasswordScreen';
+export { default } from '../../screens/auth/ForgotPasswordScreen';

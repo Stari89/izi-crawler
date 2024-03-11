@@ -1,8 +1,8 @@
 import { useTheme, Text, TextInput, HelperText, Button, ActivityIndicator } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AuthSafePasswordDto } from '../api-client';
+import { AuthSafePasswordDto } from '../../api-client';
 import { ScrollView, StyleSheet } from 'react-native';
 
 const SetPasswordScreen = () => {

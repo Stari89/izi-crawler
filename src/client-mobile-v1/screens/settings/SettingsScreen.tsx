@@ -1,9 +1,9 @@
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Button } from 'react-native-paper';
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 import { router } from 'expo-router';
-import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
+import { NAVIGATION_ROUTES } from '../../constants/navigation-routes';
 
 const SettingsScreen = () => {
     const theme = useTheme();
