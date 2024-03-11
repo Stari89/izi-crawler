@@ -22,6 +22,7 @@ import { AuthEmailDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto } from
 import { AuthConfirmDto, AuthSafePasswordDto } from 'src/dtos/auth.dto';
 import { BadRequestDto } from 'src/dtos/bad-request.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { ResetPasswordGuard } from 'src/guards/reset-password.guard';
 import { AuthService } from 'src/services';
 import { EntityNotFoundError } from 'typeorm';
 
@@ -109,7 +110,7 @@ export class AuthController {
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token.' })
     @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
-    @UseGuards(AuthGuard)
+    @UseGuards(ResetPasswordGuard)
     async resetPassword(
         @Request() req: { user: { username: string } },
         @Body() body: AuthSafePasswordDto,

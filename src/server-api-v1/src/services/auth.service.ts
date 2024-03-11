@@ -40,7 +40,11 @@ export class AuthService {
         this.assertConfirmCode(user, confirmationCode);
         user.emailConfirmed = true;
         await this.usersService.save(user);
-        return await this.generateUserToken(user, process.env.TOKEN_EXP_CONFIRM_ACCOUNT);
+        return await this.generateUserToken(
+            user,
+            process.env.TOKEN_EXP_CONFIRM_ACCOUNT,
+            process.env.JWT_RESET_PASSWORD_SECRET,
+        );
     }
 
     async sendConfirmCode(email: string): Promise<void> {
@@ -104,10 +108,11 @@ export class AuthService {
 
     private async generateUserToken(
         user: User,
-        expiresIn: string | undefined = process.env.TOKEN_EXP_CONFIRM_ACCOUNT,
+        expiresIn: string | undefined = process.env.TOKEN_EXP_GLOBAL,
+        secret: string | undefined = process.env.JWT_SECRET,
     ): Promise<string> {
         const payload = { sub: user.uuid, username: user.email };
-        const token = await this.jwtService.signAsync(payload, { expiresIn });
+        const token = await this.jwtService.signAsync(payload, { expiresIn, secret });
         return token;
     }
 }
