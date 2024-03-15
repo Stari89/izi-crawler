@@ -1,9 +1,10 @@
-import { View, Image, Pressable, ViewStyle, StyleSheet } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { Venue } from '../../models';
 import { Text, useTheme } from 'react-native-paper';
 import { LatLng, Region } from 'react-native-maps';
 import { useEffect, useState } from 'react';
-import { getMapPreviewUri } from '../../util/maps-static-api';
+import { MapView, Marker, Polyline } from '../../util/maps';
+import Constants from 'expo-constants';
 
 interface RouteMapViewProps {
     venues: Venue[];
@@ -15,7 +16,7 @@ interface RouteMapViewProps {
 const RouteMapView = (props: RouteMapViewProps) => {
     const theme = useTheme();
     const { venues, markerPosition, showVenueMarkers = false, style, onPress } = props;
-
+    const apiKey = Constants.expoConfig?.extra?.googleMapsApiKey;
     const [region, setRegion] = useState<Region>();
 
     const handleMapPress = () => {
@@ -48,20 +49,24 @@ const RouteMapView = (props: RouteMapViewProps) => {
     }
 
     return (
-        <Pressable onPress={handleMapPress} style={style}>
-            <Image
-                style={styles.map}
-                source={{ uri: getMapPreviewUri(venues, theme.colors.secondary, showVenueMarkers, markerPosition) }}
+        <MapView
+            style={style}
+            region={region}
+            onPress={handleMapPress}
+            provider="google"
+            // @ts-ignore
+            googleMapsApiKey={apiKey}
+        >
+            {markerPosition && <Marker coordinate={markerPosition} />}
+            {showVenueMarkers && venues.map((v) => <Marker key={v.guid} coordinate={v.location} />)}
+            <Polyline
+                coordinates={venues.map((v) => v.location)}
+                strokeWidth={2.5}
+                strokeColor={theme.colors.secondary}
+                lineDashPattern={[0, 5]}
             />
-        </Pressable>
+        </MapView>
     );
 };
 
 export default RouteMapView;
-
-const styles = StyleSheet.create({
-    map: {
-        width: '100%',
-        height: '100%',
-    },
-});

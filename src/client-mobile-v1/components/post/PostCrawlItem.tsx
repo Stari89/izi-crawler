@@ -63,7 +63,9 @@ const PostCrawlItem = (props: PostCrawlItemProps) => {
                     {name}
                 </Text>
                 <StatsTable stats={stats} columns={3} topBottomDividers={false} size="small" />
-                {crawlRoute && <RouteMapView venues={crawlRoute.venues} style={styles.mapView} />}
+                <View style={{ height: 200 }}>
+                    {crawlRoute && <RouteMapView venues={crawlRoute.venues} style={styles.mapView} />}
+                </View>
                 <View style={styles.participants}>
                     <Text style={styles.participantsLabel}>With</Text>
                     {participants
