@@ -13,7 +13,7 @@ import {
     ResponseError,
 } from '../api-client';
 import { UseFormSetError } from 'react-hook-form';
-import { useSnack } from '../hooks';
+import { useSnack } from '../hooks/use-snack';
 
 const ACCESS_TOKEN_KEY = 'auth-context-access-token';
 type PasswordSetMode = 'create' | 'reset';

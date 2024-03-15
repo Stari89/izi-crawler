@@ -1,7 +1,7 @@
 import { ReactNode, createContext } from 'react';
 import { AuthApi, Configuration, DefaultApi, Middleware } from '../api-client';
 import Constants from 'expo-constants';
-import { useSnack } from '../hooks';
+import { useSnack } from '../hooks/use-snack';
 
 // Add new apis here
 interface ApiContextValue {
