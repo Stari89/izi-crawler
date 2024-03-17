@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Divider, useTheme } from 'react-native-paper';
 import { Stat } from '../../models';
 import React from 'react';
@@ -9,9 +9,10 @@ interface StatsTableProps {
     columns: number;
     size?: 'normal' | 'small';
     topBottomDividers?: boolean;
+    style?: ViewStyle;
 }
 const StatsTable = (props: StatsTableProps) => {
-    const { stats, columns, size = 'normal', topBottomDividers = true } = props;
+    const { stats, columns, size = 'normal', topBottomDividers = true, style } = props;
     const theme = useTheme();
 
     const statsTable: Stat[][] = [];
@@ -21,7 +22,7 @@ const StatsTable = (props: StatsTableProps) => {
     }
 
     return (
-        <View style={[topBottomDividers && styles.container]}>
+        <View style={[topBottomDividers && styles.container, style]}>
             {statsTable.map((statsRow, rowIdx) => (
                 <React.Fragment key={rowIdx}>
                     {(topBottomDividers || rowIdx > 0) && <Divider />}
