@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
-import { BadRequestDto } from './dtos/bad-request.dto';
+import { BadRequestDto } from './dtos';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);

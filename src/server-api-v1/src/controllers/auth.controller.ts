@@ -18,11 +18,16 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthEmailDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto } from 'src/dtos';
-import { AuthConfirmDto, AuthSafePasswordDto } from 'src/dtos/auth.dto';
-import { BadRequestDto } from 'src/dtos/bad-request.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { ResetPasswordGuard } from 'src/guards/reset-password.guard';
+import {
+    AuthEmailDto,
+    AuthSignInDto,
+    AuthTokenDto,
+    AuthUpdatePasswordDto,
+    AuthConfirmDto,
+    AuthSafePasswordDto,
+    BadRequestDto,
+} from 'src/dtos';
+import { AuthGuard, ResetPasswordGuard } from 'src/guards';
 import { AuthService } from 'src/services';
 import { EntityNotFoundError } from 'typeorm';
 

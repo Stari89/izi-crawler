@@ -4,9 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities';
 import { AuthService, MailingService, UsersService } from './services';
-import { UsersController } from './controllers';
 import { ConfigModule } from '@nestjs/config';
-import { AuthController } from './controllers/auth.controller';
+import { AuthController } from './controllers';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -29,7 +28,7 @@ import { JwtModule } from '@nestjs/jwt';
             signOptions: { expiresIn: process.env.TOKEN_EXP_GLOBAL },
         }),
     ],
-    controllers: [AppController, AuthController, UsersController],
+    controllers: [AppController, AuthController],
     providers: [AppService, AuthService, MailingService, UsersService],
 })
 export class AppModule {}

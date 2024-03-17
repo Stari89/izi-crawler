@@ -1,4 +1,19 @@
-import { AuthEmailDto, AuthSafePasswordDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto } from './auth.dto';
-import { UserDto } from './user.dto';
+import {
+    AuthConfirmDto,
+    AuthEmailDto,
+    AuthSafePasswordDto,
+    AuthSignInDto,
+    AuthTokenDto,
+    AuthUpdatePasswordDto,
+} from './auth.dto';
+import { BadRequestDto } from './bad-request.dto';
 
-export { AuthEmailDto, AuthSafePasswordDto, AuthSignInDto, AuthTokenDto, AuthUpdatePasswordDto, UserDto };
+export {
+    AuthConfirmDto,
+    AuthEmailDto,
+    AuthSafePasswordDto,
+    AuthSignInDto,
+    AuthTokenDto,
+    AuthUpdatePasswordDto,
+    BadRequestDto,
+};
