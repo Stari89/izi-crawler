@@ -32,6 +32,7 @@ async function bootstrap() {
         .setTitle('Izi Crawler API')
         .setDescription('server-api-v1')
         .setVersion('0.0.1')
+        .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);

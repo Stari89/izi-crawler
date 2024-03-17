@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities';
 import { AuthService, MailingService, UsersService } from './services';
 import { ConfigModule } from '@nestjs/config';
-import { AuthController } from './controllers';
+import { AuthController, FilesController } from './controllers';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -28,7 +28,7 @@ import { JwtModule } from '@nestjs/jwt';
             signOptions: { expiresIn: process.env.TOKEN_EXP_GLOBAL },
         }),
     ],
-    controllers: [AppController, AuthController],
+    controllers: [AppController, AuthController, FilesController],
     providers: [AppService, AuthService, MailingService, UsersService],
 })
 export class AppModule {}

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
+    ApiBearerAuth,
     ApiConflictResponse,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
@@ -115,6 +116,7 @@ export class AuthController {
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token.' })
     @ApiInternalServerErrorResponse({ description: 'Something went wrong.' })
+    @ApiBearerAuth()
     @UseGuards(ResetPasswordGuard)
     async resetPassword(
         @Request() req: { user: { username: string } },
@@ -135,6 +137,7 @@ export class AuthController {
     @ApiOkResponse({ description: 'Password was updated.' })
     @ApiBadRequestResponse({ type: BadRequestDto, description: 'Invalid form data.' })
     @ApiUnauthorizedResponse({ description: 'Invalid token or old password.' })
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     async updatePassword(
         @Request() req: { user: { username: string } },
