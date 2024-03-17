@@ -2,6 +2,7 @@ export const NAVIGATION_ROUTES = {
     authSuccessScreen: '/auth-success',
     confirmationCode: '/confirmation-code',
     crawl: '/crawl',
+    editProfile: '/edit-profile',
     explore: '/explore',
     favoriteRoutes: '/favorite-routes',
     forgotPassword: '/forgot-password',

@@ -3,6 +3,8 @@ import { Avatar, Button, Text, useTheme } from 'react-native-paper';
 import { USERS } from '../data/dummy-data';
 import StatsTable from '../components/ui/StatsTable';
 import { Stat } from '../models';
+import { router } from 'expo-router';
+import { NAVIGATION_ROUTES } from '../constants/navigation-routes';
 
 const MyProfileScreen = () => {
     const theme = useTheme();
@@ -22,6 +24,10 @@ const MyProfileScreen = () => {
         },
     ];
 
+    const handleEditProfilePress = () => {
+        router.navigate(NAVIGATION_ROUTES.editProfile);
+    };
+
     return (
         <ScrollView
             style={[styles.rootContainer, { backgroundColor: theme.colors.background }]}
@@ -32,10 +38,10 @@ const MyProfileScreen = () => {
                 <StatsTable stats={stats} columns={3} size="small" topBottomDividers={false} style={styles.stats} />
             </View>
             <View style={styles.profileButtonsContainer}>
-                <Button mode="outlined" style={styles.profileButton}>
+                <Button mode="outlined" style={styles.profileButton} onPress={handleEditProfilePress}>
                     Edit profile
                 </Button>
-                <Button mode="outlined" style={styles.profileButton}>
+                <Button mode="outlined" style={styles.profileButton} disabled>
                     Share profile
                 </Button>
             </View>
