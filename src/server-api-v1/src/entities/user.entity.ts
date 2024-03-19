@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UserProfile } from './user-profile.entity';
 
 @Entity()
 export class User {
@@ -25,4 +26,8 @@ export class User {
 
     @Column({ nullable: true })
     confirmationCodeExpiry: Date;
+
+    @OneToOne(() => UserProfile)
+    @JoinColumn()
+    profile: UserProfile | null | undefined;
 }

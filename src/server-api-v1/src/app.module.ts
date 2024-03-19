@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities';
-import { AuthService, MailingService, UsersService } from './services';
+import { User, UserProfile } from './entities';
+import { AuthService, MailingService, UserProfilesService, UsersService } from './services';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController, FilesController } from './controllers';
 import { JwtModule } from '@nestjs/jwt';
@@ -18,10 +18,10 @@ import { JwtModule } from '@nestjs/jwt';
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_SCHEMA,
-            entities: [User],
+            entities: [User, UserProfile],
             synchronize: true,
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, UserProfile]),
         JwtModule.register({
             global: true,
             secret: process.env.JWT_SECRET,
@@ -29,6 +29,6 @@ import { JwtModule } from '@nestjs/jwt';
         }),
     ],
     controllers: [AppController, AuthController, FilesController],
-    providers: [AppService, AuthService, MailingService, UsersService],
+    providers: [AppService, AuthService, MailingService, UserProfilesService, UsersService],
 })
 export class AppModule {}

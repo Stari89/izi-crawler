@@ -7,16 +7,23 @@ import { Repository } from 'typeorm';
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        private readonly usersRepository: Repository<User>,
     ) {}
 
     findAll(): Promise<User[]> {
-        return this.usersRepository.find();
+        return this.usersRepository.find({
+            relations: {
+                profile: true,
+            },
+        });
     }
 
     findOne(email: string): Promise<User> {
         return this.usersRepository.findOneOrFail({
             where: { email },
+            relations: {
+                profile: true,
+            },
         });
     }
 
