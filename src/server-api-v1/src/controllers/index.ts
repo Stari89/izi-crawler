@@ -1,4 +1,5 @@
 import { AuthController } from './auth.controller';
 import { FilesController } from './files.controller';
+import { UserController } from './user.controller';
 
-export { AuthController, FilesController };
+export { AuthController, FilesController, UserController };
