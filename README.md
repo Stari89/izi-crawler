@@ -17,10 +17,10 @@ Pub crawler app for my friend and anyone else who may be interested.
 -   Download and install **git** (for newbies the Principal Developer recommends installing [Sourcetree](https://www.sourcetreeapp.com/) git UI client with git included, so in case of problems he can help you)
 -   Clone the project to your workspace folder with this url: `https://github.com/Stari89/izi-crawler.git`
 -   Download and install Node Version Manager: [nvm for Windows](https://github.com/coreybutler/nvm-windows), [nvm for Linux and MacOS](https://github.com/nvm-sh/nvm)
--   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 20.11.0 in this instructions) with nvm in your terminal (run your terminal as administrator if you get `exit status 5: Access is denied.` error):
+-   Install Node.js (LTS, the exact version will be stated and enforced in `/src/client-mobile-v1/package.json`, but let's use 22.15.0 in this instructions) with nvm in your terminal (run your terminal as administrator if you get `exit status 5: Access is denied.` error):
     ```
-    nvm install 20.11.0
-    nvm use 20.11.0
+    nvm install 22.15.0
+    nvm use 22.15.0
     ```
 
 ##### API
@@ -34,7 +34,7 @@ Pub crawler app for my friend and anyone else who may be interested.
     ```
 -   Run the docker-compose command:
     ```
-    docker-compose up -d
+    docker-compose up -d izi-crawler-db
     ```
 -   Navigate to `/src/server-api-v1` folder in your terminal:
     ```

@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
     izi-crawler-builder:
         build:
@@ -12,8 +10,8 @@ services:
         restart: on-failure
         volumes:
             - ./client-mobile-v1:/project/app
-    izi-cawler-db:
-        image: mysql
+    izi-crawler-db:
+        image: mysql:8.0
         restart: always
         environment:
             MYSQL_DATABASE: db
