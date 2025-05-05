@@ -14,6 +14,7 @@ module.exports = {
     assetBundlePatterns: ['**/*'],
     ios: {
         supportsTablet: true,
+        bundleIdentifier: "com.stari89.izicrawler"
     },
     android: {
         package: 'com.stari89.izicrawler',
