@@ -1,4 +1,4 @@
-FROM node:20.11.0
+FROM node:22.15.0
 
 WORKDIR /
 # RUN npm -g i eas-cli @expo/ngrok@^4.1.0 sharp-cli@^2.1.0
